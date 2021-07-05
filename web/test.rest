@@ -1,0 +1,9 @@
+### student upload
+post http://localhost:35000/signUp
+content-type: application/json
+
+{
+    "username" : "test1",
+    "email" : "hjkjasdkajhsdads",
+    "tel" : "0888888888",
+}
