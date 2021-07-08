@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/header.ejs') %>
+  <link rel="stylesheet" type="text/css" href="/style/index.css">
+  <body>
+    <div id="floating-panel">
+      <input id="address" type="text" value="พะเยา">
+      <input id="submit" type="button" value="ค้นหาข้อมูล">
+      <input type="button" id="Logout"value="Logout" >
+    </div>
+    
+    <div id="map"></div>
+    <%- include('./partials/map.ejs') %>
+    
+    <script src="/scripts/js/index.js"></script>
+  </body>
+</html>

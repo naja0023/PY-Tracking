@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/mapping", (req, res) => {
-    res.sendFile(path.join(__dirname, "../views/index.html"));
+    res.render('index') 
 
 })
 router.get("/register", (req, res) => {

@@ -14,18 +14,18 @@ const authRoutes = require("./routes/auth-routes");
 const profile = require("./routes/profile-routes")
 const pageRoute = require('./routes/pagerout');
 const compression = require('compression');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(compression());
-app.use(helmet());      //for header protection
+// app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/loginstyle", express.static(path.join(__dirname, '/public/styles/login.css')));
+app.use("/style", express.static(path.join(__dirname, '/public/styles')));
 app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use(pageRoute);
