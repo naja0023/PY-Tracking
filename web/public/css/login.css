@@ -1,0 +1,23 @@
+
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            overflow: auto;
+            background: lime;
+            /* Just to visualize the extent */
+
+        }
+        .d-grid{
+            margin-top: 250px;
+        } 
+        p{
+            font-size: 150px;
+            text-align: center;
+            color: rgb(96, 165, 40);
+            
+        }
+    
+   
