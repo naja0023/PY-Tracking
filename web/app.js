@@ -25,7 +25,7 @@ app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/loginstyle", express.static(path.join(__dirname, '/public/css/login.css')));
 app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use(pageRoute);
