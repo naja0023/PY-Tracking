@@ -26,8 +26,6 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
             if (result.length == 1) {
                 if (result[0].role == 3) {
                     res.redirect("/manage");
-                } else if (result[0].role == 2) {
-
                 } else {
 
                     res.redirect("/mapping");
