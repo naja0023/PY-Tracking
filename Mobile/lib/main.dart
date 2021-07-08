@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import 'login.dart';
+import 'managers/MQTTManager.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,17 +28,41 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _messageTextController = TextEditingController();
+  MQTTManager _manager;
   StreamSubscription _locationSubscription;
   Location _locationTracker = Location();
   Marker marker;
   Circle circle;
   GoogleMapController _controller;
+
+  int _counter = 0;
+  Timer _timer;
+  void _startTimer() {
+    _counter = 0;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_counter == 3) {
+          _publishMessage("hello");
+          _counter = 0;
+        } else {
+          _counter++;
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _startTimer();
+  }
 
   static final CameraPosition initialLocation = CameraPosition(
     target: LatLng(19.033305505259104, 99.92876655258036),
@@ -152,4 +178,14 @@ class _MyHomePageState extends State<MyHomePage> {
       UserAccountsDrawerHeader(
           accountName: Text('เดี๋ยวมาทำ'),
           accountEmail: Text('ตอนนี้ง่วงแล้ว'));
+
+  void _publishMessage(String text) {
+    String osPrefix = 'Flutter_iOS';
+    if (Platform.isAndroid) {
+      osPrefix = 'Username1';
+    }
+    final String message = osPrefix + ' says: ' + text;
+    _manager.publish(message);
+    _messageTextController.clear();
+  }
 }
