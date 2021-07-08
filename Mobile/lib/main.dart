@@ -3,11 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_maps/login.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
-import 'login.dart';
-import 'managers/MQTTManager.dart';
+import 'MQTTManager.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,9 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Marker marker;
   Circle circle;
   GoogleMapController _controller;
-
   int _counter = 0;
   Timer _timer;
+  String hoster ="broker.emqx.io";
   void _startTimer() {
     _counter = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -57,11 +56,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void start() {
+    _manager.subScribeTo("moyanyo");
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _startTimer();
+    _manager.initializeMQTTClient(
+        host: hoster, identifier: "mynameisbenz");
+
+    _manager.connect();
+    start();
   }
 
   static final CameraPosition initialLocation = CameraPosition(

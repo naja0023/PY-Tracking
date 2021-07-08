@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import '../models/MQTTAppState.dart';
+import 'MQTTAppState.dart';
 
 class MQTTManager extends ChangeNotifier {
   // Private instance of client
   MQTTAppState _currentState = MQTTAppState();
   MqttServerClient _client;
+  
   String _identifier;
   String _host;
   String _topic = "";
