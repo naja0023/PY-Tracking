@@ -25,7 +25,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
             // console.log(result.length)
             if (result.length == 1) {
                 if (result[0].role == 3) {
-                    res.redirect("/manage");
+                    res.redirect('/check')
                 } else {
 
                     res.redirect("/mapping");

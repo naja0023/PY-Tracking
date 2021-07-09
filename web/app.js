@@ -14,6 +14,7 @@ const authRoutes = require("./routes/auth-routes");
 const profile = require("./routes/profile-routes")
 const pageRoute = require('./routes/pagerout');
 const compression = require('compression');
+const blogRoute = require('./routes/manageuserroute');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(compression());
+
 // app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -29,6 +31,7 @@ app.use("/style", express.static(path.join(__dirname, '/public/styles')));
 app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use(pageRoute);
+app.use(blogRoute);
 app.use("/profile", profile);
 app.set('view engine', 'ejs');
 
@@ -108,35 +111,7 @@ app.post("/login", function (req, res) {
     });
 });
 
-app.post("/getuser", function (req, res) {
 
-    const sql = "SELECT * FROM user";
-    con.query(sql,  function (err, result, fields) {
-        if (err) {
-            console.error(err.message);
-            res.status(503).send("Database error");
-            return;
-        }else{
-            res.json(result)
-        }
-
-    });
-
-});
-
-app.put("/updateuser", (req, res) => {
-    const { name, tel,email, id,role } = req.body;
-    console.log(req.body)
-    const sql = "UPDATE user SET name = ?, email = ?,tel =?,role =? WHERE Id = ?"
-    con.query(sql, [name, email, tel,role, id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("Update successed");
-        }
-    });
-});
 
 app.delete("/deleteuser", (req, res) => {
     const { id } = req.body;

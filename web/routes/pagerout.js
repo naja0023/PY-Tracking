@@ -14,8 +14,8 @@ router.get("/register", (req, res) => {
 
 })
 
-router.get("/manage", (req, res) => {
-    res.render('manageuser') 
+router.get("/check", (req, res) => {
+    res.render('checkpage') 
 
 })
 

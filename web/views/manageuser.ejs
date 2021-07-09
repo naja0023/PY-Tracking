@@ -1,171 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- DataTable -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
-    <!-- /DataTable -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
-    <title>Document</title>
-    <script>
-        var table
-        var id
-        $(document).ready(function () {
-
-            createtable()
-            table = $('#tbuser').DataTable({
-                "lengthChange": false,
-                "paging": false,
-                "ordering": false,
-                "info": false,
-                "searching": false,
-                deferRender: true,
-                columns: [
-
-                    { data: "id", title: "id", visible: false },
-                    { data: "name", title: "Name-Surname" },
-                    { data: "email", title: "Email" },
-                    { data: "tel", title: "Tel.number" },
-                    { data: "role", title: "Role" },
-                    {
-                        data: "anouce_Id",
-                        render: function (data, type, full, meta) {
-                            console.log(full)
-                            return '<button  type="button" class="edit btn btn-warning  mt-1" data-toggle="modal"data-target="#editModal"><b>EDIT</b></button> <button type="button" class="deletebut btn btn-danger mt-1" data-toggle="modal"data-target="#exampleModal2"><b>DELETE</b></button>'
-                        }, title: "Edit"
-                    },
-
-                ],
-                responsive: true,
-            });
-
-
-
-            $("#create").click(function () {
-                let name = $("#name").val()
-                let email = $("#email").val()
-                let tel = $("#tel").val()
-                let role = $("#selectrole").val()
-                $.ajax({
-                    method: "POST",
-                    url: "/signUp",
-                    data: { username: name, email: email, tel: tel, role: role }
-                }).done(function (data, state, xhr) {
-                    alert(data)
-                    $('#exampleModal').modal('toggle')
-                    createtable()
-
-                })
-            })
-
-            $("#saveedit").click(function () {
-                let name = $("#nameedit").val();
-                let email = $("#emailedit").val();
-                let tel = $("#teledit").val();
-                let role = $("#roleedit").val();
-                $.ajax({
-                    type: "PUT",
-                    url: "/updateuser",
-                    data: { name: name, email: email, tel: tel, role: role, id: id },
-                }).done(function (data, state, xhr) {
-                    swal({
-                        title: "<small>Update Succes</small>",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonClass: "btn-success rounded",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true,
-                        closeOnCancel: true
-                    },
-                        function (isConfirm) {
-                            $("#editModal").modal('hide')
-                            createtable();
-                        });
-                })
-            })
-
-            $("#delete").click(function () {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/deleteuser",
-                    data: { id: id },
-                }).done(function (data, state, xhr) {
-                    swal({
-                        title: "<small>Delete Succes</small>",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonClass: "btn-success rounded",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true,
-                        closeOnCancel: true
-                    },
-                        function (isConfirm) {
-                            $("#exampleModal2").modal('hide')
-                            createtable();
-                        });
-                })
-            })
-
-            $('#tbuser tbody').on('click', '.edit', function () {
-                let data = table.row($(this).parents('tr')).data();
-                id = data.id;
-                $("#nameedit").val(data.name);
-                $("#emailedit").val(data.email);
-                $("#teledit").val(data.tel);
-
-            });
-            $('#tbuser tbody').on('click', '.deletebut', function (e) {
-                let data = table.row($(this).parents('tr')).data();
-                id = data.id;
-            });
-        });
-
-
-        function createtable() {
-            $.ajax({
-                type: "POST",
-                url: "/getuser",
-            }).done(function (data, state, xhr) {
-                let datata = []
-                for (let i = 0; i < data.length; i++) {
-                    let role
-                    if (data[i].role == 1) {
-                        role = "User"
-                    } else if (data[i].role == 2) {
-                        role = "driver"
-                    } else {
-                        role = "admin"
-                    }
-                    datata.push({ name: data[i].name, email: data[i].email, tel: data[i].tel, role: role, id: data[i].Id });
-                }
-                table.clear();
-                table.rows.add(datata).draw();
-            })
-        }
-    </script>
-</head>
-
-<body>
+    <%- include('./partials/header.ejs') %>
+<body> 
     <div class="container">
         <div class="">
             <button class=" btn-danger" onclick="window.location.replace('/auth/logout')"> logout</button>
@@ -173,7 +9,37 @@
             <button class="btn btn-primary" onclick="window.location.replace('/admin')">Admin</button>
         </div>
         <!-- table -->
-        <table class="table table-bordered  table-responsive-xl" id="tbuser">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for( let index = 0; index < resule.length; index++ ) { %>
+                    <tr>
+                        <td><%= index+1 %> </td>
+                        <td><%= resule[index].name %> </td>
+                        <td><%= resule[index].email %> </td>
+                        <td>  <% if (resule[index].role == 1) { %>
+                            User
+                        <% } else if(resule[index].role == 2) { %>
+                            Driver
+                        <% } else{ %>
+                        Admin
+                        <% } %>
+                            </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btnDelete" blogID="<%= resule[index].id %>">Delete</button>
+                            <button type="button" class="btn btn-warning btnEdit" blogData="<%= JSON.stringify(resule[index]) %>">Edit</button>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
         </table>
     </div>
 

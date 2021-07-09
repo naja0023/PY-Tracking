@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    sessionStorage.ktt = 0
     $("#btnregister").click(function () { 
         window.location.href = "/register";
         
