@@ -1,6 +1,13 @@
 $(document).ready(function () {
     var mode = "";
     var blogID = 0;
+    $(".closes").click(function(){
+        $("#exampleModal").modal("toggle");  
+    })
+
+    $(".close").click(function(){
+        $("#exampleModal2").modal("toggle");  
+    })
 
     $(".btnDelete").click(function () {
         blogID = $(this).attr("blogID");
