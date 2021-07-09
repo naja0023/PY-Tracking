@@ -40,6 +40,7 @@ $(document).ready(function () {
             url: url,
             data: data,
             success: function (response) {
+                alert("Success")
                 window.location.replace(response);
             },
             error: function (xhr) {
@@ -83,26 +84,14 @@ $(document).ready(function () {
         blogID = postData.Id;
     });
 
-    $("#delete").click(function () {
+    $("#deletekiki").click(function () {
         $.ajax({
             type: "DELETE",
             url: "/adminse/" + blogID,
             data: { id: blogID },
         }).done(function (data, state, xhr) {
-            swal({
-                title: "<small>Delete Succes</small>",
-                type: "success",
-                showCancelButton: false,
-                confirmButtonClass: "btn-success rounded",
-                confirmButtonText: "OK",
-                closeOnConfirm: true,
-                html: true,
-                closeOnCancel: true
-            },
-                function (isConfirm) {
-                    $("#exampleModal2").modal('hide')
-                    window.location.replace(data)
-                });
+            alert("delete success")
+                window.location.replace(data)
         })
     })
 
