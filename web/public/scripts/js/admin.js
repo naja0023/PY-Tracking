@@ -5,7 +5,7 @@ $(document).ready(function () {
         $("#exampleModal").modal("toggle");  
     })
 
-    $(".close").click(function(){
+    $(".close2").click(function(){
         $("#exampleModal2").modal("toggle");  
     })
 
