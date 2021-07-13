@@ -2,59 +2,46 @@
 <html lang="en">
 <%- include('./partials/header.ejs') %>
     <link rel="stylesheet" type="text/css" href="/style/login.css">
-
-
+    
     <body>
         <form></form>
-            <section>
-                <div class="imgBx">
-                    <img src="/image/super-car-2.jpg">
-                </div>
-                <div class="contentBx">
-                    <div class="formBx">
-                        <h2>Login</h2>
-                        <form>
-                            <div class="inputBx">
-                                <span>Username</span>
-                                <input type="text" name="">
-                            </div>
-                            <div class="inputBx">
-                                <span>Password</span>
-                                <input type="password" name="">
-                            </div>
-                            <div class="remember">
-                                <label><input type="checkbox" nme=""> Remember me</label>
-                            </div>
-                            <div class="inputBx">
-                                <input type="submit" value="Login" name="">
-                            </div>
-                            <div class="inputBx">
-                                <p>Don't have an account? <a href="#">Create an account</a></p>
-                            </div>
-                        </form>
+        <class class="data-form">
+            <div class="data-input">
+                <section>
+                    <div class="imgBx">
+                        <img src="/image/super-car-2.jpg">
                     </div>
-                </div>
-            </section>
-                <br>
-                <class class="data-form">
-                    <div class="data-input">
-
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                            <p class="login">Login</p>
-                        <p class="username">Username</p> 
-                            <input class="input-username" type="text" name="username">       
-                <br>
-                        <p class="password"> Pass word</p>
-                            <input class="input-password" type="text" name="password">
-                            <br><button class="bsc btn-success">login</button> 
-                            <button id="btnlogin" class="btn btn-primary btn-block">Login with Google</button>
-                            <button id="btnregister" class="btn btn-primary btn-block">Create an account</button>
-                            
-
+                    <div class="contentBx">
+                        <div class="formBx">
+                            <h2>Login</h2>
+                            <form>
+                                <div class="inputBx">
+                                    <span>Username</span>
+                                    <input type="text" name="username">
+                                </div>
+                                <div class="inputBx">
+                                    <span>Password</span>
+                                    <input type="password" name="password">
+                                </div>
+                                <!-- <div class="remember">
+                                    <label><input type="checkbox" nme=""> Remember me</label>
+                                </div> -->
+                                <div class="inputBx">
+                                    <input type="submit" value="Login" name="">
+                                </div>
+                                <!-- <div class="inputBx">
+                                    <p>Don't have an account? <a href="#">Create an account</a></p>
+                                </div> -->
+                            </form>
+                            <h3>Login with Google</h3>
+                            <ul class="sci">
+                                <li id="btnlogin"><img src="/image/google.png"></li>
+                            </ul>
                         </div>
                     </div>
-                </class>
-
+                </section>
+            </div>
+        </class>
         <script src="/scripts/js/login.js"></script>
     </body>
 </html>
