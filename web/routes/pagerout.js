@@ -24,4 +24,14 @@ router.get("/admin", (req, res) => {
 
 })
 
+router.get("/profile", (req, res) => {
+    res.render('profile') 
+
+})
+
+router.get("/driver", (req, res) => {
+    res.render('driver') 
+
+})
+
 module.exports = router;
