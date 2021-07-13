@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttermqttnew/modules/message/screen/new.dart';
 import 'package:provider/provider.dart';
 
 import 'modules/core/managers/MQTTManager.dart';
@@ -38,8 +39,8 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: '/',
           routes: {
-            '/': (BuildContext context) => MessageScreen(),
-            SETTINGS_ROUTE: (BuildContext context) => SettingsScreen(),
+            '/': (BuildContext context) => Benz(),
+            SETTINGS_ROUTE: (BuildContext context) => MessageScreen(),
           }),
     );
   }
