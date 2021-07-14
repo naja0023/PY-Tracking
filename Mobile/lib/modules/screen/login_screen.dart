@@ -199,7 +199,7 @@ class _loginState extends State<login> {
     _manager.connect();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (counter == 3) {
+        if (counter == 1) {
           _subscribe();
           counter = 0;
           timer.cancel();
