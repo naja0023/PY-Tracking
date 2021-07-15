@@ -21,9 +21,11 @@ $(document).ready(function () {
         // add       
         let data = {
             username: $("#name").val(),
+            lastname: $("#editer").val(),
+            tell: $("#tel").val(),
             email: $("#email").val(),
-            tel: $("#tel").val(),
-            role: $("#selectrole").val()
+            id_card: $("#card").val(),
+            role: $("#selectrole").val(),
 
         };
         let method = "POST";
@@ -33,8 +35,10 @@ $(document).ready(function () {
         if (mode == "edit") {
             data = {
                 name: $("#name").val(),
+                lastname: $("#editer").val(),
+                tell: $("#tel").val(),
+                idcard:$("#card").val(),
                 email: $("#email").val(),
-                tel: $("#tel").val(),
                 role: $("#selectrole").val(),
                 id: blogID
             };
@@ -83,12 +87,13 @@ $(document).ready(function () {
         $("#exampleModal").modal("toggle");
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
-        // console.log(postData);
+         console.log(postData);
         $("#name").val(postData.name);
         $("#email").val(postData.email);
-        $("#tel").val(postData.tel);
+        $("#tel").val(postData.tell);
         $("#selectrole").val('');
-        blogID = postData.Id;
+        blogID = postData.driver_id;
+        
     });
 
     $("#deletekiki").click(function () {

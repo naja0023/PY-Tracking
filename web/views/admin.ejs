@@ -50,8 +50,9 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Name</th>
+                                        <th>Lastname</th>
                                         <th>Email</th>
-                                        <th>Tel</th>
+                                        <th>Phone</th>
                                         <th>ID card</th>
                                         <th>license plate</th>
                                         
@@ -69,16 +70,19 @@
                                                 <%= resule[index].name %>
                                             </td>
                                             <td>
+                                                <%= resule[index].lastname %>
+                                            </td>
+                                            <td>
                                                 <%= resule[index].email %>
                                             </td>
                                             <td>
-                                                <%= resule[index].tel %>
+                                                <%= resule[index].tell %>
                                             </td>
                                             <td>
-                                                464654
+                                                <%= resule[index].id_card %>
                                             </td>
                                             <td>
-                                               646465456
+                                               0820465530
                                             </td>
                                             <td>
                                                 <% if (resule[index].role==1) { %>
@@ -91,7 +95,7 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger btnDelete"
-                                                    blogID="<%= resule[index].Id %>">Delete</button>
+                                                    blogID="<%= resule[index].driver_id %>">Delete</button>
                                                 <button type="button" class="btn btn-warning btnEdit"
                                                     blogData="<%= JSON.stringify(resule[index]) %>">Edit</button>
                                             </td>

@@ -15,7 +15,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 //if login success, redirect here
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
     console.log(req.user.email)
-    var sql = ("select * from user where email = ?")
+    var sql = ("select * from driver where email = ?")
     con.query(sql, [req.user.email], function (err, result) {
         if (err) {
             return done(err)

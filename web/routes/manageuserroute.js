@@ -5,7 +5,7 @@ const con = mysql.createConnection(config);
 
 
 router.get("/adminse", (req, res) => {
-    const sql = "SELECT * FROM user";
+    const sql = "SELECT * FROM driver";
     con.query(sql,  function (err, result, fields) {
         if (err) {
             console.error(err.message);
@@ -22,12 +22,14 @@ router.get("/adminse", (req, res) => {
 //  --- add new post ---
 router.post('/adminse/new', (req, res) => {
     const username = req.body.username;
-    const email = req.body.email;
-    const tel = req.body.tel;
+    const lastname = req.body.lastname;
+     const tell = req.body.tell;
+     const id_card = req.body.id_card;
+     const email = req.body.email;
     const role = req.body.role
 
-    const sql = "INSERT INTO user(name, email, role,tel) VALUES(?,?,?,?)";
-    con.query(sql, [username, email,role, tel], function (err, result, fields) {
+    const sql = "INSERT INTO driver(name,lastname,tell,id_card,email, role)VALUES(?,?,?,?,?,?)"
+    con.query(sql, [username,lastname,tell,id_card,email,role ], function (err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("Database error");
@@ -48,10 +50,10 @@ router.post('/adminse/new', (req, res) => {
 
 //  --- edit a post ---
 router.put('/adminse/edit', (req, res) => {
-    const { name, tel,email, id,role } = req.body;
+    const { name,lastname, tell,idcard,email,licenseplate, id,role } = req.body;
     console.log(req.body)
-    const sql = "UPDATE user SET name = ?, email = ?,tel =?,role =? WHERE Id = ?"
-    con.query(sql, [name, email, tel,role, id], (err, result) => {
+    const sql = "UPDATE driver SET name = ?,lastname = ?,tell =?, email = ?,id_card = ?, role = ? WHERE driver_id= ?"
+    con.query(sql, [name,lastname,tell,email,idcard,role, id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -64,7 +66,7 @@ router.put('/adminse/edit', (req, res) => {
 // --- delete selected blog of a user ---
 router.delete('/adminse/:id',  (req, res) => {
     const blogID = req.params.id;
-    const sql = "DELETE FROM user WHERE Id =?"
+    const sql = "DELETE FROM driver WHERE driver_id =?"
     con.query(sql, [blogID], (err, result) => {
         if (err) {
             console.log(err);
