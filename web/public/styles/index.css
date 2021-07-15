@@ -85,3 +85,16 @@ html,body {
   transition: .5s;
   background: #020452;
 }
+#eiei{
+  position:absolute;
+  top: 100px;
+  left: 47%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+  padding-left: 10px;
+}
