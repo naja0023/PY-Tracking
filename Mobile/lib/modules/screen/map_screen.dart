@@ -35,7 +35,8 @@ class _MapViewState extends State<MapView> {
   late Timer _timer;
   var _counter = 0;
   late MQTTManager _manager;
-
+  StreamSubscription<Position>? positionStream;
+  bool track_button = true;
   late Position _currentPosition;
   String _currentAddress = '';
 
@@ -106,16 +107,18 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  // ignore: unused_element
-  void _updatelocation() {
-    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
-      desiredAccuracy: LocationAccuracy.best,
-    ).listen((Position position) {
+  // Method for retrieving the current location
+  /* _getCurrentLocation() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      //_publishMessage(position.toString());
+      //_timer = Timer.periodic(Duration(seconds: 3), (timer) {});
+      setState(() {});
       _currentPosition = position;
-      _publishMessage("latitude :" +
-          position.latitude.toString() +
-          " longtitude : " +
-          position.longitude.toString());
+      /*_publishMessage("latitude :" +
+              position.latitude.toString() +
+              " longtitude : " +
+              position.longitude.toString());*/
       print('CURRENT LOCATION $_currentPosition');
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -125,7 +128,52 @@ class _MapViewState extends State<MapView> {
           ),
         ),
       );
+
+      await _getAddress();
+    }).catchError((e) {
+      print(e);
     });
+  }*/
+
+  // ignore: unused_element
+  void _updatelocation() {
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
+            .listen((Position position) {
+      _currentPosition = position;
+      /*_publishMessage("latitude :" +
+              position.latitude.toString() +
+              " longtitude : " +
+              position.longitude.toString());*/
+      print('CURRENT LOCATION $_currentPosition');
+      /* mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 15.0,
+          ),
+        ),
+      );*/
+    });
+  }
+
+  void _cameratrack() {
+    positionStream =
+        Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
+            .listen((Position position) {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 18.0,
+          ),
+        ),
+      );
+    });
+  }
+
+  _uncameratrack() {
+    positionStream?.cancel();
   }
 
   // Method for retrieving the address
@@ -541,28 +589,22 @@ class _MapViewState extends State<MapView> {
                   padding: const EdgeInsets.only(right: 10.0, bottom: 10.0),
                   child: ClipOval(
                     child: Material(
-                      color: Colors.orange.shade100, // button color
+                      color: Colors.orange[100], // button color
                       child: InkWell(
-                        splashColor: Colors.orange, // inkwell color
-                        child: SizedBox(
-                          width: 56,
-                          height: 56,
-                          child: Icon(Icons.my_location),
-                        ),
-                        onTap: () {
-                          mapController.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                              CameraPosition(
-                                target: LatLng(
-                                  _currentPosition.latitude,
-                                  _currentPosition.longitude,
-                                ),
-                                zoom: 18.0,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                          splashColor: Colors.orange, // inkwell color
+                          child: SizedBox(
+                            width: 56,
+                            height: 56,
+                            child: track_button
+                                ? Icon(Icons.explore)
+                                : Icon(Icons.my_location),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              track_button ? _cameratrack() : _uncameratrack();
+                              track_button = !track_button;
+                            });
+                          }),
                     ),
                   ),
                 ),
