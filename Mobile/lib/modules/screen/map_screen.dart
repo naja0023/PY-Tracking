@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/secrets.dart'; // Stores the Google Maps API Key
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -30,7 +32,8 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   CameraPosition _initialLocation = CameraPosition(target: LatLng(0.0, 0.0));
   late GoogleMapController mapController;
-
+  late Timer _timer;
+  var _counter = 0;
   late MQTTManager _manager;
 
   late Position _currentPosition;
@@ -103,26 +106,25 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  // Method for retrieving the current location
-  _getCurrentLocation() async {
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) async {
-      setState(() {
-        _currentPosition = position;
-        _publishMessage("latitude :"+position.latitude.toString()+" longtitude : "+position.longitude.toString());
-        print('CURRENT POS: $_currentPosition');
-        mapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(position.latitude, position.longitude),
-              zoom: 18.0,
-            ),
+  // ignore: unused_element
+  void _updatelocation() {
+    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+      desiredAccuracy: LocationAccuracy.best,
+    ).listen((Position position) {
+      _currentPosition = position;
+      _publishMessage("latitude :" +
+          position.latitude.toString() +
+          " longtitude : " +
+          position.longitude.toString());
+      print('CURRENT LOCATION $_currentPosition');
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 15.0,
           ),
-        );
-      });
-      await _getAddress();
-    }).catchError((e) {
-      print(e);
+        ),
+      );
     });
   }
 
@@ -319,7 +321,7 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    _updatelocation();
     // _configureAndConnect();
     // WidgetsBinding.instance!
     //     .addPostFrameCallback((_) => _configureAndConnect());
@@ -345,7 +347,7 @@ class _MapViewState extends State<MapView> {
               markers: Set<Marker>.from(markers),
               initialCameraPosition: _initialLocation,
               myLocationEnabled: true,
-              myLocationButtonEnabled: false,
+              myLocationButtonEnabled: true,
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: false,

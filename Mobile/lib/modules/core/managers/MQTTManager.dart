@@ -70,7 +70,7 @@ class MQTTManager extends ChangeNotifier {
   void publish(String message) {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
     builder.addString(message);
-    _client!.publishMessage(_topic, MqttQos.exactlyOnce, builder.payload!);
+    _client!.publishMessage(_topic, MqttQos.atLeastOnce, builder.payload!);
   }
 
   /// The subscribed callback
@@ -109,7 +109,7 @@ class MQTTManager extends ChangeNotifier {
     _client!.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
       final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
       final String pt =
-      MqttPublishPayload.bytesToStringAsString(recMess.payload.message!);
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message!);
       _currentState.setReceivedText(pt);
       updateState();
       print(
