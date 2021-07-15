@@ -30,7 +30,10 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  CameraPosition _initialLocation = CameraPosition(target: LatLng(0.0, 0.0));
+  CameraPosition _initialLocation = CameraPosition(
+    target: LatLng(19.030790, 99.924131),
+    zoom: 14,
+  );
   late GoogleMapController mapController;
   late Timer _timer;
   var _counter = 0;
@@ -141,10 +144,10 @@ class _MapViewState extends State<MapView> {
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) {
       _currentPosition = position;
-      /*_publishMessage("latitude :" +
-              position.latitude.toString() +
-              " longtitude : " +
-              position.longitude.toString());*/
+      _publishMessage("latitude :" +
+          position.latitude.toString() +
+          " longtitude : " +
+          position.longitude.toString());
       print('CURRENT LOCATION $_currentPosition');
       /* mapController.animateCamera(
         CameraUpdate.newCameraPosition(
