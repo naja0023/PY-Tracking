@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:fluttermqttnew/modules/screen/login_screen.dart';
+import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/secrets.dart'; // Stores the Google Maps API Key
+import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:fluttermqttnew/utillity/show_progress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -132,12 +135,19 @@ class _MapViewState extends State<MapView> {
       height: height,
       width: width,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: MyConstant.dark,
+          title: Center(
+            child: Text(MyConstant.appName),
+          ),
+        ),
+        drawer: buildDrawer(),
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
             buildMap(),
             zoombutton(),
-            inputText(width, context),
+            //inputText(width, context),
             trackingbutton(),
           ],
         ),
@@ -176,7 +186,7 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  SafeArea inputText(double width, BuildContext context) {
+  /* SafeArea inputText(double width, BuildContext context) {
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
@@ -301,6 +311,7 @@ class _MapViewState extends State<MapView> {
       ),
     );
   }
+*/
 
   SafeArea zoombutton() {
     return SafeArea(
@@ -363,7 +374,7 @@ class _MapViewState extends State<MapView> {
               ),
               markers: Set<Marker>.from(markers),
               myLocationEnabled: true,
-              myLocationButtonEnabled: true,
+              myLocationButtonEnabled: false,
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: false,
@@ -550,7 +561,7 @@ class _MapViewState extends State<MapView> {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(position.latitude, position.longitude),
-            zoom: 18.0,
+            zoom: 15.0,
           ),
         ),
       );
@@ -621,5 +632,43 @@ class _MapViewState extends State<MapView> {
       width: 3,
     );
     polylines[id] = polyline;
+  }
+
+  Drawer buildDrawer() {
+    return Drawer(
+      child: Container(
+        //color: MyConstant.light,
+        child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: [
+            headerDrawer(),
+            titleDrawer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  UserAccountsDrawerHeader headerDrawer() {
+    return UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        color: MyConstant.dark,
+      ),
+      accountName: Text('เดี๋ยวมาทำ'),
+      accountEmail: Text('ตอนนี้ง่วงแล้ว'),
+    );
+  }
+
+  ListTile titleDrawer() {
+    return ListTile(
+      leading: Icon(Icons.android),
+      title: Text('Logout'),
+      onTap: () {
+        Navigator.pop(context);
+        MaterialPageRoute route =
+            MaterialPageRoute(builder: (value) => login());
+        Navigator.push(context, route);
+      },
+    );
   }
 }
