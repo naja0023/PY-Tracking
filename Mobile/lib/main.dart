@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (BuildContext context) => login(),
-            SETTINGS_ROUTE: (BuildContext context) => MessageScreen(),
+            SETTINGS_ROUTE: (BuildContext context) => MapScreen(),
           }),
     );
   }

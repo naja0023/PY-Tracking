@@ -18,13 +18,11 @@ class login extends StatefulWidget {
   _loginState createState() => _loginState();
 }
 
-late Timer _timer;
-late MQTTManager _manager;
-var _counter = 0;
-
 class _loginState extends State<login> {
   bool statusRedEye = true;
-
+  late Timer _timer;
+  late MQTTManager _manager;
+  var _counter = 0;
   void initState() {
     // TODO: implement initState
     super.initState();
