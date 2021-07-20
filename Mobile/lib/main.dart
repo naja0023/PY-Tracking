@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fluttermqttnew/modules/message/screen/new.dart';
+import 'package:fluttermqttnew/modules/screen/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'modules/core/managers/MQTTManager.dart';
 import 'modules/helpers/screen_route.dart';
 import 'modules/helpers/service_locator.dart';
-import 'modules/message/screen/message_screen.dart';
-import 'modules/settings/screen/settings_screen.dart';
+import 'modules/screen/map_screen.dart';
 
 void main() {
   setupLocator();
@@ -18,9 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MQTTManager>(
-      create: (context) =>service_locator<MQTTManager>(),
+      create: (context) => service_locator<MQTTManager>(),
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Driver App',
           theme: ThemeData(
             // This is the theme of your application.
             //
@@ -39,8 +38,8 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: '/',
           routes: {
-            '/': (BuildContext context) => Benz(),
-            SETTINGS_ROUTE: (BuildContext context) => MessageScreen(),
+            '/': (BuildContext context) => login(),
+            SETTINGS_ROUTE: (BuildContext context) => MapScreen(),
           }),
     );
   }
