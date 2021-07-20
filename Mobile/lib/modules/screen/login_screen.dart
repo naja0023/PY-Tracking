@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:fluttermqttnew/modules/core/models/MQTTAppState.dart';
 import 'package:fluttermqttnew/modules/core/widgets/status_bar.dart';
 import 'package:fluttermqttnew/modules/helpers/screen_route.dart';
 import 'package:fluttermqttnew/modules/helpers/status_info_message_utils.dart';
+import 'package:fluttermqttnew/modules/screen/map_screen.dart';
 import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:provider/provider.dart';
@@ -201,7 +203,7 @@ class _loginState extends State<login> {
     }
     _manager.initializeMQTTClient(host: "broker.emqx.io", identifier: osPrefix);
     _manager.connect();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
         if (counter == 1) {
           _subscribe();
@@ -216,21 +218,42 @@ class _loginState extends State<login> {
 
   void _subscribe() {
     _manager.subScribeTo("moyanyo");
-    Navigator.of(context).pushNamed(SETTINGS_ROUTE);
+
+    MaterialPageRoute route =
+        MaterialPageRoute(builder: (value) => MapScreen());
+    Navigator.pushReplacement(context, route);
+    // Navigator.of(context)
+    //     .pushNamedAndRemoveUntil('/map', (Route<dynamic> route) => false);
+    // Navigator.pushNamedAndRemoveUntil(
+    //     context, '/map', ModalRoute.withName('/map'));
   }
 
   _login() async {
     var username = _getUsername.text;
     var password = _getPassword.text;
+
     try {
       http.Response response = await http.post(_url, body: {
         'username': username,
         'password': password,
       }).timeout(Duration(seconds: 4));
       var _check = response.body;
-      if (response.statusCode == 200) {
+
+      if (response.statusCode == 200 && _check.length > 0) {
         _configureAndConnect();
+      } else {
+        final snackBar = SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text('ล็อกอืนไม่สำเร็จ'),
+        );
+        // Find the ScaffoldMessenger in the widget tree
+        // and use it to show a SnackBar.
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-    } catch (e) {}
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
   }
 }

@@ -136,9 +136,12 @@ class _MapViewState extends State<MapView> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: MyConstant.dark,
-          title: Center(
-            child: Text(MyConstant.appName),
-          ),
+          title: Row(children: [
+            SizedBox(
+              width: 89,
+            ),
+            Text(MyConstant.appName),
+          ]),
         ),
         drawer: buildDrawer(),
         key: _scaffoldKey,
@@ -661,11 +664,33 @@ class _MapViewState extends State<MapView> {
       leading: Icon(Icons.android),
       title: Text('Logout'),
       onTap: () {
-        Navigator.pop(context);
-        MaterialPageRoute route =
-            MaterialPageRoute(builder: (value) => login());
-        Navigator.push(context, route);
+        _disconnect();
       },
     );
+  }
+
+  void _disconnect() {
+    int counter = 0;
+    _manager.disconnect();
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      setState(() {
+        if (counter == 1) {
+          //Navigator.pushReplacementNamed(context, '/login');
+          counter = 0;
+          timer.cancel();
+
+          ///----------
+          // Navigator.of(context).pushNamedAndRemoveUntil(
+          //     '/login', (Route<dynamic> route) => false);
+          ///----------
+          // Navigator.pop(context);
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (value) => login());
+          Navigator.pushReplacement(context, route);
+        } else {
+          counter++;
+        }
+      });
+    });
   }
 }
