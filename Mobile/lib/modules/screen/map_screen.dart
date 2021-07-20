@@ -57,7 +57,6 @@ class _MapViewState extends State<MapView> {
   String? _placeDistance;
 
   Set<Marker> markers = {};
-
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -147,7 +146,7 @@ class _MapViewState extends State<MapView> {
           children: <Widget>[
             buildMap(),
             zoombutton(),
-            //inputText(width, context),
+            // inputText(width, context),
             trackingbutton(),
           ],
         ),
@@ -186,7 +185,7 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  /* SafeArea inputText(double width, BuildContext context) {
+  SafeArea inputText(double width, BuildContext context) {
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
@@ -267,7 +266,6 @@ class _MapViewState extends State<MapView> {
                                 polylineCoordinates.clear();
                               _placeDistance = null;
                             });
-
                             _calculateDistance().then((isCalculated) {
                               if (isCalculated) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -311,7 +309,6 @@ class _MapViewState extends State<MapView> {
       ),
     );
   }
-*/
 
   SafeArea zoombutton() {
     return SafeArea(
@@ -370,7 +367,7 @@ class _MapViewState extends State<MapView> {
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(lat!, lng!),
-                zoom: 14,
+                zoom: 15,
               ),
               markers: Set<Marker>.from(markers),
               myLocationEnabled: true,
@@ -561,7 +558,7 @@ class _MapViewState extends State<MapView> {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(position.latitude, position.longitude),
-            zoom: 15.0,
+            zoom: 16.0,
           ),
         ),
       );
