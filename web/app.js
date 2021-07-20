@@ -67,12 +67,60 @@ app.post("/signUp", function (req, res) {
 
 });
 
+//-------------------------- Register ------------------------
+app.post("/register", function (req, res) {
+    const username = req.body.username;
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const password = req.body.password;
+    const role = req.body.role;
+    const id_card = req.body.id_card;
+    const email = req.body.email;
+    const tell =req.body.tell;
+
+    //checked existing username
+    let sql = "SELECT driver_id FROM driver WHERE username=?";
+    con.query(sql, [username], function (err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("Database server error");
+            return;
+        }
+
+        const numrows = result.length;
+        //if repeated username
+        if (numrows > 0) {
+            res.status(400).send("Sorry, this username exists");
+        }
+        else {
+            bcrypt.hash(password, 10, function (err, hash) {
+                //return hashed password, 60 characters
+                sql = "INSERT INTO driver(username,name,lastname,password,role,id_card,email,tell) VALUES (?,?,?,?,?,?,?,?)";
+                con.query(sql, [username,name,lastname,hash,role,id_card,email,tell], function (err, result, fields) {
+                    if (err) {
+                        console.error(err.message);
+                        res.status(500).send("Database server error");
+                        return;
+                    }
+
+                    const numrows = result.affectedRows;
+                    if (numrows != 1) {
+                        res.status(500).send("Insert failed");
+                    }
+                    else {
+                        res.send("Register done");
+                    }
+                });
+            });
+        }
+    });
+});
 
 app.post("/login", function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT password, role FROM login WHERE username=?";
+    const sql = "SELECT password, role FROM driver WHERE username= ?";
     con.query(sql, [username], function (err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");

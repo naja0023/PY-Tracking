@@ -7,3 +7,32 @@ content-type: application/json
     "email" : "hjkjasdkajhsdads",
     "tel" : "0888888888",
 }
+
+
+
+
+###
+post http://localhost:35000/register
+content-type: application/json
+
+{
+    "username" : "windoss",
+    "name" : "kunnawut",
+    "lastname" :"artwong",
+    "password" : "12345",
+    "role" : "1",
+    "id_card" : "645564621616",
+    "email" : "61020908@up.ac.th",
+    "tell" : "0631146778"
+}
+
+
+###
+post http://localhost:35000/login
+content-type: application/json
+
+{
+    "username" : "windoss",
+    "password" : "12345"
+    
+}
