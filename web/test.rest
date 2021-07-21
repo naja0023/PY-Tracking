@@ -36,3 +36,68 @@ content-type: application/json
     "password" : "12345"
     
 }
+
+####
+post http://localhost:35000/addcar
+content-type: application/json
+
+{
+    "License_plate" : "454465",
+    "seat" : "15"
+    
+}
+
+####
+post http://localhost:35000/addcarmacht
+content-type: application/json
+
+{
+    "car_id" : "1",
+    "driver_id" : "1",
+     "date" : "11/2/64"
+}
+
+####
+post http://localhost:35000/updatecar
+content-type: application/json
+
+{
+    "License_plate" : "1231",
+    "seat" : "15",
+     "car_id" : "1"
+}
+
+####
+post http://localhost:35000/updatecarmatch
+content-type: application/json
+
+{
+    "driver_id" : "1231",
+    "car_id" : "1",
+    "date" : "2021/7/21",
+    "carmatch" : "3"
+    
+}
+
+
+####
+delete http://localhost:35000/deletecar
+content-type: application/json
+
+{
+    "car_id" : "5"
+    
+    
+}
+
+####
+post http://localhost:35000/addlocation
+content-type: application/json
+
+{
+    "carmatch" : "667",
+    "lat" : "192.1111",
+    "lng" : "192.2222"
+   
+    
+}

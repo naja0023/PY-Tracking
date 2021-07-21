@@ -120,7 +120,7 @@ app.post("/login", function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT password, role FROM driver WHERE username= ?";
+    const sql = "SELECT * FROM driver WHERE username= ?";
     con.query(sql, [username], function (err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
@@ -137,17 +137,7 @@ app.post("/login", function (req, res) {
                         res.status(503).send("การรับรองเซิร์ฟเวอร์ผิดพลาด");
                     }
                     else if (resp == true) {
-
-                        if (result[0].role == 1) {
-
-                            res.send("/admin");
-                        }
-                        else if (result[0].role == 2) {
-
-                            res.send("/");
-                        } else {
-                            res.send("/Loginforhospital");
-                        }
+                    res.json(result)
                     }
                     else {
                         //wrong password
@@ -175,6 +165,100 @@ app.delete("/deleteuser", (req, res) => {
     });
 });
 
+
+
+app.post("/addcar", (req, res) => {
+    const { License_plate,seat } = req.body;
+    const sql = "INSERT INTO `car`(`License_plate`, `seat`) VALUES (?,?)"
+    con.query(sql, [License_plate,seat ], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("addsuccessed");
+        }
+    });
+});
+
+app.post("/addcarmatch", (req, res) => {
+    const {driver_id,car_id,date } = req.body;
+    const sql = "INSERT INTO `car_match`(`driver_id`, `car_id`, `date`) VALUES (?,?,?)"
+    con.query(sql, [driver_id,car_id,date], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("addsuccessed");
+        }
+    });
+});
+
+app.post("/updatecar", (req, res) => {
+    const {License_plate,seat,car_id} = req.body;
+    const sql = "UPDATE car SET License_plate=?,seat=? WHERE car_id = ?"
+    con.query(sql, [License_plate,seat,car_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("updatecarsuccessed");
+        }
+    });
+});
+
+
+app.post("/updatecarmatch", (req, res) => {
+    const {driver_id,car_id,date,carmatch} = req.body;
+    const sql = "UPDATE car_match SET driver_id=?,car_id=?,date=? WHERE carmatch=?"
+    con.query(sql, [driver_id,car_id,date,carmatch], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("updatesuccessed");
+        }
+    });
+});
+
+
+app.delete("/deletecar", (req, res) => {
+    const {car_id} = req.body;
+    const sql = "DELETE FROM car WHERE car_id = ?"
+    con.query(sql, [car_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Deletesuccessed");
+        }
+    });
+});
+
+app.delete("/deletecarmatch", (req, res) => {
+    const {carmatch} = req.body;
+    const sql = "DELETE FROM car_match WHERE carmatch = ?"
+    con.query(sql, [carmatch], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Deletecarmatchsuccessed");
+        }
+    });
+});
+
+app.post("/addlocation", (req, res) => {
+    const {carmatch,lat,lng}= req.body;
+    const sql = "INSERT INTO location(carmatch, lat, lng) VALUES (?,?,?)"
+    con.query(sql, [carmatch,lat,lng], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("addlocationsuccessed");
+        }
+    });
+});
 
 
 const PORT = 35000
