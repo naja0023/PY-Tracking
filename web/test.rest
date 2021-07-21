@@ -101,3 +101,14 @@ content-type: application/json
    
     
 }
+
+####
+post http://localhost:35000/selectstar
+content-type: application/json
+
+{
+    "driver_id" : "3",
+    "date" : "2021/07/21"
+   
+    
+}
