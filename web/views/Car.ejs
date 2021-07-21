@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/header.ejs') %>
+    <link rel="stylesheet" type="text/css" href="/style/car.css">
+    <link rel="stylesheet" type="text/css" href="/style/sidebar.css">
+    
+    <script src="/scripts/js/car.js"></script>
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <%- include('./partials/sidebar.ejs') %>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                   
+                    <div class="row">
+                        <div class="col-md-4">
+                           
+                        </div>
+                        <div class="col-md-4">
+                           
+                        </div>
+                        <div class="col-md-4">
+                         
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                            
+                                
+                               
+                                    <canvas class="chart" width="250" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <Tabls class="col-md-12 fw-bold fs-3">Car
+                            <button class="btn btn-primary" id="adduser">+</button>
+                    </div>
+
+                    <div class="col-md-12">
+                        <!-- table -->
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>License_plate</th>
+                                    <th>Seat</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <%- include('./partials/modal.ejs') %>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

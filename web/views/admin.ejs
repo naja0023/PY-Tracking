@@ -3,6 +3,7 @@
 
 <%- include('./partials/header.ejs') %>
     <link rel="stylesheet" type="text/css" href="/style/admin.css">
+    <link rel="stylesheet" type="text/css" href="/style/sidebar.css">
     <script src="/scripts/js/admin.js"></script>
     <body>
         <%- include('./partials/navbar.ejs') %>
@@ -53,9 +54,7 @@
                                         <th>Lastname</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>ID card</th>
-                                        <th>license plate</th>
-                                        
+                                        <th>ID card</th>   
                                         <th>Role</th>
                                         <th>Action</th>
                                     </tr>
@@ -80,9 +79,6 @@
                                             </td>
                                             <td>
                                                 <%= resule[index].id_card %>
-                                            </td>
-                                            <td>
-                                               0820465530
                                             </td>
                                             <td>
                                                 <% if (resule[index].role==1) { %>
