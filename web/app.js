@@ -254,6 +254,19 @@ app.post("/addlocation", (req, res) => {
 });
 
 
+app.post("/selectstar", (req, res) => {
+    const {driver_id,date}= req.body;
+    const sql = "SELECT * FROM car_match WHERE driver_id=?  AND date = ?"
+    con.query(sql, [driver_id,date], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.json(result);
+        }
+    });
+});
+
 const PORT = 35000
 app.listen(PORT, function() {
     console.log("Server is running at " + PORT);
