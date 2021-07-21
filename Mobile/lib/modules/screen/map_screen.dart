@@ -126,9 +126,8 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     _manager = Provider.of<MQTTManager>(context);
-
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
 
     return Container(
       height: height,
@@ -138,7 +137,7 @@ class _MapViewState extends State<MapView> {
           backgroundColor: MyConstant.dark,
           title: Row(children: [
             SizedBox(
-              width: 89,
+              width: width * 0.21,
             ),
             Text(MyConstant.appName),
           ]),
@@ -148,29 +147,29 @@ class _MapViewState extends State<MapView> {
         body: Stack(
           children: <Widget>[
             buildMap(),
-            zoombutton(),
-            // inputText(width, context),
-            trackingbutton(),
+            zoombutton(width, height),
+            trackingbutton(width, height),
+            inputText(width, context, height),
           ],
         ),
       ),
     );
   }
 
-  SafeArea trackingbutton() {
+  SafeArea trackingbutton(double width, double height) {
     return SafeArea(
       child: Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-          padding: const EdgeInsets.only(right: 10.0, bottom: 10.0),
+          padding: EdgeInsets.only(right: 25, bottom: 25),
           child: ClipOval(
             child: Material(
               color: Colors.orange[100], // button color
               child: InkWell(
                   splashColor: Colors.orange, // inkwell color
                   child: SizedBox(
-                    width: 56,
-                    height: 56,
+                    width: width * 0.15,
+                    height: height * 0.08,
                     child: track_button
                         ? Icon(Icons.explore)
                         : Icon(Icons.my_location),
@@ -188,121 +187,47 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  SafeArea inputText(double width, BuildContext context) {
+  SafeArea inputText(double width, BuildContext context, double height) {
     return SafeArea(
       child: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 30),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white70,
+              color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
+                Radius.circular(width * height * 0.01),
               ),
             ),
-            width: width * 0.9,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'Places',
-                    style: TextStyle(fontSize: 20.0),
+            width: width * 0.6,
+            height: height * 0.1,
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: width * height * 0.1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: width * 0.03,
                   ),
-                  SizedBox(height: 10),
-                  _textField(
-                      label: 'Start',
-                      hint: 'Choose starting point',
-                      prefixIcon: Icon(Icons.looks_one),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.my_location),
-                        onPressed: () {
-                          startAddressController.text = _currentAddress;
-                          _startAddress = _currentAddress;
-                        },
-                      ),
-                      controller: startAddressController,
-                      focusNode: startAddressFocusNode,
-                      width: width,
-                      locationCallback: (String value) {
-                        setState(() {
-                          _startAddress = value;
-                        });
-                      }),
-                  SizedBox(height: 10),
-                  _textField(
-                      label: 'Destination',
-                      hint: 'Choose destination',
-                      prefixIcon: Icon(Icons.looks_two),
-                      controller: destinationAddressController,
-                      focusNode: desrinationAddressFocusNode,
-                      width: width,
-                      locationCallback: (String value) {
-                        setState(() {
-                          _destinationAddress = value;
-                        });
-                      }),
-                  SizedBox(height: 10),
-                  Visibility(
-                    visible: _placeDistance == null ? false : true,
-                    child: Text(
-                      'DISTANCE: $_placeDistance km',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  Icon(
+                    Icons.account_circle,
+                    size: width * height * 0.00018,
+                    color: MyConstant.primary,
                   ),
-                  SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: (_startAddress != '' &&
-                            _destinationAddress != '')
-                        ? () async {
-                            startAddressFocusNode.unfocus();
-                            desrinationAddressFocusNode.unfocus();
-                            setState(() {
-                              if (markers.isNotEmpty) markers.clear();
-                              if (polylines.isNotEmpty) polylines.clear();
-                              if (polylineCoordinates.isNotEmpty)
-                                polylineCoordinates.clear();
-                              _placeDistance = null;
-                            });
-                            _calculateDistance().then((isCalculated) {
-                              if (isCalculated) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Distance Calculated Sucessfully'),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Error Calculating Distance'),
-                                  ),
-                                );
-                              }
-                            });
-                          }
-                        : null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Show Route'.toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                        ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: width * 0.35,
+                        height: height * 0.02,
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                      ShowTitle(
+                        title: 'Show Username',
+                        textStyle: MyConstant().h2_Stlye(),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
@@ -313,10 +238,10 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  SafeArea zoombutton() {
+  SafeArea zoombutton(double width, double height) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: EdgeInsets.only(left: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -326,8 +251,8 @@ class _MapViewState extends State<MapView> {
                 child: InkWell(
                   splashColor: Colors.blue, // inkwell color
                   child: SizedBox(
-                    width: 50,
-                    height: 50,
+                    width: width * 0.12,
+                    height: height * 0.06,
                     child: Icon(Icons.add),
                   ),
                   onTap: () {
@@ -338,15 +263,15 @@ class _MapViewState extends State<MapView> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: height * 0.03),
             ClipOval(
               child: Material(
                 color: Colors.blue.shade100, // button color
                 child: InkWell(
                   splashColor: Colors.blue, // inkwell color
                   child: SizedBox(
-                    width: 50,
-                    height: 50,
+                    width: width * 0.12,
+                    height: height * 0.06,
                     child: Icon(Icons.remove),
                   ),
                   onTap: () {
@@ -639,7 +564,7 @@ class _MapViewState extends State<MapView> {
       child: Container(
         //color: MyConstant.light,
         child: ListView(
-          padding: const EdgeInsets.all(0),
+          padding: EdgeInsets.all(0),
           children: [
             headerDrawer(),
             titleDrawer(),
