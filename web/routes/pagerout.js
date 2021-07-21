@@ -33,5 +33,17 @@ router.get("/driver", (req, res) => {
     res.render('driver') 
 
 })
+router.get("/car", (req, res) => {
+    res.render('car') 
+
+})
+router.get("/match", (req, res) => {
+    res.render('match') 
+
+})
+router.get("/usermanage", (req, res) => {
+    res.render('usermanage') 
+
+})
 
 module.exports = router;
