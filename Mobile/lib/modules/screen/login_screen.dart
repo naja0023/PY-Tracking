@@ -41,7 +41,8 @@ class _loginState extends State<login> {
   @override
   Widget build(BuildContext context) {
     _manager = Provider.of<MQTTManager>(context);
-    double size = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SafeArea(
       child: GestureDetector(
@@ -49,11 +50,11 @@ class _loginState extends State<login> {
         behavior: HitTestBehavior.opaque,
         child: ListView(
           children: [
-            build_img(size),
+            build_img(width, height),
             build_titleapp(),
-            build_textForm_username(size),
-            build_textForm_password(size),
-            build_button(size),
+            build_textForm_username(width, height),
+            build_textForm_password(width, height),
+            build_button(width),
             build_describtion(),
           ],
         ),
@@ -61,13 +62,13 @@ class _loginState extends State<login> {
     ));
   }
 
-  Row build_img(double size) {
+  Row build_img(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: size * 0.9,
-          height: size * 0.7,
+          width: width * 0.9,
+          height: height * 0.35,
           child: Image.asset('images/img3.png'),
         ),
       ],
@@ -84,13 +85,13 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_textForm_username(double size) {
+  Row build_textForm_username(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 25),
-          width: size * 0.6,
+          margin: EdgeInsets.only(top: 30),
+          width: width * 0.6,
           child: TextFormField(
             controller: _getUsername,
             decoration: InputDecoration(
@@ -100,11 +101,11 @@ class _loginState extends State<login> {
                 borderSide: BorderSide(
                   color: MyConstant.dark,
                 ),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(width * height * 0.00006),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.light),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(width * height * 0.00006),
               ),
             ),
           ),
@@ -113,13 +114,13 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_textForm_password(double size) {
+  Row build_textForm_password(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
+          margin: EdgeInsets.only(top: 10),
+          width: width * 0.6,
           child: TextFormField(
             controller: _getPassword,
             obscureText: statusRedEye,
@@ -146,11 +147,11 @@ class _loginState extends State<login> {
                 borderSide: BorderSide(
                   color: MyConstant.dark,
                 ),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(width * height * 0.00006),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.light),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(width * height * 0.00006),
               ),
             ),
           ),
@@ -159,13 +160,13 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_button(double size) {
+  Row build_button(double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 15),
-          width: size * 0.6,
+          margin: EdgeInsets.only(top: 20),
+          width: width * 0.6,
           child: ElevatedButton(
             child: Text("Login"),
             style: MyConstant().MyButtonStlye(),
