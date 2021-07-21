@@ -14,6 +14,7 @@ import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -233,14 +234,19 @@ class _loginState extends State<login> {
     var username = _getUsername.text;
     var password = _getPassword.text;
 
+    await GetStorage.init();
+    final box = GetStorage();
     try {
       http.Response response = await http.post(_url, body: {
         'username': username,
         'password': password,
       }).timeout(Duration(seconds: 4));
       var _check = response.body;
-
+      var _test = jsonDecode(response.body);
+      var y = _test[0];
+      print('เช็คๆๆ' + y[0]);
       if (response.statusCode == 200 && _check.length > 0) {
+        //box.write('_Userid', _check['diver_id']);
         _configureAndConnect();
       } else {
         final snackBar = SnackBar(

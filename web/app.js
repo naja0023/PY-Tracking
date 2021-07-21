@@ -39,15 +39,15 @@ app.set('view engine', 'ejs');
 
 app.use("/image", express.static(path.join(__dirname, 'image')));
 
-app.post("/signUp", function (req, res) {
-    
+app.post("/signUp", function(req, res) {
+
     const username = req.body.username;
     const email = req.body.email;
     const tel = req.body.tel;
     const role = req.body.role
 
     const sql = "INSERT INTO user(name, email, role,tel) VALUES(?,?,?,?)";
-    con.query(sql, [username, email,role, tel], function (err, result, fields) {
+    con.query(sql, [username, email, role, tel], function(err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("Database error");
@@ -59,8 +59,7 @@ app.post("/signUp", function (req, res) {
         if (numrows != 1) {
             console.error("can not insert data");
             res.status(503).send("Database error");
-        }
-        else {
+        } else {
             res.send("Registered");
         }
     });
@@ -68,7 +67,7 @@ app.post("/signUp", function (req, res) {
 });
 
 //-------------------------- Register ------------------------
-app.post("/register", function (req, res) {
+app.post("/register", function(req, res) {
     const username = req.body.username;
     const name = req.body.name;
     const lastname = req.body.lastname;
@@ -76,11 +75,11 @@ app.post("/register", function (req, res) {
     const role = req.body.role;
     const id_card = req.body.id_card;
     const email = req.body.email;
-    const tell =req.body.tell;
+    const tell = req.body.tell;
 
     //checked existing username
     let sql = "SELECT driver_id FROM driver WHERE username=?";
-    con.query(sql, [username], function (err, result, fields) {
+    con.query(sql, [username], function(err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(500).send("Database server error");
@@ -91,12 +90,11 @@ app.post("/register", function (req, res) {
         //if repeated username
         if (numrows > 0) {
             res.status(400).send("Sorry, this username exists");
-        }
-        else {
-            bcrypt.hash(password, 10, function (err, hash) {
+        } else {
+            bcrypt.hash(password, 10, function(err, hash) {
                 //return hashed password, 60 characters
                 sql = "INSERT INTO driver(username,name,lastname,password,role,id_card,email,tell) VALUES (?,?,?,?,?,?,?,?)";
-                con.query(sql, [username,name,lastname,hash,role,id_card,email,tell], function (err, result, fields) {
+                con.query(sql, [username, name, lastname, hash, role, id_card, email, tell], function(err, result, fields) {
                     if (err) {
                         console.error(err.message);
                         res.status(500).send("Database server error");
@@ -106,8 +104,7 @@ app.post("/register", function (req, res) {
                     const numrows = result.affectedRows;
                     if (numrows != 1) {
                         res.status(500).send("Insert failed");
-                    }
-                    else {
+                    } else {
                         res.send("Register done");
                     }
                 });
@@ -116,30 +113,26 @@ app.post("/register", function (req, res) {
     });
 });
 
-app.post("/login", function (req, res) {
+app.post("/login", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
     const sql = "SELECT * FROM driver WHERE username= ?";
-    con.query(sql, [username], function (err, result, fields) {
+    con.query(sql, [username], function(err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
-        }
-        else {
+        } else {
             const numrows = result.length;
             if (numrows != 1) {
 
                 res.status(401).send("เข้าสู่ระบบไม่สำเร็จ");
-            }
-            else {
-                bcrypt.compare(password, result[0].password, function (err, resp) {
+            } else {
+                bcrypt.compare(password, result[0].password, function(err, resp) {
                     if (err) {
                         res.status(503).send("การรับรองเซิร์ฟเวอร์ผิดพลาด");
-                    }
-                    else if (resp == true) {
-                    res.json(result)
-                    }
-                    else {
+                    } else if (resp == true) {
+                        res.send(result)
+                    } else {
                         //wrong password
                         res.status(403).send("รหัสไม่ถูกต้อง");
                     }
@@ -155,7 +148,7 @@ app.delete("/deleteuser", (req, res) => {
     const { id } = req.body;
     console.log(req.body)
     const sql = "DELETE FROM user WHERE Id =?"
-    con.query(sql, [ id], (err, result) => {
+    con.query(sql, [id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -168,9 +161,9 @@ app.delete("/deleteuser", (req, res) => {
 
 
 app.post("/addcar", (req, res) => {
-    const { License_plate,seat } = req.body;
+    const { License_plate, seat } = req.body;
     const sql = "INSERT INTO `car`(`License_plate`, `seat`) VALUES (?,?)"
-    con.query(sql, [License_plate,seat ], (err, result) => {
+    con.query(sql, [License_plate, seat], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -181,9 +174,9 @@ app.post("/addcar", (req, res) => {
 });
 
 app.post("/addcarmatch", (req, res) => {
-    const {driver_id,car_id,date } = req.body;
+    const { driver_id, car_id, date } = req.body;
     const sql = "INSERT INTO `car_match`(`driver_id`, `car_id`, `date`) VALUES (?,?,?)"
-    con.query(sql, [driver_id,car_id,date], (err, result) => {
+    con.query(sql, [driver_id, car_id, date], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -194,9 +187,9 @@ app.post("/addcarmatch", (req, res) => {
 });
 
 app.post("/updatecar", (req, res) => {
-    const {License_plate,seat,car_id} = req.body;
+    const { License_plate, seat, car_id } = req.body;
     const sql = "UPDATE car SET License_plate=?,seat=? WHERE car_id = ?"
-    con.query(sql, [License_plate,seat,car_id], (err, result) => {
+    con.query(sql, [License_plate, seat, car_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -208,9 +201,9 @@ app.post("/updatecar", (req, res) => {
 
 
 app.post("/updatecarmatch", (req, res) => {
-    const {driver_id,car_id,date,carmatch} = req.body;
+    const { driver_id, car_id, date, carmatch } = req.body;
     const sql = "UPDATE car_match SET driver_id=?,car_id=?,date=? WHERE carmatch=?"
-    con.query(sql, [driver_id,car_id,date,carmatch], (err, result) => {
+    con.query(sql, [driver_id, car_id, date, carmatch], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -222,7 +215,7 @@ app.post("/updatecarmatch", (req, res) => {
 
 
 app.delete("/deletecar", (req, res) => {
-    const {car_id} = req.body;
+    const { car_id } = req.body;
     const sql = "DELETE FROM car WHERE car_id = ?"
     con.query(sql, [car_id], (err, result) => {
         if (err) {
@@ -235,7 +228,7 @@ app.delete("/deletecar", (req, res) => {
 });
 
 app.delete("/deletecarmatch", (req, res) => {
-    const {carmatch} = req.body;
+    const { carmatch } = req.body;
     const sql = "DELETE FROM car_match WHERE carmatch = ?"
     con.query(sql, [carmatch], (err, result) => {
         if (err) {
@@ -248,9 +241,9 @@ app.delete("/deletecarmatch", (req, res) => {
 });
 
 app.post("/addlocation", (req, res) => {
-    const {carmatch,lat,lng}= req.body;
+    const { carmatch, lat, lng } = req.body;
     const sql = "INSERT INTO location(carmatch, lat, lng) VALUES (?,?,?)"
-    con.query(sql, [carmatch,lat,lng], (err, result) => {
+    con.query(sql, [carmatch, lat, lng], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -262,7 +255,7 @@ app.post("/addlocation", (req, res) => {
 
 
 const PORT = 35000
-app.listen(PORT, function () {
+app.listen(PORT, function() {
     console.log("Server is running at " + PORT);
 
 });
