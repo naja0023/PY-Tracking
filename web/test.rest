@@ -16,14 +16,14 @@ post http://localhost:35000/register
 content-type: application/json
 
 {
-    "username" : "windoss",
-    "name" : "kunnawut",
-    "lastname" :"artwong",
+    "username" : "moyanyo",
+    "name" : "suphakorn",
+    "lastname" :"srinak",
     "password" : "12345",
     "role" : "1",
-    "id_card" : "645564621616",
-    "email" : "61020908@up.ac.th",
-    "tell" : "0631146778"
+    "id_card" : "1987600854342",
+    "email" : "61022540@up.ac.th",
+    "tell" : "0999999999"
 }
 
 

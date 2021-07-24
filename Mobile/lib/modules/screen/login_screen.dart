@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert' as convert;
 import 'dart:convert';
 import 'dart:io';
 
@@ -27,7 +28,7 @@ class _loginState extends State<login> {
   late Timer _timer;
   late MQTTManager _manager;
   var _counter = 0;
-  var _url = Uri.parse('http://10.0.2.2:35000/login');
+  final _url = Uri.parse('http://10.0.2.2:35000/login');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
   void initState() {
@@ -53,7 +54,7 @@ class _loginState extends State<login> {
           children: [
             build_img(width, height),
             build_titleapp(),
-            build_textForm_username(width, height),
+            build_textFormdrivername(width, height),
             build_textForm_password(width, height),
             build_button(width),
             build_describtion(),
@@ -86,7 +87,7 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_textForm_username(double width, double height) {
+  Row build_textFormdrivername(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -230,7 +231,7 @@ class _loginState extends State<login> {
     //     context, '/map', ModalRoute.withName('/map'));
   }
 
-  _login() async {
+  Future _login() async {
     var username = _getUsername.text;
     var password = _getPassword.text;
 
@@ -242,11 +243,12 @@ class _loginState extends State<login> {
         'password': password,
       }).timeout(Duration(seconds: 4));
       var _check = response.body;
-      var _test = jsonDecode(response.body);
-      var y = _test[0];
-      print('เช็คๆๆ' + y[0]);
+
       if (response.statusCode == 200 && _check.length > 0) {
-        //box.write('_Userid', _check['diver_id']);
+        //box.write('driverid', _check['diver_id']);
+        final _driver = jsonDecode(response.body);
+        final driver = _driver[0];
+        print('เช็คๆๆ ${driver['driver_id']}');
         _configureAndConnect();
       } else {
         final snackBar = SnackBar(
