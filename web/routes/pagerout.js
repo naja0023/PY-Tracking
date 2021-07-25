@@ -41,8 +41,8 @@ router.get("/match", (req, res) => {
     res.render('match') 
 
 })
-router.get("/usermanage", (req, res) => {
-    res.render('usermanage') 
+router.get("/dashboard", (req, res) => {
+    res.render('dashboard') 
 
 })
 
