@@ -1,172 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('./partials/header.ejs') %>
+    <link rel="stylesheet" type="text/css" href="/style/car.css">
+    <link rel="stylesheet" type="text/css" href="/style/sidebar.css">
+
+    <script src="/scripts/js/usermanage.js"></script>
 
     <body>
-        <div class="container">
-            <div class="">
-                <button class=" btn-danger" onclick="window.location.replace('/auth/logout')"> logout</button>
-                <button class="btn btn-primary" id="adduser" data-toggle="modal" data-target="#exampleModal">+</button>
-                <button class="btn btn-primary" onclick="window.location.replace('/admin')">Admin</button>
-            </div>
-            <!-- table -->
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>No.</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for( let index=0; index < resule.length; index++ ) { %>
-                        <tr>
-                            <td>
-                                <%= index+1 %>
-                            </td>
-                            <td>
-                                <%= resule[index].name %>
-                            </td>
-                            <td>
-                                <%= resule[index].email %>
-                            </td>
-                            <td>
-                                <% if (resule[index].role==1) { %>
-                                    User
-                                    <% } else if(resule[index].role==2) { %>
-                                        Driver
-                                        <% } else{ %>
-                                            Admin
-                                            <% } %>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btnDelete"
-                                    blogID="<%= resule[index].id %>">Delete</button>
-                                <button type="button" class="btn btn-warning btnEdit"
-                                    blogData="<%= JSON.stringify(resule[index]) %>">Edit</button>
-                            </td>
-                        </tr>
-                        <% } %>
-                </tbody>
-            </table>
-        </div>
+        <%- include('./partials/navbar.ejs') %>
+            <%- include('./partials/sidebar.ejs') %>
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
 
-        <!-- Modal  Add User -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                                <div class="row">
+                                    <div class="col-md-4">
+
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+
+
+
+
+                                    <canvas class="chart" width="250" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Name:</label>
-                                <input type="text" class="form-control" id="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Email:</label>
-                                <input class="form-control" type="email" placeholder="example@mail.com"
-                                    id="email"></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Tel number:</label>
-                                <input class="form-control" type="tel" placeholder="08xxxxxxxx" id="tel"></input>
-                            </div>
-                            <div>
-                                <select id="selectrole" class="form-control">
-                                    <option value="3">Admin</option>
-                                    <option value="1">User</option>
-                                    <option value="2">Driver</option>
-                                </select>
-                            </div>
-                        </form>
+                    <div class="row">
+                        <Tabls class="col-md-12 fw-bold fs-3">Use Manage
+                            <button class="btn btn-primary" id="adduser">+</button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-                        <button type="button" class="btn btn-primary" id="create">add</button>
+
+                    <div class="col-md-12">
+                        <!-- table -->
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Lastname</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>ID card</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
+
+                    <%- include('./partials/modal.ejs') %>
                 </div>
-            </div>
-        </div>
-
-        <!-- end -->
-
-        <!-- Modal  Edit User -->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">EDIT User</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Name</label>
-                                <input type="text" class="form-control" id="nameedit">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Email:</label>
-                                <input class="form-control" type="email" placeholder="example@mail.com"
-                                    id="emailedit"></input>
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Tel:</label>
-                                <input class="form-control" type="tel" placeholder="08xxxxxxxx" id="teledit"></input>
-                            </div>
-                            <div>
-                                <select id="roleedit" class="form-control">
-                                    <option value="3">Admin</option>
-                                    <option value="1">User</option>
-                                    <option value="2">Driver</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-                        <button type="button" class="btn btn-primary" id="saveedit">SAVE</button>
-                    </div>
                 </div>
-            </div>
-        </div>
-        <!-- end -->
-
-        <!-- Modal  Delete User -->
-
-        <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">DELETE USER</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <p>Are you sure you want to remove this User</p>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-                        <button type="button" class="btn btn-danger" id="delete">YES</button>
-                    </div>
+                <div class="col-2"></div>
                 </div>
-            </div>
-        </div>
-
+                </div>
+                </div>
+                </div>
     </body>
 
 </html>

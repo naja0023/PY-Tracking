@@ -15,6 +15,7 @@ const profile = require("./routes/profile-routes")
 const pageRoute = require('./routes/pagerout');
 const compression = require('compression');
 const blogRoute = require('./routes/manageuserroute');
+const caroute = require('./routes/managecarroute');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
@@ -32,6 +33,7 @@ app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use(pageRoute);
 app.use(blogRoute);
+app.use(caroute);
 app.use("/profile", profile);
 app.set('view engine', 'ejs');
 
@@ -159,20 +161,6 @@ app.delete("/deleteuser", (req, res) => {
 });
 
 
-
-app.post("/addcar", (req, res) => {
-    const { License_plate, seat } = req.body;
-    const sql = "INSERT INTO `car`(`License_plate`, `seat`) VALUES (?,?)"
-    con.query(sql, [License_plate, seat], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("addsuccessed");
-        }
-    });
-});
-
 app.post("/addcarmatch", (req, res) => {
     const { driver_id, car_id, date } = req.body;
     const sql = "INSERT INTO `car_match`(`driver_id`, `car_id`, `date`) VALUES (?,?,?)"
@@ -182,19 +170,6 @@ app.post("/addcarmatch", (req, res) => {
             res.status(503).send("Server error");
         } else {
             res.status(200).send("addsuccessed");
-        }
-    });
-});
-
-app.post("/updatecar", (req, res) => {
-    const { License_plate, seat, car_id } = req.body;
-    const sql = "UPDATE car SET License_plate=?,seat=? WHERE car_id = ?"
-    con.query(sql, [License_plate, seat, car_id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("updatecarsuccessed");
         }
     });
 });
@@ -214,18 +189,7 @@ app.post("/updatecarmatch", (req, res) => {
 });
 
 
-app.delete("/deletecar", (req, res) => {
-    const { car_id } = req.body;
-    const sql = "DELETE FROM car WHERE car_id = ?"
-    con.query(sql, [car_id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("Deletesuccessed");
-        }
-    });
-});
+
 
 app.delete("/deletecarmatch", (req, res) => {
     const { carmatch } = req.body;

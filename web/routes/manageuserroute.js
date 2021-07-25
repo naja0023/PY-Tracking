@@ -14,9 +14,7 @@ router.get("/adminse", (req, res) => {
         }else{
            res.render('admin',{resule:result})  
         }
-
     });
-    
 })
 
 //  --- add new post ---

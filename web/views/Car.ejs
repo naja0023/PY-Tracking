@@ -51,6 +51,27 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                <% for( let index=0; index < result.length; index++ ) { %>
+                                    <tr>
+                                        <td>
+                                            <%= index+1 %>
+                                        </td>
+                                        <td>
+                                            <%= result[index].License_plate %>
+                                        </td>
+                                        <td>
+                                            <%= result[index].seat %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btnDelete"
+                                                blogID="<%= result[index].car_id %>">Delete</button>
+                                            <button type="button" class="btn btn-warning btnEdit"
+                                                blogData="<%= JSON.stringify(result[index]) %>">Edit</button>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
                         </table>
                     </div>
 
