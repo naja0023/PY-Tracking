@@ -248,7 +248,9 @@ class _loginState extends State<login> {
         final _driver = jsonDecode(response.body);
         final driver = _driver[0];
         box.write('carmatchid', driver['carmatch']);
-        print('เช็คๆๆ ${box.read('carmatchid')}');
+        box.write('name', "${driver['name']} ${driver['lastname']}");
+
+        print('เช็คๆๆ ${box.read('name')}');
         _configureAndConnect();
       } else {
         final snackBar = SnackBar(

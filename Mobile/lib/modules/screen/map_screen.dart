@@ -41,6 +41,7 @@ class _MapViewState extends State<MapView> {
   late GoogleMapController mapController;
   late Timer _timer;
   var _counter = 0;
+  late double p = 4.5;
   int countingtin = 0;
   late MQTTManager _manager;
   final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
@@ -48,6 +49,8 @@ class _MapViewState extends State<MapView> {
   bool track_button = true;
   late Position _currentPosition;
   String _currentAddress = '';
+
+  late String _name;
 
   final startAddressController = TextEditingController();
   final destinationAddressController = TextEditingController();
@@ -119,7 +122,10 @@ class _MapViewState extends State<MapView> {
   void initState() {
     findposition();
     finlatlng();
+
+    getName();
     _updatelocation();
+
     super.initState();
     // _configureAndConnect();
     // WidgetsBinding.instance!
@@ -152,7 +158,7 @@ class _MapViewState extends State<MapView> {
             buildMap(),
             zoombutton(width, height),
             trackingbutton(width, height),
-            inputText(width, context, height),
+            reviewBox(width, context, height),
           ],
         ),
       ),
@@ -190,56 +196,99 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  SafeArea inputText(double width, BuildContext context, double height) {
+  SafeArea reviewBox(double width, BuildContext context, double height) {
     return SafeArea(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: EdgeInsets.only(top: 30),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(width * height * 0.01),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(width * height * 0.01),
+                ),
               ),
-            ),
-            width: width * 0.6,
-            height: height * 0.1,
-            child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: width * height * 0.1,
+              width: width * 0.6,
+              height: height * 0.1,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: width * 0.03,
-                  ),
-                  Icon(
-                    Icons.account_circle,
-                    size: width * height * 0.00018,
-                    color: MyConstant.primary,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: width * 0.35,
-                        height: height * 0.02,
+                  Expanded(
+                    child: Container(
+                      height: height * 0.1,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.account_circle,
+                              size: width * height * 0.00018,
+                              color: MyConstant.primary,
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Text(
+                                    _name,
+                                    style: MyConstant().h2_Stlye(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  // SizedBox(
+                                  //   height: height * 0.015,
+                                  // ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.star_border,
+                                          color: Colors.grey),
+
+                                      ///2 ดาว
+                                      Icon(Icons.star_border,
+                                          color: Colors.grey),
+
+                                      ///3 ดาว
+                                      Icon(Icons.star_border,
+                                          color: Colors.grey),
+
+                                      ///4 ดาว
+                                      Icon(Icons.star_border,
+                                          color: Colors.grey),
+
+                                      ///5 ดาว
+                                      Icon(Icons.star_border,
+                                          color: Colors.grey),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      ShowTitle(
-                        title: 'Show Username',
-                        textStyle: MyConstant().h2_Stlye(),
-                      ),
-                    ],
+                    ),
                   ),
+                  // Expanded(
+                  //   child: Text(
+                  //     _name,
+                  //     style: MyConstant().h2_Stlye(),
+                  //     overflow: TextOverflow.ellipsis,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
+
+  calculateStar() {}
 
   SafeArea zoombutton(double width, double height) {
     return SafeArea(
@@ -534,7 +583,6 @@ class _MapViewState extends State<MapView> {
     positionStream?.cancel();
   }
 
-  // Method for retrieving the address
   void _getAddress() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
@@ -552,10 +600,7 @@ class _MapViewState extends State<MapView> {
       print(e);
     }
   }
-  // Method for calculating the distance between two places
 
-  // Formula for calculating distance between two coordinates
-  // https://stackoverflow.com/a/54138876/11910277
   double _coordinateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -563,37 +608,6 @@ class _MapViewState extends State<MapView> {
         c((lat2 - lat1) * p) / 2 +
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
-  }
-
-  // Create the polylines for showing the route between two places
-  _createPolylines(
-    double startLatitude,
-    double startLongitude,
-    double destinationLatitude,
-    double destinationLongitude,
-  ) async {
-    polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Secrets.API_KEY, // Google Maps API Key
-      PointLatLng(startLatitude, startLongitude),
-      PointLatLng(destinationLatitude, destinationLongitude),
-      travelMode: TravelMode.transit,
-    );
-
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
-    PolylineId id = PolylineId('poly');
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.red,
-      points: polylineCoordinates,
-      width: 3,
-    );
-    polylines[id] = polyline;
   }
 
   Drawer buildDrawer() {
@@ -654,5 +668,41 @@ class _MapViewState extends State<MapView> {
         }
       });
     });
+  }
+
+  void getName() async {
+    await GetStorage.init();
+    final box = GetStorage();
+    _name = box.read('name').toString();
+  }
+
+  _createPolylines(
+    double startLatitude,
+    double startLongitude,
+    double destinationLatitude,
+    double destinationLongitude,
+  ) async {
+    polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      Secrets.API_KEY, // Google Maps API Key
+      PointLatLng(startLatitude, startLongitude),
+      PointLatLng(destinationLatitude, destinationLongitude),
+      travelMode: TravelMode.transit,
+    );
+
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    PolylineId id = PolylineId('poly');
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.red,
+      points: polylineCoordinates,
+      width: 3,
+    );
+    polylines[id] = polyline;
   }
 }
