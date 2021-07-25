@@ -28,7 +28,7 @@ class _loginState extends State<login> {
   late Timer _timer;
   late MQTTManager _manager;
   var _counter = 0;
-  final _url = Uri.parse('http://10.0.2.2:35000/login');
+  final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
   void initState() {
@@ -245,10 +245,10 @@ class _loginState extends State<login> {
       var _check = response.body;
 
       if (response.statusCode == 200 && _check.length > 0) {
-        //box.write('driverid', _check['diver_id']);
         final _driver = jsonDecode(response.body);
         final driver = _driver[0];
-        print('เช็คๆๆ ${driver['driver_id']}');
+        box.write('carmatchid', driver['carmatch']);
+        print('เช็คๆๆ ${box.read('carmatchid')}');
         _configureAndConnect();
       } else {
         final snackBar = SnackBar(

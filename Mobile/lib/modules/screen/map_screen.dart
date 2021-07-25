@@ -7,11 +7,12 @@ import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/secrets.dart'; // Stores the Google Maps API Key
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:fluttermqttnew/utillity/show_progress.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:fluttermqttnew/modules/core/managers/MQTTManager.dart';
@@ -40,7 +41,9 @@ class _MapViewState extends State<MapView> {
   late GoogleMapController mapController;
   late Timer _timer;
   var _counter = 0;
+  int countingtin = 0;
   late MQTTManager _manager;
+  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
   StreamSubscription<Position>? positionStream;
   bool track_button = true;
   late Position _currentPosition;
@@ -468,13 +471,47 @@ class _MapViewState extends State<MapView> {
   void _updatelocation() {
     StreamSubscription<Position> positionStream =
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
-            .listen((Position position) {
+            .listen((Position position) async {
       _currentPosition = position;
       _publishMessage("latitude :" +
           position.latitude.toString() +
           " longtitude : " +
           position.longitude.toString());
-      print('CURRENT LOCATION $_currentPosition');
+
+      await GetStorage.init();
+      final box = GetStorage();
+      String car = box.read('carmatchid').toString();
+      if (countingtin == 30) {
+        try {
+          http.Response response = await http.post(_url, body: {
+            'carmatch': car,
+            'lat': position.latitude.toString(),
+            'lng': position.longitude.toString(),
+          }).timeout(Duration(seconds: 4));
+          var _check = response.body;
+
+          if (response.statusCode == 200) {
+            print('Upload to database $_currentPosition');
+            countingtin = 0;
+          } else {
+            final snackBar = SnackBar(
+              duration: Duration(seconds: 2),
+              content: Text('Server error'),
+            );
+            // Find the ScaffoldMessenger in the widget tree
+            // and use it to show a SnackBar.
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        } on TimeoutException catch (e) {
+          print('Timeout : $e ');
+        } catch (e) {
+          print('ERROR : $e ');
+        }
+      } else {
+        print('CURRENT LOCATION $_currentPosition');
+        print('counting $countingtin');
+        countingtin++;
+      }
     });
   }
 

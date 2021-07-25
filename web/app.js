@@ -113,11 +113,11 @@ app.post("/register", function(req, res) {
     });
 });
 
-app.post("/login", function(req, res) {
+app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver WHERE username= ?";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username = ? AND DATE(car_match.date) = CURDATE()";
     con.query(sql, [username], function(err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
@@ -242,6 +242,7 @@ app.delete("/deletecarmatch", (req, res) => {
 
 app.post("/addlocation", (req, res) => {
     const { carmatch, lat, lng } = req.body;
+    console.log(req.body)
     const sql = "INSERT INTO location(carmatch, lat, lng) VALUES (?,?,?)"
     con.query(sql, [carmatch, lat, lng], (err, result) => {
         if (err) {
@@ -254,7 +255,7 @@ app.post("/addlocation", (req, res) => {
 });
 
 
-app.post("/selectstar", (req, res) => {
+app.post("/selectcarmatch", (req, res) => {
     const { driver_id, date } = req.body;
     const sql = "SELECT * FROM car_match WHERE driver_id=?  AND date = ?"
     con.query(sql, [driver_id, date], (err, result) => {
