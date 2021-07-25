@@ -16,6 +16,7 @@ const pageRoute = require('./routes/pagerout');
 const compression = require('compression');
 const blogRoute = require('./routes/manageuserroute');
 const caroute = require('./routes/managecarroute');
+const carmatchro = require('./routes/managecarmatch');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
@@ -31,10 +32,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/style", express.static(path.join(__dirname, '/public/styles')));
 app.use(passport.session());
 app.use("/auth", authRoutes);
+app.use(carmatchro)
 app.use(pageRoute);
 app.use(blogRoute);
 app.use(caroute);
+
 app.use("/profile", profile);
+
 app.set('view engine', 'ejs');
 
 // app.engine('html', require('ejs').renderFile);
@@ -160,49 +164,6 @@ app.delete("/deleteuser", (req, res) => {
     });
 });
 
-
-app.post("/addcarmatch", (req, res) => {
-    const { driver_id, car_id, date } = req.body;
-    const sql = "INSERT INTO `car_match`(`driver_id`, `car_id`, `date`) VALUES (?,?,?)"
-    con.query(sql, [driver_id, car_id, date], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("addsuccessed");
-        }
-    });
-});
-
-
-app.post("/updatecarmatch", (req, res) => {
-    const { driver_id, car_id, date, carmatch } = req.body;
-    const sql = "UPDATE car_match SET driver_id=?,car_id=?,date=? WHERE carmatch=?"
-    con.query(sql, [driver_id, car_id, date, carmatch], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("updatesuccessed");
-        }
-    });
-});
-
-
-
-
-app.delete("/deletecarmatch", (req, res) => {
-    const { carmatch } = req.body;
-    const sql = "DELETE FROM car_match WHERE carmatch = ?"
-    con.query(sql, [carmatch], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("Deletecarmatchsuccessed");
-        }
-    });
-});
 
 app.post("/addlocation", (req, res) => {
     const { carmatch, lat, lng } = req.body;
