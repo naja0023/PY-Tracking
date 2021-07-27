@@ -54,7 +54,7 @@ class _loginState extends State<login> {
           children: [
             build_img(width, height),
             build_titleapp(),
-            build_textFormdrivername(width, height),
+            build_textForm_username(width, height),
             build_textForm_password(width, height),
             build_button(width),
             build_describtion(),
@@ -87,7 +87,7 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_textFormdrivername(double width, double height) {
+  Row build_textForm_username(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -249,6 +249,7 @@ class _loginState extends State<login> {
         final driver = _driver[0];
         box.write('carmatchid', driver['carmatch']);
         box.write('name', "${driver['name']} ${driver['lastname']}");
+        box.write('email', "${driver['email']} ");
 
         print('เช็คๆๆ ${box.read('name')}');
         _configureAndConnect();

@@ -51,6 +51,8 @@ class _MapViewState extends State<MapView> {
   String _currentAddress = '';
 
   late String _name;
+  late String _username;
+  late String _email;
 
   final startAddressController = TextEditingController();
   final destinationAddressController = TextEditingController();
@@ -121,9 +123,9 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     findposition();
-    finlatlng();
+    getInfo();
 
-    getName();
+    finlatlng();
     _updatelocation();
 
     super.initState();
@@ -630,14 +632,17 @@ class _MapViewState extends State<MapView> {
       decoration: BoxDecoration(
         color: MyConstant.dark,
       ),
-      accountName: Text('เดี๋ยวมาทำ'),
-      accountEmail: Text('ตอนนี้ง่วงแล้ว'),
+      accountName: Text(_name),
+      accountEmail: Text(_email),
+      currentAccountPicture: CircleAvatar(
+        backgroundImage: AssetImage("images/img5.png"),
+      ),
     );
   }
 
   ListTile titleDrawer() {
     return ListTile(
-      leading: Icon(Icons.android),
+      leading: Icon(Icons.logout),
       title: Text('Logout'),
       onTap: () {
         _disconnect();
@@ -670,10 +675,12 @@ class _MapViewState extends State<MapView> {
     });
   }
 
-  void getName() async {
+  void getInfo() async {
     await GetStorage.init();
     final box = GetStorage();
     _name = box.read('name').toString();
+    _username = box.read('name').toString();
+    _email = box.read('email').toString();
   }
 
   _createPolylines(
