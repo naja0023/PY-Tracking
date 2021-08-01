@@ -55,6 +55,8 @@ class _MapViewState extends State<MapView> {
 
   double _originLatitude = 19.031459, _originLongitude = 99.926547;
   double _destLatitude = 19.172379, _destLongitude = 99.898241;
+  double _originLatitude1 = 19.172379, _originLongitude1 = 99.898241;
+  double _destLatitude1 = 19.031459, _destLongitude1 = 99.926547;
 
   Set<Marker> markers = {};
   PolylinePoints polylinePoints = PolylinePoints();
@@ -297,6 +299,7 @@ class _MapViewState extends State<MapView> {
 
   void _getPolyline() async {
     List<LatLng> polylineCoordinates = [];
+    List<LatLng> polylineCoordinates1 = [];
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       Secrets.API_KEY,
@@ -304,23 +307,46 @@ class _MapViewState extends State<MapView> {
       PointLatLng(_destLatitude, _destLongitude),
       travelMode: TravelMode.driving,
     );
-    if (result.points.isNotEmpty) {
+    PolylineResult result1 = await polylinePoints.getRouteBetweenCoordinates(
+      Secrets.API_KEY,
+      PointLatLng(_originLatitude1, _originLongitude1),
+      PointLatLng(_destLatitude1, _destLongitude1),
+      travelMode: TravelMode.driving,
+    );
+    if (result.points.isNotEmpty || result1.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
+      result1.points.forEach((PointLatLng point) {
+        polylineCoordinates1.add(LatLng(point.latitude, point.longitude));
+      });
     } else {
       print('err_poly ${result.errorMessage}');
+      print('err_poly1 ${result1.errorMessage}');
     }
     _addPolyLine(polylineCoordinates);
+    _addPolyLine1(polylineCoordinates1);
   }
 
   _addPolyLine(List<LatLng> polylineCoordinates) {
     PolylineId id = PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: MyConstant.primary,
+      color: Colors.green,
       points: polylineCoordinates,
-      width: 8,
+      width: 2,
+    );
+    polylines[id] = polyline;
+    setState(() {});
+  }
+
+  _addPolyLine1(List<LatLng> polylineCoordinates) {
+    PolylineId id = PolylineId("poly1");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.red,
+      points: polylineCoordinates,
+      width: 2,
     );
     polylines[id] = polyline;
     setState(() {});
