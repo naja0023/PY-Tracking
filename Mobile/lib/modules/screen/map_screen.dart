@@ -1,20 +1,16 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
-import 'package:fluttermqttnew/modules/widgets/show_title.dart';
-import 'package:fluttermqttnew/secrets.dart'; // Stores the Google Maps API Key
+import 'package:fluttermqttnew/secrets.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:fluttermqttnew/utillity/show_progress.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
-import 'dart:math' show cos, sqrt, asin;
 import 'package:fluttermqttnew/modules/core/managers/MQTTManager.dart';
 
 class MapScreen extends StatelessWidget {
@@ -40,7 +36,6 @@ class _MapViewState extends State<MapView> {
 
   late GoogleMapController mapController;
   late Timer _timer;
-  var _counter = 0;
   late double p = 4.5;
   int countingtin = 0;
   late MQTTManager _manager;
@@ -48,10 +43,8 @@ class _MapViewState extends State<MapView> {
   StreamSubscription<Position>? positionStream;
   bool track_button = true;
   late Position _currentPosition;
-  String _currentAddress = '';
 
   late String _name;
-  late String _username;
   late String _email;
 
   final startAddressController = TextEditingController();
@@ -60,78 +53,24 @@ class _MapViewState extends State<MapView> {
   final startAddressFocusNode = FocusNode();
   final desrinationAddressFocusNode = FocusNode();
 
-  String _startAddress = '';
-  String _destinationAddress = '';
-  String? _placeDistance;
+  double _originLatitude = 19.031459, _originLongitude = 99.926547;
+  double _destLatitude = 19.172379, _destLongitude = 99.898241;
 
   Set<Marker> markers = {};
-  late PolylinePoints polylinePoints;
+  PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
-  List<LatLng> polylineCoordinates = [];
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Widget _textField({
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    required String label,
-    required String hint,
-    required double width,
-    required Icon prefixIcon,
-    Widget? suffixIcon,
-    required Function(String) locationCallback,
-  }) {
-    return Container(
-      width: width * 0.8,
-      child: TextField(
-        onChanged: (value) {
-          locationCallback(value);
-        },
-        controller: controller,
-        focusNode: focusNode,
-        decoration: new InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          labelText: label,
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            borderSide: BorderSide(
-              color: Colors.grey.shade400,
-              width: 2,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            borderSide: BorderSide(
-              color: Colors.blue.shade300,
-              width: 2,
-            ),
-          ),
-          contentPadding: EdgeInsets.all(15),
-          hintText: hint,
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
-    findposition();
     getInfo();
-
-    finlatlng();
-    _updatelocation();
+    findposition();
 
     super.initState();
-    // _configureAndConnect();
-    // WidgetsBinding.instance!
-    //     .addPostFrameCallback((_) => _configureAndConnect());
+    _getPolyline();
+    finlatlng();
+    _updatelocation();
   }
 
   @override
@@ -274,13 +213,6 @@ class _MapViewState extends State<MapView> {
                       ),
                     ),
                   ),
-                  // Expanded(
-                  //   child: Text(
-                  //     _name,
-                  //     style: MyConstant().h2_Stlye(),
-                  //     overflow: TextOverflow.ellipsis,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -289,8 +221,6 @@ class _MapViewState extends State<MapView> {
       ),
     );
   }
-
-  calculateStar() {}
 
   SafeArea zoombutton(double width, double height) {
     return SafeArea(
@@ -365,6 +295,37 @@ class _MapViewState extends State<MapView> {
     );
   }
 
+  void _getPolyline() async {
+    List<LatLng> polylineCoordinates = [];
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      Secrets.API_KEY,
+      PointLatLng(_originLatitude, _originLongitude),
+      PointLatLng(_destLatitude, _destLongitude),
+      travelMode: TravelMode.driving,
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    } else {
+      print('err_poly ${result.errorMessage}');
+    }
+    _addPolyLine(polylineCoordinates);
+  }
+
+  _addPolyLine(List<LatLng> polylineCoordinates) {
+    PolylineId id = PolylineId("poly");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: MyConstant.primary,
+      points: polylineCoordinates,
+      width: 8,
+    );
+    polylines[id] = polyline;
+    setState(() {});
+  }
+
   Future<Null> finlatlng() async {
     Position? _position = await findposition();
     setState(() {
@@ -381,134 +342,6 @@ class _MapViewState extends State<MapView> {
     } catch (e) {
       return null;
     }
-  }
-
-  Future<bool> _calculateDistance() async {
-    try {
-      // Retrieving placemarks from addresses
-      List<Location> startPlacemark = await locationFromAddress(_startAddress);
-      List<Location> destinationPlacemark =
-          await locationFromAddress(_destinationAddress);
-
-      // Use the retrieved coordinates of the current position,
-      // instead of the address if the start position is user's
-      // current position, as it results in better accuracy.
-      double startLatitude = _startAddress == _currentAddress
-          ? _currentPosition.latitude
-          : startPlacemark[0].latitude;
-
-      double startLongitude = _startAddress == _currentAddress
-          ? _currentPosition.longitude
-          : startPlacemark[0].longitude;
-
-      double destinationLatitude = destinationPlacemark[0].latitude;
-      double destinationLongitude = destinationPlacemark[0].longitude;
-
-      String startCoordinatesString = '($startLatitude, $startLongitude)';
-      String destinationCoordinatesString =
-          '($destinationLatitude, $destinationLongitude)';
-
-      // Start Location Marker
-      Marker startMarker = Marker(
-        markerId: MarkerId(startCoordinatesString),
-        position: LatLng(startLatitude, startLongitude),
-        infoWindow: InfoWindow(
-          title: 'Start $startCoordinatesString',
-          snippet: _startAddress,
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      );
-
-      // Destination Location Marker
-      Marker destinationMarker = Marker(
-        markerId: MarkerId(destinationCoordinatesString),
-        position: LatLng(destinationLatitude, destinationLongitude),
-        infoWindow: InfoWindow(
-          title: 'Destination $destinationCoordinatesString',
-          snippet: _destinationAddress,
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      );
-
-      // Adding the markers to the list
-      markers.add(startMarker);
-      markers.add(destinationMarker);
-
-      print(
-        'START COORDINATES: ($startLatitude, $startLongitude)',
-      );
-      print(
-        'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
-      );
-
-      // Calculating to check that the position relative
-      // to the frame, and pan & zoom the camera accordingly.
-      double miny = (startLatitude <= destinationLatitude)
-          ? startLatitude
-          : destinationLatitude;
-      double minx = (startLongitude <= destinationLongitude)
-          ? startLongitude
-          : destinationLongitude;
-      double maxy = (startLatitude <= destinationLatitude)
-          ? destinationLatitude
-          : startLatitude;
-      double maxx = (startLongitude <= destinationLongitude)
-          ? destinationLongitude
-          : startLongitude;
-
-      double southWestLatitude = miny;
-      double southWestLongitude = minx;
-
-      double northEastLatitude = maxy;
-      double northEastLongitude = maxx;
-
-      // Accommodate the two locations within the
-      // camera view of the map
-      mapController.animateCamera(
-        CameraUpdate.newLatLngBounds(
-          LatLngBounds(
-            northeast: LatLng(northEastLatitude, northEastLongitude),
-            southwest: LatLng(southWestLatitude, southWestLongitude),
-          ),
-          100.0,
-        ),
-      );
-
-      // Calculating the distance between the start and the end positions
-      // with a straight path, without considering any route
-      // double distanceInMeters = await Geolocator.bearingBetween(
-      //   startLatitude,
-      //   startLongitude,
-      //   destinationLatitude,
-      //   destinationLongitude,
-      // );
-
-      await _createPolylines(startLatitude, startLongitude, destinationLatitude,
-          destinationLongitude);
-
-      double totalDistance = 0.0;
-
-      // Calculating the total distance by adding the distance
-      // between small segments
-      for (int i = 0; i < polylineCoordinates.length - 1; i++) {
-        totalDistance += _coordinateDistance(
-          polylineCoordinates[i].latitude,
-          polylineCoordinates[i].longitude,
-          polylineCoordinates[i + 1].latitude,
-          polylineCoordinates[i + 1].longitude,
-        );
-      }
-
-      setState(() {
-        _placeDistance = totalDistance.toStringAsFixed(2);
-        print('DISTANCE: $_placeDistance km');
-      });
-
-      return true;
-    } catch (e) {
-      print(e);
-    }
-    return false;
   }
 
   void _publishMessage(String text) {
@@ -585,33 +418,6 @@ class _MapViewState extends State<MapView> {
     positionStream?.cancel();
   }
 
-  void _getAddress() async {
-    try {
-      List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-
-      Placemark place = p[0];
-
-      setState(() {
-        _currentAddress =
-            "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
-        startAddressController.text = _currentAddress;
-        _startAddress = _currentAddress;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  double _coordinateDistance(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var c = cos;
-    var a = 0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a));
-  }
-
   Drawer buildDrawer() {
     return Drawer(
       child: Container(
@@ -679,37 +485,6 @@ class _MapViewState extends State<MapView> {
     await GetStorage.init();
     final box = GetStorage();
     _name = box.read('name').toString();
-    _username = box.read('name').toString();
     _email = box.read('email').toString();
-  }
-
-  _createPolylines(
-    double startLatitude,
-    double startLongitude,
-    double destinationLatitude,
-    double destinationLongitude,
-  ) async {
-    polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Secrets.API_KEY, // Google Maps API Key
-      PointLatLng(startLatitude, startLongitude),
-      PointLatLng(destinationLatitude, destinationLongitude),
-      travelMode: TravelMode.transit,
-    );
-
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
-    PolylineId id = PolylineId('poly');
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.red,
-      points: polylineCoordinates,
-      width: 3,
-    );
-    polylines[id] = polyline;
   }
 }
