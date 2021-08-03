@@ -20,16 +20,14 @@ $(document).ready(function () {
 
         // add       
         let data = {
-            username: $("#name").val(),
-            lastname: $("#editer").val(),
-            tell: $("#tel").val(),
-            email: $("#email").val(),
-            id_card: $("#card").val(),
-            role: $("#selectrole").val(),
+            name: $("#name").val(),
+            lastname: $("#lastname").val(),
+            License_plate: $("#carplate").val(),
+           
 
         };
         let method = "POST";
-        let url = "/adminse/new";
+        let url = "/addcarmatch";
 
         // edit
         if (mode == "edit") {
@@ -67,12 +65,11 @@ $(document).ready(function () {
         mode = "add";
         // change the modal title
         // change the modal title
-        $("#exampleModalLabel").text("Add User");
+        $("#exampleModalLabel").text("Add Carmatch");
         // console.log(postData);
         $("#name").val('');
-        $("#email").val('');
-        $("#tel").val('');
-        $("#selectrole").val('');
+        $("#lastnamel").val('');
+        $("#carplate").val('');
         // show modal
         $("#exampleModal").modal("toggle");
 

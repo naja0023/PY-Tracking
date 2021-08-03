@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const con = mysql.createConnection(config);
 
 router.get("/carmatchinfo", (req, res) => {
-    const sql = "SELECT * FROM car_match,driver,car WHERE car_match.date=CURRENT_DATE AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
+    const sql = "SELECT * FROM car_match,driver,car WHERE date(date)=CURRENT_DATE AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
     con.query(sql, function (err, result, fields) {
         if (err) {
             console.error(err.message);
@@ -43,9 +43,10 @@ router.post("/updatecarmatch", (req, res) => {
 });
 
 router.post("/addcarmatch", (req, res) => {
-    const { driver_id, car_id, date } = req.body;
-    const sql = "INSERT INTO `car_match`(`driver_id`, `car_id`, `date`) VALUES (?,?,?)"
-    con.query(sql, [driver_id, car_id, date], (err, result) => {
+    const { name, lastname, License_plate } = req.body;
+    console.log(name+lastname+License_plate)
+    const sql = "INSERT INTO car_match(driver_id, car_id ) VALUES ((SELECT driver_id FROM driver WHERE name =? AND lastname=? ),(SELECT car_id FROM car WHERE License_plate = ?))"
+    con.query(sql, [name, lastname, License_plate], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -56,7 +57,7 @@ router.post("/addcarmatch", (req, res) => {
                 res.status(503).send("Database error");
             }
             else {
-                res.send("/adminse");
+                res.send("/carmatchinfo");
             }
         }
     });
