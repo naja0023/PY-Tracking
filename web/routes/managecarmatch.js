@@ -29,10 +29,10 @@ router.delete("/deletecarmatch", (req, res) => {
     });
 });
 
-router.post("/updatecarmatch", (req, res) => {
-    const { driver_id, car_id, date, carmatch } = req.body;
-    const sql = "UPDATE car_match SET driver_id=?,car_id=?,date=? WHERE carmatch=?"
-    con.query(sql, [driver_id, car_id, date, carmatch], (err, result) => {
+router.put("/updatecarmatch", (req, res) => {
+    const { name, lastname,License_plate,carmatch } = req.body;
+    const sql = "UPDATE car_match SET driver_id=(SELECT driver_id FROM driver WHERE name =? AND lastname=? ),car_id=(SELECT car_id FROM car WHERE License_plate = ?) WHERE carmatch=?"
+    con.query(sql, [name, lastname, License_plate,carmatch], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");

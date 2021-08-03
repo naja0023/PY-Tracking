@@ -33,15 +33,12 @@ $(document).ready(function () {
         if (mode == "edit") {
             data = {
                 name: $("#name").val(),
-                lastname: $("#editer").val(),
-                tell: $("#tel").val(),
-                idcard:$("#card").val(),
-                email: $("#email").val(),
-                role: $("#selectrole").val(),
-                id: carmatch
+                lastname: $("#lastname").val(),
+                License_plate: $("#carplate").val(),
+                carmatch:carmatch
             };
             method = "PUT";
-            url = "/adminse/edit";
+            url = "/updatecarmatch";
         }
 
         $.ajax({
@@ -62,6 +59,7 @@ $(document).ready(function () {
     });
 
     $("#adduser").click(function () {
+        $("#btnModalSave").html("ADD")
         mode = "add";
         // change the modal title
         // change the modal title
@@ -77,19 +75,19 @@ $(document).ready(function () {
 
     // Edit button
     $(".btnEdit").click(function () {
+        $("#btnModalSave").html("EDIT")
         mode = "edit";
         // change the modal title
-        $("#exampleModalLabel").text("Edit User");
+        $("#exampleModalLabel").text("Edit match");
         // show modal
         $("#exampleModal").modal("toggle");
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
          console.log(postData);
         $("#name").val(postData.name);
-        $("#email").val(postData.email);
-        $("#tel").val(postData.tell);
-        $("#selectrole").val('');
-        carmatch = postData.driver_id;
+        $("#lastname").val(postData.lastname);
+        $("#carplate").val(postData.License_plate);
+        carmatch = postData.carmatch;
         
     });
 
