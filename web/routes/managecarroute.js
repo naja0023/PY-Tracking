@@ -50,17 +50,18 @@ router.put("/updatecar", (req, res) => {
     });
 });
 
-router.delete("/deletecar", (req, res) => {
-    const { car_id } = req.body;
-    const sql = "DELETE FROM car WHERE car_id = ?"
-    con.query(sql, [car_id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send('/carinfo');
-        }
-    });
-});
+// router.delete("/deletecar", (req, res) => {
+//     const { car_id } = req.body;
+//     console.log(car_id)
+//     const sql = "DELETE FROM car WHERE car_id = ?"
+//     con.query(sql, [car_id], (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             res.status(503).send("Server error");
+//         } else {
+//             res.status(200).send('/carinfo');
+//         }
+//     });
+// });
 
 module.exports = router;

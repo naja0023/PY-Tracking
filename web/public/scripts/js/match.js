@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var mode = "";
-    var blogID = 0;
+    var carmatch = 0;
     $(".closes").click(function(){
         $("#exampleModal").modal("toggle");  
     })
@@ -10,7 +10,7 @@ $(document).ready(function () {
     })
 
     $(".btnDelete").click(function () {
-        blogID = $(this).attr("blogID");
+        carmatch = $(this).attr("blogID");
         $("#exampleModal2").modal("toggle");
     })
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
                 idcard:$("#card").val(),
                 email: $("#email").val(),
                 role: $("#selectrole").val(),
-                id: blogID
+                id: carmatch
             };
             method = "PUT";
             url = "/adminse/edit";
@@ -92,15 +92,15 @@ $(document).ready(function () {
         $("#email").val(postData.email);
         $("#tel").val(postData.tell);
         $("#selectrole").val('');
-        blogID = postData.driver_id;
+        carmatch = postData.driver_id;
         
     });
 
     $("#deletekiki").click(function () {
         $.ajax({
             type: "DELETE",
-            url: "/adminse/" + blogID,
-            data: { id: blogID },
+            url: "/deletecarmatch" ,
+            data: { carmatch: carmatch },
         }).done(function (data, state, xhr) {
             alert("delete success")
                 window.location.replace(data)

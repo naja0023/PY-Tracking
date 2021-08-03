@@ -96,16 +96,16 @@ $(document).ready(function () {
         
     });
 
-    $("#deletekiki").click(function () {
-        $.ajax({
-            type: "DELETE",
-            url: "/adminse/" + blogID,
-            data: { id: blogID },
-        }).done(function (data, state, xhr) {
-            alert("delete success")
-                window.location.replace(data)
-        })
-    })
+    // $("#deletekiki").click(function () {
+    //     $.ajax({
+    //         type: "DELETE",
+    //         url: "/adminse/" + blogID,
+    //         data: { id: blogID },
+    //     }).done(function (data, state, xhr) {
+    //         alert("delete success")
+    //             window.location.replace(data)
+    //     })
+    // })
 
 });
 
