@@ -4,14 +4,14 @@ const mysql = require("mysql");
 const con = mysql.createConnection(config);
 
 router.get("/carmatchinfo", (req, res) => {
-    const sql = "SELECT * FROM car_match";
+    const sql = "SELECT * FROM car_match,driver,car WHERE car_match.date=CURRENT_DATE AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
     con.query(sql, function (err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("Database error");
             return;
         } else {
-            res.render('match', { result: result })
+            res.render('match', { resule: result })
         }
     });
 })
