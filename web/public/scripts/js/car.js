@@ -31,16 +31,12 @@ $(document).ready(function () {
         // edit
         if (mode == "edit") {
             data = {
-                name: $("#name").val(),
-                lastname: $("#editer").val(),
-                tell: $("#tel").val(),
-                idcard:$("#card").val(),
-                email: $("#email").val(),
-                role: $("#selectrole").val(),
-                id: car_id
+                License_plate: $("#editer").val(),
+                seat: $("#seat").val(),
+                car_id: car_id
             };
             method = "PUT";
-            url = "/adminse/edit";
+            url = "/updatecar";
         }
 
         $.ajax({
@@ -61,6 +57,7 @@ $(document).ready(function () {
     });
 
     $("#adduser").click(function () {
+        $("#btnModalSave").html("ADD")
         mode = "add";
         // change the modal title
         // change the modal title
@@ -75,6 +72,7 @@ $(document).ready(function () {
 
     // Edit button
     $(".btnEdit").click(function () {
+        $("#btnModalSave").html("EDIT")
         mode = "edit";
         // change the modal title
         $("#exampleModalLabel").text("Edit User");
@@ -83,11 +81,10 @@ $(document).ready(function () {
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
          console.log(postData);
-        $("#name").val(postData.name);
-        $("#email").val(postData.email);
-        $("#tel").val(postData.tell);
-        $("#selectrole").val('');
-        car_id = postData.driver_id;
+        $("#editer").val(postData.License_plate);
+        $("#seat").val(postData.seat);
+       
+        car_id = postData.car_id;
         
     });
 
