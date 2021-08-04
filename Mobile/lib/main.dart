@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
+import 'package:fluttermqttnew/modules/screen/main_sceen.dart';
 import 'package:provider/provider.dart';
 
 import 'modules/core/managers/MQTTManager.dart';
@@ -39,7 +40,6 @@ class MyApp extends StatelessWidget {
           initialRoute: '/login',
           routes: {
             '/login': (BuildContext context) => login(),
-            '/map': (BuildContext context) => MapScreen(),
           }),
     );
   }

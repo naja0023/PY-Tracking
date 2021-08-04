@@ -1,7 +1,9 @@
 import 'dart:async';
-
+import 'dart:ui';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
+import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/secrets.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:fluttermqttnew/utillity/show_progress.dart';
@@ -32,7 +34,11 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
+  late String _name = '';
+  late String _email = '';
   double? lat, lng;
+
+  bool _picture = true;
 
   late GoogleMapController mapController;
   late Timer _timer;
@@ -43,9 +49,6 @@ class _MapViewState extends State<MapView> {
   StreamSubscription<Position>? positionStream;
   bool track_button = true;
   late Position _currentPosition;
-
-  late String _name;
-  late String _email;
 
   final startAddressController = TextEditingController();
   final destinationAddressController = TextEditingController();
@@ -62,46 +65,64 @@ class _MapViewState extends State<MapView> {
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
-    getInfo();
     findposition();
-
     super.initState();
     _getPolyline();
     finlatlng();
     _updatelocation();
+    getInfo();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    // ]);
   }
+
+  // @override
+  // dispose() {
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.landscapeRight,
+  //     DeviceOrientation.landscapeLeft,
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     _manager = Provider.of<MQTTManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    Size size = MediaQuery.of(context).size;
 
     return Container(
       height: height,
       width: width,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: MyConstant.dark,
-          title: Row(children: [
-            SizedBox(
-              width: width * 0.21,
-            ),
-            Text(MyConstant.appName),
-          ]),
+        drawer: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width * (50 / 100)),
+          child: buildDrawer(),
         ),
-        drawer: buildDrawer(),
-        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: true,
+          toolbarHeight: height * (5 / 100) + 20,
+          title: ShowTitle(
+            title: MyConstant.appName,
+            textStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+          backgroundColor: MyConstant.dark,
+        ),
         body: Stack(
           children: <Widget>[
             buildMap(),
+            reviewBox(width, context, height),
             zoombutton(width, height),
             trackingbutton(width, height),
-            reviewBox(width, context, height),
           ],
         ),
       ),
@@ -113,18 +134,25 @@ class _MapViewState extends State<MapView> {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-          padding: EdgeInsets.only(right: 25, bottom: 25),
+          padding: EdgeInsets.only(
+              right: width * (5 / 100), bottom: height * (3 / 100)),
           child: ClipOval(
             child: Material(
               color: Colors.orange[100], // button color
               child: InkWell(
                   splashColor: Colors.orange, // inkwell color
-                  child: SizedBox(
-                    width: width * 0.15,
-                    height: height * 0.08,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.orange[200],
+                    radius: 35,
                     child: track_button
-                        ? Icon(Icons.explore)
-                        : Icon(Icons.my_location),
+                        ? Icon(
+                            Icons.explore,
+                            color: Colors.black,
+                          )
+                        : Icon(
+                            Icons.my_location,
+                            color: Colors.black,
+                          ),
                   ),
                   onTap: () {
                     setState(() {
@@ -142,7 +170,7 @@ class _MapViewState extends State<MapView> {
   SafeArea reviewBox(double width, BuildContext context, double height) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: EdgeInsets.only(top: height * (3 / 100)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -153,39 +181,52 @@ class _MapViewState extends State<MapView> {
                   Radius.circular(width * height * 0.01),
                 ),
               ),
-              width: width * 0.6,
-              height: height * 0.1,
+              width: 275,
+              height: 100,
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
-                      height: height * 0.1,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.account_circle,
-                              size: width * height * 0.00018,
-                              color: MyConstant.primary,
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: height * 0.02,
+                      //height: height * 0.1,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: _picture
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage("images/img5.png"),
+                                      maxRadius: 35,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.account_circle,
+                                    size: 70,
+                                    color: MyConstant.primary,
                                   ),
-                                  Text(
-                                    _name,
-                                    style: MyConstant().h2_Stlye(),
-                                    overflow: TextOverflow.ellipsis,
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 5, top: 25),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _name,
+                                          style: MyConstant().h2_Stlye(),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  // SizedBox(
-                                  //   height: height * 0.015,
-                                  // ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 25, top: 5),
+                                  child: Row(
                                     children: [
                                       Icon(Icons.star_border,
                                           color: Colors.grey),
@@ -206,12 +247,12 @@ class _MapViewState extends State<MapView> {
                                       Icon(Icons.star_border,
                                           color: Colors.grey),
                                     ],
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -237,8 +278,8 @@ class _MapViewState extends State<MapView> {
                 child: InkWell(
                   splashColor: Colors.blue, // inkwell color
                   child: SizedBox(
-                    width: width * 0.12,
-                    height: height * 0.06,
+                    width: 60,
+                    height: 60,
                     child: Icon(Icons.add),
                   ),
                   onTap: () {
@@ -256,8 +297,8 @@ class _MapViewState extends State<MapView> {
                 child: InkWell(
                   splashColor: Colors.blue, // inkwell color
                   child: SizedBox(
-                    width: width * 0.12,
-                    height: height * 0.06,
+                    width: 60,
+                    height: 60,
                     child: Icon(Icons.remove),
                   ),
                   onTap: () {
@@ -334,7 +375,7 @@ class _MapViewState extends State<MapView> {
       polylineId: id,
       color: Colors.green,
       points: polylineCoordinates,
-      width: 2,
+      width: 5,
     );
     polylines[id] = polyline;
     setState(() {});
@@ -346,7 +387,7 @@ class _MapViewState extends State<MapView> {
       polylineId: id,
       color: Colors.red,
       points: polylineCoordinates,
-      width: 2,
+      width: 5,
     );
     polylines[id] = polyline;
     setState(() {});
@@ -464,21 +505,55 @@ class _MapViewState extends State<MapView> {
       decoration: BoxDecoration(
         color: MyConstant.dark,
       ),
-      accountName: Text(_name),
-      accountEmail: Text(_email),
-      currentAccountPicture: CircleAvatar(
-        backgroundImage: AssetImage("images/img5.png"),
+      accountName: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ShowTitle(
+          title: _name,
+          textStyle: TextStyle(
+            fontSize: 17,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      accountEmail: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ShowTitle(
+          title: _email,
+          textStyle: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      currentAccountPicture: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: CircleAvatar(
+          backgroundImage: AssetImage("images/img5.png"),
+          maxRadius: 250,
+        ),
       ),
     );
   }
 
-  ListTile titleDrawer() {
-    return ListTile(
-      leading: Icon(Icons.logout),
-      title: Text('Logout'),
-      onTap: () {
-        _disconnect();
-      },
+  Container titleDrawer() {
+    return Container(
+      child: Card(
+        color: Colors.white70,
+        elevation: 5,
+        child: ListTile(
+          leading: Icon(Icons.logout),
+          title: ShowTitle(
+            title: 'logout',
+            textStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.black45,
+            ),
+          ),
+          onTap: () {
+            _disconnect();
+          },
+        ),
+      ),
     );
   }
 

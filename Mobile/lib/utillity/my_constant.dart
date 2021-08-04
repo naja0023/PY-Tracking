@@ -14,7 +14,7 @@ class MyConstant {
   //style
   TextStyle h1_Stlye() => TextStyle(
         fontSize: 24,
-        color: dark,
+        color: primary,
         fontWeight: FontWeight.bold,
       );
   TextStyle h2_Stlye() => TextStyle(
@@ -24,7 +24,7 @@ class MyConstant {
       );
   TextStyle h3_Stlye() => TextStyle(
         fontSize: 14,
-        color: dark,
+        color: light,
         fontWeight: FontWeight.normal,
       );
 

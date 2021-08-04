@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 
+import '../../responsive.dart';
+
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
   @override
@@ -31,20 +33,13 @@ class _loginState extends State<login> {
   final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // WidgetsBinding.instance!
-    // .addPostFrameCallback((_) => _configureAndConnect());
-    // WidgetsBinding.instance.addPostFrameCallback(()=> _configureAndConnect(context);
-    // WidgetsBinding.instance.addPostFrameCallback((_) => configureAndConnect(context));
-  }
 
   @override
   Widget build(BuildContext context) {
     _manager = Provider.of<MQTTManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    Size _size = MediaQuery.of(context).size;
     return Scaffold(
         body: SafeArea(
       child: GestureDetector(
@@ -56,21 +51,21 @@ class _loginState extends State<login> {
             build_titleapp(),
             build_textForm_username(width, height),
             build_textForm_password(width, height),
-            build_button(width),
-            build_describtion(),
+            build_button(width, height),
           ],
         ),
       ),
     ));
   }
 
+//
   Row build_img(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: width * 0.9,
-          height: height * 0.35,
+          height: height * 0.4,
           child: Image.asset('images/img3.png'),
         ),
       ],
@@ -92,7 +87,7 @@ class _loginState extends State<login> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: EdgeInsets.only(top: height * 0.05),
           width: width * 0.6,
           child: TextFormField(
             controller: _getUsername,
@@ -121,7 +116,7 @@ class _loginState extends State<login> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: EdgeInsets.only(top: height * 0.02),
           width: width * 0.6,
           child: TextFormField(
             controller: _getPassword,
@@ -162,12 +157,12 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_button(double width) {
+  Row build_button(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: height * 0.05),
           width: width * 0.6,
           child: ElevatedButton(
             child: Text("Login"),
@@ -175,21 +170,6 @@ class _loginState extends State<login> {
             onPressed: () {
               _login();
             },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row build_describtion() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 180),
-          child: ShowTitle(
-            title: 'Powered by Moyanyo and his Friends.',
-            textStyle: MyConstant().h3_Stlye(),
           ),
         ),
       ],
@@ -247,6 +227,7 @@ class _loginState extends State<login> {
       if (response.statusCode == 200 && _check.length > 0) {
         final _driver = jsonDecode(response.body);
         final driver = _driver[0];
+
         box.write('carmatchid', driver['carmatch']);
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
