@@ -19,6 +19,8 @@ const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+var mqtt = require('mqtt')
+var client  = mqtt.connect('mqtt://broker.emqx.io')
 
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
@@ -165,6 +167,7 @@ app.delete("/deleteuser", (req, res) => {
 });
 
 
+
 app.post("/addlocation", (req, res) => {
     const { carmatch, lat, lng } = req.body;
     console.log(req.body)
@@ -179,6 +182,19 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
+client.on('connect', function () {
+    client.subscribe('moyanyo', function (err) {
+      if (!err) {
+        client.publish('moyanyo', 'Hello mqtt')
+      }
+    })
+  })
+  
+  client.on('message', function (topic, message) {
+    // message is Buffer
+    console.log(message.toString())
+    // client.end()
+  })
 
 const PORT = 35000
 app.listen(PORT, function() {
