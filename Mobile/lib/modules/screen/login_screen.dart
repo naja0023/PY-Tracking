@@ -179,7 +179,7 @@ class _loginState extends State<login> {
   ///ConectMqtt and Sucribe
   void _configureAndConnect() {
     // TODO: Use UUID
-    String osPrefix = 'Flutter_iOS';
+    String osPrefix = 'diver';
     int counter = 0;
     if (Platform.isAndroid) {
       osPrefix = "mynono";
@@ -227,12 +227,13 @@ class _loginState extends State<login> {
       if (response.statusCode == 200 && _check.length > 0) {
         final _driver = jsonDecode(response.body);
         final driver = _driver[0];
+        //print('titok ${driver['lastname']}');
 
         box.write('carmatchid', driver['carmatch']);
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
 
-        print('เช็คๆๆ ${box.read('name')}');
+        //print('เช็คๆๆ ${box.read('name')}');
         _configureAndConnect();
       } else {
         final snackBar = SnackBar(

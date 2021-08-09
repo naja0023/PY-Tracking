@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:fluttermqttnew/modules/core/managers/MQTTManager.dart';
+import 'package:http/http.dart' as http;
+// import 'package:http/http.dart';
 
 class MapScreen extends StatelessWidget {
   @override
@@ -45,7 +47,7 @@ class _MapViewState extends State<MapView> {
   late double p = 4.5;
   int countingtin = 0;
   late MQTTManager _manager;
-  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
+
   StreamSubscription<Position>? positionStream;
   bool track_button = true;
   late Position _currentPosition;
@@ -61,18 +63,22 @@ class _MapViewState extends State<MapView> {
   double _originLatitude1 = 19.172379, _originLongitude1 = 99.898241;
   double _destLatitude1 = 19.031459, _destLongitude1 = 99.926547;
 
-  Set<Marker> markers = {};
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
+  List<Marker> _marker = [];
 
   @override
   void initState() {
     findposition();
-    super.initState();
+
     _getPolyline();
     finlatlng();
     _updatelocation();
     getInfo();
+    get_location();
+
+    super.initState();
+
     // SystemChrome.setPreferredOrientations([
     //   DeviceOrientation.portraitUp,
     //   DeviceOrientation.portraitDown,
@@ -324,12 +330,12 @@ class _MapViewState extends State<MapView> {
                 target: LatLng(lat!, lng!),
                 zoom: 15,
               ),
-              markers: Set<Marker>.from(markers),
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: false,
+              markers: _marker.map((e) => e).toSet(),
               polylines: Set<Polyline>.of(polylines.values),
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
@@ -424,9 +430,9 @@ class _MapViewState extends State<MapView> {
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) async {
       _currentPosition = position;
-      _publishMessage("latitude :" +
+      _publishMessage("lat:" +
           position.latitude.toString() +
-          " longtitude : " +
+          ":lng:" +
           position.longitude.toString());
 
       await GetStorage.init();
@@ -434,7 +440,8 @@ class _MapViewState extends State<MapView> {
       String car = box.read('carmatchid').toString();
       if (countingtin == 30) {
         try {
-          http.Response response = await http.post(_url, body: {
+          http.Response response = await http
+              .post(Uri.parse('http://10.0.0.2:35000/addlocation'), body: {
             'carmatch': car,
             'lat': position.latitude.toString(),
             'lng': position.longitude.toString(),
@@ -587,5 +594,48 @@ class _MapViewState extends State<MapView> {
     final box = GetStorage();
     _name = box.read('name').toString();
     _email = box.read('email').toString();
+  }
+
+  Future get_location() async {
+    try {
+      http.Response response =
+          await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
+
+      List data = jsonDecode(response.body);
+      for (var i in data) {
+        var user_lat = double.parse('${i['lat']}');
+        var user_lng = double.parse('${i['lng']}');
+        var user_status = int.parse('${i['status']}');
+        var user_route = int.parse('${i['route']}');
+
+        // Marker mark1 = Marker(
+        //   markerId: MarkerId('5555'),
+        //   position: LatLng(user_lat, user_lng),
+        //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        // );
+
+        if (user_status != 0) {
+          _marker.add(
+            Marker(
+                markerId: MarkerId('${i['request_id']}'),
+                position: LatLng(user_lat, user_lng),
+                icon: (user_route == 1)
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen,
+                      )
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed,
+                      )),
+          );
+        }
+      }
+
+      // print(
+      //     '#${data['request_id']} ตำแหน่งผู้โดยสาร : ${data['lat']},${data['lng']}');
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
   }
 }
