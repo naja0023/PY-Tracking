@@ -37,7 +37,21 @@ var maps;
         });
       }
       $(document).ready(function(){
-    
+        $('.request').click(function () {
+          $('.popup_box').css({
+            "opacity": "1", "pointer-events": "auto"
+          });
+        });
+        $('.btn1').click(function () {
+          $('.popup_box').css({
+            "opacity": "0", "pointer-events": "none"
+          });
+        });
+        $('.btn2').click(function () {
+          $('.popup_box').css({
+            "opacity": "0", "pointer-events": "none"
+          });
+        });
           $("#Logout").click(function (e) { 
           e.preventDefault();
           window.location.replace('/auth/logout')
