@@ -19,9 +19,8 @@ const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const WebSocket = require('ws');
- var mqtt = require('mqtt')
- var client  = mqtt.connect('mqtt://broker.emqx.io')
+var mqtt = require('mqtt')
+var client = mqtt.connect('mqtt://broker.emqx.io')
 
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
@@ -167,6 +166,20 @@ app.delete("/deleteuser", (req, res) => {
     });
 });
 
+app.get("/query_location", (req, res) => {
+
+    const sql = "SELECT * FROM `user_request`"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+
 
 
 app.post("/addlocation", (req, res) => {
@@ -183,15 +196,20 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
-client.on('connect', function () {
-    client.subscribe('moyanyo', function (err) {
-      if (!err) {
-        client.publish('moyanyo', 'Hello mqtt')
-      }
+client.on('connect', function() {
+    client.subscribe('moyanyo', function(err) {
+        if (!err) {
+            client.publish('moyanyo', 'Hello mqtt')
+        }
     })
-  })
-  
- 
+})
+
+client.on('message', function(topic, message) {
+    // message is Buffer
+    console.log(message.toString())
+        // client.end()
+})
+
 const PORT = 35000
 app.listen(PORT, function() {
     console.log("Server is running at " + PORT);

@@ -89,6 +89,14 @@ content-type: application/json
     
     
 }
+####
+get http://localhost:35000/query_location
+content-type: application/json
+
+{
+    
+  
+}
 
 ####
 post http://localhost:35000/addlocation
