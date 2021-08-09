@@ -1,3 +1,15 @@
+var lat 
+var lng
+var connection = new WebSocket('ws://localhost:34000')
+connection.onopen = function () {
+  // จะทำงานเมื่อเชื่อมต่อสำเร็จ
+  console.log("connect webSocket");
+  // connection.send("Hello ESUS"); // ส่ง Data ไปที่ Server
+};
+connection.onerror = function (error) {
+  console.error('WebSocket Error ' + error);
+};
+
 var maps; 
       var position={lat:19.024647,lng:99.943809};
       function initMap(){
@@ -25,6 +37,7 @@ var maps;
         });
       }
       $(document).ready(function(){
+    
           $("#Logout").click(function (e) { 
           e.preventDefault();
           window.location.replace('/auth/logout')
@@ -41,22 +54,26 @@ function initMap() {
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 18,
-    center: { lat: 19.024647, lng: 99.943809 },
+    // zoom: 18,
+    // center: { lat: 19.024647, lng: 99.943809 },
   });
+
   directionsRenderer.setMap(map);
   calculateAndDisplayRoute(directionsService, directionsRenderer);
 
+ 
   var image = '/image/car_13260.png';
-  var myLatLng = new google.maps.LatLng(19.024647, 99.943809); //or wherever you want the marker placed
+  var myLatLng = new google.maps.LatLng(lat,lng); //or wherever you want the marker placed
   var beachMarker = new google.maps.Marker({
       position: myLatLng,
       map: map,
       icon: image
       
   });
+  
  
 }
+
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
   directionsService
@@ -74,3 +91,21 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     })
     .catch((e) => window.alert("Directions request failed due to " + status));
 }
+connection.onmessage = function (e) {
+  var yourString = e.data;
+var array = [];
+yourString.split(':').forEach(function(value) {
+  array.push(value.split(' '));
+});
+  // log ค่าที่ถูกส่งมาจาก server
+  // console.log("message from server: ", e.data);
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 18,
+    center: { lat: 19.024647, lng: 99.943809 },
+  });
+
+  lat=parseFloat(array[2])    
+  lng=parseFloat(array[4])
+  
+  initMap()
+};

@@ -19,8 +19,9 @@ const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://broker.emqx.io')
+const WebSocket = require('ws');
+ var mqtt = require('mqtt')
+ var client  = mqtt.connect('mqtt://broker.emqx.io')
 
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
@@ -190,14 +191,29 @@ client.on('connect', function () {
     })
   })
   
-  client.on('message', function (topic, message) {
-    // message is Buffer
-    console.log(message.toString())
-    // client.end()
-  })
-
+ 
 const PORT = 35000
 app.listen(PORT, function() {
     console.log("Server is running at " + PORT);
-
 });
+const wss = new WebSocket.Server({ port: 34000 });
+wss.on('connection', function connection(ws) { // สร้าง connection
+  ws.on('message', function incoming(message) {
+   // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
+    console.log('received: %s', message);
+  });
+  ws.on('close', function close() {
+    // จะทำงานเมื่อปิด Connection ในตัวอย่างคือ ปิด Browser
+      console.log('disconnected');
+    });
+  
+    // ส่ง data ไปที่ client เชื่อมกับ websocket server นี้
+    client.on('message', function (topic, message) {
+        // message is Buffer
+        console.log(message.toString())
+        ws.send(message.toString());
+        // client.end()
+      })
+    
+  });
+  

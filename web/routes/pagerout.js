@@ -1,11 +1,26 @@
 const router = require('express').Router();
 const path = require("path");
+var mqtt = require('mqtt')
+var client  = mqtt.connect('mqtt://broker.emqx.io')
 router.get("/", (req, res) => {
     res.render('login') 
 
 })
 
 router.get("/mapping", (req, res) => {
+    client.on('connect', function () {
+    client.subscribe('moyanyo', function (err) {
+      if (!err) {
+        client.publish('moyanyo', 'Hello mqtt')
+      }
+    })
+  })
+  
+  client.on('message', function (topic, message) {
+    // message is Buffer
+    console.log(message.toString())
+    // client.end()
+  })
     res.render('index') 
 
 })
