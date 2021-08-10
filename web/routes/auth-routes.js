@@ -36,7 +36,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 
             }
             else {
-                res.redirect("/")
+                res.redirect("/mapping");
             }
         }
 

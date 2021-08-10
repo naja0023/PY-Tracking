@@ -1,5 +1,6 @@
 var lat 
 var lng
+var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
 connection.onopen = function () {
   // จะทำงานเมื่อเชื่อมต่อสำเร็จ
@@ -77,8 +78,8 @@ function initMap() {
 
  
   var image = '/image/car_13260.png';
-  var myLatLng = new google.maps.LatLng(lat,lng); //or wherever you want the marker placed
-  var beachMarker = new google.maps.Marker({
+  var myLatLng = new google.maps.LatLng(19.024647,99.943809); //or wherever you want the marker placed
+  beachMarker = new google.maps.Marker({
       position: myLatLng,
       map: map,
       icon: image
@@ -88,8 +89,8 @@ function initMap() {
  
 }
 
-
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  // var driver = '"'+lat+','+lng+'"'
   directionsService
     .route({
       origin: 
@@ -105,6 +106,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     })
     .catch((e) => window.alert("Directions request failed due to " + status));
 }
+
 connection.onmessage = function (e) {
   var yourString = e.data;
 var array = [];
@@ -113,13 +115,42 @@ yourString.split(':').forEach(function(value) {
 });
   // log ค่าที่ถูกส่งมาจาก server
   // console.log("message from server: ", e.data);
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 18,
-    center: { lat: 19.024647, lng: 99.943809 },
-  });
-
+  // const map = new google.maps.Map(document.getElementById("map"), {
+  //   zoom: 18,
+  //   center: { lat: 19.024647, lng: 99.943809 },
+  // });
+  
   lat=parseFloat(array[2])    
   lng=parseFloat(array[4])
+  var latlng = new google.maps.LatLng(lat, lng);
+  redraw()
+  beachMarker.setPosition(latlng);
   
-  initMap()
 };
+
+// var numDeltas = 100;
+// var delay = 10; //milliseconds
+// var i = 0;
+// var deltaLat;
+// var deltaLng;
+
+// function transition(result){
+//     i = 0;
+
+//     deltaLat = (result[0] - lat)/numDeltas;
+//     deltaLng = (result[1] - lng)/numDeltas;
+//     moveMarker();
+// }
+
+// function moveMarker(){
+//     lat += deltaLat;
+//     lng += deltaLng;
+//     var latlng = new google.maps.LatLng(lat, lng);
+// beachMarker.setTitle("Latitude:"+lat+" | Longitude:"+lng);
+//     beachMarker.setPosition(latlng);
+//     if(i!=numDeltas){
+//         i++;
+//         setTimeout(moveMarker, delay);
+//         // initMap()
+//     }
+// }
