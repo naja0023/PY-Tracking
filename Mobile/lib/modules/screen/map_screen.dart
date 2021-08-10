@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'dart:ui';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
 import 'package:fluttermqttnew/modules/widgets/show_title.dart';
@@ -41,6 +42,7 @@ class _MapViewState extends State<MapView> {
   double? lat, lng;
 
   bool _picture = true;
+  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
 
   late GoogleMapController mapController;
   late Timer _timer;
@@ -75,7 +77,20 @@ class _MapViewState extends State<MapView> {
     finlatlng();
     _updatelocation();
     getInfo();
-    get_location();
+
+    int counter = 0;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (counter == 1) {
+          get_location();
+
+          counter = 0;
+          // timer.cancel();
+        } else {
+          counter++;
+        }
+      });
+    });
 
     super.initState();
 
@@ -438,10 +453,10 @@ class _MapViewState extends State<MapView> {
       await GetStorage.init();
       final box = GetStorage();
       String car = box.read('carmatchid').toString();
+
       if (countingtin == 30) {
         try {
-          http.Response response = await http
-              .post(Uri.parse('http://10.0.0.2:35000/addlocation'), body: {
+          http.Response response = await http.post((_url), body: {
             'carmatch': car,
             'lat': position.latitude.toString(),
             'lng': position.longitude.toString(),
