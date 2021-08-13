@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/login',
           routes: {
             '/login': (BuildContext context) => login(),
+            '/map': (BuildContext context) => MapScreen(),
           }),
     );
   }
