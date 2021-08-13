@@ -9,6 +9,7 @@ import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/secrets.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
 import 'package:fluttermqttnew/utillity/show_progress.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -46,7 +47,7 @@ class _MapViewState extends State<MapView> {
 
   late GoogleMapController mapController;
   late Timer _timer;
-  late double p = 4.5;
+  late double p = 3.7;
   int countingtin = 0;
   late MQTTManager _manager;
 
@@ -249,24 +250,55 @@ class _MapViewState extends State<MapView> {
                                   margin: EdgeInsets.only(bottom: 25, top: 5),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.star_border,
-                                          color: Colors.grey),
-
-                                      ///2 ดาว
-                                      Icon(Icons.star_border,
-                                          color: Colors.grey),
-
-                                      ///3 ดาว
-                                      Icon(Icons.star_border,
-                                          color: Colors.grey),
-
-                                      ///4 ดาว
-                                      Icon(Icons.star_border,
-                                          color: Colors.grey),
-
-                                      ///5 ดาว
-                                      Icon(Icons.star_border,
-                                          color: Colors.grey),
+                                      (p >= 0.5)
+                                          ? (p >= 1)
+                                              ? Icon(Icons.star,
+                                                  color: Colors.amber[500])
+                                              : Icon(Icons.star_half,
+                                                  color: Colors.amber[500])
+                                          : Icon(Icons.star_border,
+                                              color: Colors.grey),
+                                      (p >= 1.5)
+                                          ? (p >= 2)
+                                              ? Icon(Icons.star,
+                                                  color: Colors.amber[500])
+                                              : Icon(Icons.star_half,
+                                                  color: Colors.amber[500])
+                                          : Icon(Icons.star_border,
+                                              color: Colors.grey),
+                                      (p >= 2.5)
+                                          ? (p >= 3)
+                                              ? Icon(Icons.star,
+                                                  color: Colors.amber[500])
+                                              : Icon(Icons.star_half,
+                                                  color: Colors.amber[500])
+                                          : Icon(Icons.star_border,
+                                              color: Colors.grey),
+                                      (p >= 3.5)
+                                          ? (p >= 4)
+                                              ? Icon(Icons.star,
+                                                  color: Colors.amber[500])
+                                              : Icon(Icons.star_half,
+                                                  color: Colors.amber[500])
+                                          : Icon(Icons.star_border,
+                                              color: Colors.grey),
+                                      (p >= 4.5)
+                                          ? (p >= 5)
+                                              ? Icon(Icons.star,
+                                                  color: Colors.amber[500])
+                                              : Icon(Icons.star_half,
+                                                  color: Colors.amber[500])
+                                          : Icon(Icons.star_border,
+                                              color: Colors.grey),
+                                      Text(
+                                        '($p)',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: MyConstant.dark,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -350,6 +382,7 @@ class _MapViewState extends State<MapView> {
               mapType: MapType.normal,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: false,
+              mapToolbarEnabled: false,
               markers: _marker.map((e) => e).toSet(),
               polylines: Set<Polyline>.of(polylines.values),
               onMapCreated: (GoogleMapController controller) {
@@ -622,31 +655,110 @@ class _MapViewState extends State<MapView> {
         var user_lng = double.parse('${i['lng']}');
         var user_status = int.parse('${i['status']}');
         var user_route = int.parse('${i['route']}');
-
-        // Marker mark1 = Marker(
-        //   markerId: MarkerId('5555'),
-        //   position: LatLng(user_lat, user_lng),
-        //   icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        // );
+        var marker_id = int.parse('${i['request_id']}');
 
         if (user_status != 0) {
           _marker.add(
             Marker(
-                markerId: MarkerId('${i['request_id']}'),
-                position: LatLng(user_lat, user_lng),
-                icon: (user_route == 1)
-                    ? BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueGreen,
-                      )
-                    : BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed,
-                      )),
+              markerId: MarkerId('$marker_id'),
+              position: LatLng(user_lat, user_lng),
+              icon: (user_route == 1)
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueGreen,
+                    )
+                  : BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRed,
+                    ),
+              onTap: () {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      _AlertDialog(context, marker_id),
+                );
+              },
+            ),
           );
         }
       }
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
+  }
 
-      // print(
-      //     '#${data['request_id']} ตำแหน่งผู้โดยสาร : ${data['lat']},${data['lng']}');
+  AlertDialog _AlertDialog(BuildContext context, int marker_id) {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      actions: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CloseButton(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Expanded(
+                    child: ElevatedButton(
+                      child: Text(
+                        "ยืนยันการขึ้นรถ",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      style: MyConstant().MyButtonStlye(),
+                      onPressed: () {
+                        Navigator.pop(context, 'OK');
+                        setState(() {
+                          _marker.removeWhere((element) =>
+                              element.markerId == MarkerId('$marker_id'));
+                          updateStatus('$marker_id');
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  child: Expanded(
+                    child: ElevatedButton(
+                      child: Text(
+                        "ลบหมุดตำแหน่ง",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      style: MyConstant().MyButtonStlye1(),
+                      onPressed: () {
+                        Navigator.pop(context, 'Cancel');
+                        setState(() {
+                          _marker.removeWhere((element) =>
+                              element.markerId == MarkerId('$marker_id'));
+                          updateStatus('$marker_id');
+                          ;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Future updateStatus(var id) async {
+    try {
+      http.Response response =
+          await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
+        'request_id': id,
+      }).timeout(Duration(seconds: 4));
     } on TimeoutException catch (e) {
       print('Timeout : $e ');
     } catch (e) {

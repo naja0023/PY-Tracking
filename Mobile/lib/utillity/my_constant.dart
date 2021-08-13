@@ -33,4 +33,8 @@ class MyConstant {
         primary: MyConstant.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       );
+  ButtonStyle MyButtonStlye1() => ElevatedButton.styleFrom(
+        primary: Colors.red[900],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      );
 }

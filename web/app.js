@@ -179,7 +179,18 @@ app.get("/query_location", (req, res) => {
     });
 });
 
-
+app.put("/setstatus", (req, res) => {
+    const { request_id } = req.body;
+    const sql = "UPDATE `user_request` SET `status` = '0' WHERE `user_request`.`request_id` = ?"
+    con.query(sql, [request_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Update Successfully");
+        }
+    });
+});
 
 
 app.post("/addlocation", (req, res) => {
@@ -216,22 +227,21 @@ app.listen(PORT, function() {
 });
 const wss = new WebSocket.Server({ port: 34000 });
 wss.on('connection', function connection(ws) { // สร้าง connection
-  ws.on('message', function incoming(message) {
-   // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
-    console.log('received: %s', message);
-  });
-  ws.on('close', function close() {
-    // จะทำงานเมื่อปิด Connection ในตัวอย่างคือ ปิด Browser
-      console.log('disconnected');
+    ws.on('message', function incoming(message) {
+        // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
+        console.log('received: %s', message);
     });
-  
+    ws.on('close', function close() {
+        // จะทำงานเมื่อปิด Connection ในตัวอย่างคือ ปิด Browser
+        console.log('disconnected');
+    });
+
     // ส่ง data ไปที่ client เชื่อมกับ websocket server นี้
-    client.on('message', function (topic, message) {
+    client.on('message', function(topic, message) {
         // message is Buffer
         console.log(message.toString())
         ws.send(message.toString());
         // client.end()
-      })
-    
-  });
-  
+    })
+
+});
