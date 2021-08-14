@@ -34,13 +34,6 @@ content-type: application/json
 
 }
 
-####
-post http://localhost:35000/query_point
-content-type: application/json
-
-{ 
-  "driver_id" : "6",
-}
 
 ####
 post http://localhost:35000/loginmoblie
@@ -132,4 +125,11 @@ content-type: application/json
 
 {
     "request_id" : "7"
+<<<<<<< HEAD
 }
+=======
+   
+    
+}
+
+>>>>>>> e383dbe0d2db1df4d920aa296579d67e69733e72
