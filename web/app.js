@@ -61,7 +61,6 @@ app.post("/signUp", function(req, res) {
             res.status(503).send("Database error");
             return;
         }
-
         // get inserted rows
         const numrows = result.affectedRows;
         if (numrows != 1) {
@@ -170,6 +169,20 @@ app.get("/query_location", (req, res) => {
 
     const sql = "SELECT * FROM `user_request`"
     con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.post("/query_point", (req, res) => {
+
+    const _id = req.body.driver_id;
+    const sql = "SELECT * FROM `review_driver` WHERE driver_id=?"
+    con.query(sql, [_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");

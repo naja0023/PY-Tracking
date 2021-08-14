@@ -232,6 +232,7 @@ class _loginState extends State<login> {
         box.write('carmatchid', driver['carmatch']);
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
+        box.write('driver_id', "${driver['driver_id']} ");
 
         //print('เช็คๆๆ ${box.read('name')}');
         _configureAndConnect();
