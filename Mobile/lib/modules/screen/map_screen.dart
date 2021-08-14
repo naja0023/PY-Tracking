@@ -47,7 +47,7 @@ class _MapViewState extends State<MapView> {
 
   late GoogleMapController mapController;
   late Timer _timer;
-  late double p = 3.7;
+  late double p = 0;
   int countingtin = 0;
   late MQTTManager _manager;
 
@@ -78,6 +78,7 @@ class _MapViewState extends State<MapView> {
     finlatlng();
     _updatelocation();
     getInfo();
+    calculateStar();
 
     int counter = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -301,7 +302,7 @@ class _MapViewState extends State<MapView> {
                   : Icon(Icons.star_half, color: Colors.amber[500])
               : Icon(Icons.star_border, color: Colors.grey),
           Text(
-            '($p)',
+            '(' + p.toStringAsFixed(1) + ')',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: MyConstant.dark,
@@ -755,6 +756,35 @@ class _MapViewState extends State<MapView> {
           await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
         'request_id': id,
       }).timeout(Duration(seconds: 4));
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
+  }
+
+  void calculateStar() async {
+    await GetStorage.init();
+    final box = GetStorage();
+    String id = box.read('driver_id').toString();
+    double sum = 0;
+    int count = 0;
+    try {
+      http.Response response = await http
+          .post(Uri.parse('http://10.0.2.2:35000/query_point'), body: {
+        'driver_id': id,
+      }).timeout(Duration(seconds: 4));
+      List data = jsonDecode(response.body);
+      for (var i in data) {
+        var point = double.parse('${i['point']}');
+        print('data_ : $point');
+        sum += point;
+        count++;
+      }
+      print('data_coubt : $count');
+      print('data_sum : $sum');
+      p = sum / count;
+      print('data_point : $p');
     } on TimeoutException catch (e) {
       print('Timeout : $e ');
     } catch (e) {

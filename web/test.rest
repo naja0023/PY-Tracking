@@ -25,16 +25,23 @@ content-type: application/json
     "email" : "61022540@up.ac.th",
     "tell" : "0999999999"
 }
-
-
-###
-post http://localhost:35000/login
+####
+get http://localhost:35000/query_location
 content-type: application/json
 
-{
-    "username" : "windoss",
-    "password" : "12345"
-    
+{ 
+  
+
+}
+
+
+####
+post http://localhost:35000/loginmoblie
+content-type: application/json
+
+{ 
+    "username": "windoss",
+    "password": "12345",
 }
 
 ####
@@ -44,7 +51,6 @@ content-type: application/json
 {
     "License_plate" : "454465",
     "seat" : "15"
-    
 }
 
 ####
@@ -76,7 +82,6 @@ content-type: application/json
     "car_id" : "1",
     "date" : "2021/7/21",
     "carmatch" : "3"
-    
 }
 
 
@@ -86,16 +91,13 @@ content-type: application/json
 
 {
     "car_id" : "5"
-    
-    
 }
 ####
-get http://localhost:35000/query_location
+post http://localhost:35000/query_point
 content-type: application/json
 
-{
-    
-  
+{  
+  "driver_id":"6",
 }
 
 ####
@@ -105,9 +107,7 @@ content-type: application/json
 {
     "carmatch" : "1",
     "lat" : "192.1111",
-    "lng" : "192.2222"
-   
-    
+    "lng" : "192.2222" 
 }
 
 ####
@@ -117,8 +117,6 @@ content-type: application/json
 {
     "driver_id" : "3",
     "date" : "2021/07/21"
-   
-    
 }
 
 ####
@@ -127,6 +125,7 @@ content-type: application/json
 post http://localhost:35000/review
 content-type: application/json
 
+<<<<<<< HEAD
 {   "driver_id" : "6",
     "user_email" : "fsafs@gmail.com",
     "carmatch" : "1",
@@ -144,5 +143,15 @@ content-type: application/json
     "lng" : "99.926732",
     "status" : "0",
     "route" : "1"
+=======
+{
+    "request_id" : "7"
+<<<<<<< HEAD
+}
+=======
+   
+    
+>>>>>>> fe3d60b22a75aa4346ae3de61d3c48d668a4025f
 }
 
+>>>>>>> e383dbe0d2db1df4d920aa296579d67e69733e72
