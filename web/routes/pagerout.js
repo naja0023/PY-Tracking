@@ -61,4 +61,8 @@ router.get("/dashboard", (req, res) => {
 
 })
 
+router.get("/review", (req, res) => {
+    res.render('review') 
+
+})
 module.exports = router;
