@@ -122,12 +122,27 @@ content-type: application/json
 }
 
 ####
-put http://localhost:35000/setstatus
+
+
+post http://localhost:35000/review
 content-type: application/json
 
-{
-    "request_id" : "7"
-   
-    
+{   "driver_id" : "6",
+    "user_email" : "fsafs@gmail.com",
+    "carmatch" : "1",
+    "point" : "5"
+}
+
+####
+
+
+post http://localhost:35000/request
+content-type: application/json
+
+{   "user_email" : "pipat massi",
+    "lat" : "19.032320",
+    "lng" : "99.926732",
+    "status" : "0",
+    "route" : "1"
 }
 

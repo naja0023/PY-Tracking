@@ -207,6 +207,34 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
+app.post("/review", (req, res) => {
+    const { driver_id,user_email,carmatch,point } = req.body;
+    console.log(req.body)
+    const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`, `carmatch`,`point`) VALUES (?,?,?,?)"
+    con.query(sql, [driver_id, user_email, carmatch,point], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("reviewsuccessed");
+        }
+    });
+});
+
+app.post("/request", (req, res) => {
+    const {user_email,lat,lng,status,route } = req.body;
+    console.log(req.body)
+    const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`, `status`, `route`) VALUES (?,?,?,?,?)"
+    con.query(sql, [user_email,lat,lng,status,route], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("requestsuccessed");
+        }
+    });
+});
+
 client.on('connect', function() {
     client.subscribe('moyanyo', function(err) {
         if (!err) {
