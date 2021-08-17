@@ -63,13 +63,14 @@ class _MapViewState extends State<MapView> {
 
   double _originLatitude = 19.031459, _originLongitude = 99.926547;
   double _destLatitude = 19.172379, _destLongitude = 99.898241;
+  double _onwaylat = 19.161715, _onwaylng = 99.913415;
   double _originLatitude1 = 19.172379, _originLongitude1 = 99.898241;
   double _destLatitude1 = 19.031459, _destLongitude1 = 99.926547;
 
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<Marker> _marker = [];
-
+  List wayPoint = [];
   @override
   void initState() {
     findposition();
@@ -397,6 +398,11 @@ class _MapViewState extends State<MapView> {
       Secrets.API_KEY,
       PointLatLng(_originLatitude, _originLongitude),
       PointLatLng(_destLatitude, _destLongitude),
+      wayPoints: [
+        (PolylineWayPoint(
+          location: '$_onwaylat,$_onwaylng',
+        ))
+      ],
       travelMode: TravelMode.driving,
     );
     PolylineResult result1 = await polylinePoints.getRouteBetweenCoordinates(
@@ -424,9 +430,9 @@ class _MapViewState extends State<MapView> {
     PolylineId id = PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: Colors.green,
+      color: Colors.red,
       points: polylineCoordinates,
-      width: 5,
+      width: 8,
     );
     polylines[id] = polyline;
     setState(() {});
@@ -438,7 +444,7 @@ class _MapViewState extends State<MapView> {
       polylineId: id,
       color: Colors.red,
       points: polylineCoordinates,
-      width: 5,
+      width: 8,
     );
     polylines[id] = polyline;
     setState(() {});
