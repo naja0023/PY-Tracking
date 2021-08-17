@@ -18,7 +18,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
     var sql = ("select * from driver where email = ?")
     con.query(sql, [req.user.email], function (err, result) {
         if (err) {
-            return done(err)
+            console.log(err)
         }
         else {
 

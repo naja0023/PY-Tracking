@@ -21,17 +21,19 @@ passport.deserializeUser((id, done) => {
             return done(err)
         }
         else {
+            userINFO={name:id.name,email:id.email,photo:id.photo}
+            console.log(userINFO)
+            done(null, userINFO);
             // console.log(result.length)
-            if (result.length == 1) {
-                // console.log(result)
-                userINFO={name:id.name,email:id.email,photo:id.photo}
-                console.log(userINFO)
-                done(null, userINFO);
-            }
-            else {
-                console.log('set False')
-                return done(null, 'Nodata')
-            }
+            // if (result.length == 1) {
+            //     // console.log(result)
+                
+                
+            // }
+            // else {
+            //     console.log('set False')
+            //     return done(null, 'Nodata')
+            // }
         }
 
     });
