@@ -8,7 +8,7 @@ let map, heatmap;
 var getlocale = []
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 13,
+    zoom: 15,
     center: { lat: 19.02502397770961, lng: 99.94342031550569 },
     mapTypeId: "satellite",
   });
