@@ -247,6 +247,17 @@ app.post("/request", (req, res) => {
         }
     });
 });
+app.get("/showrequest", (req, res) => {
+    const sql = "SELECT * FROM `user_request`"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
 
 client.on('connect', function() {
     client.subscribe('moyanyo', function(err) {

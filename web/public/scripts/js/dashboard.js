@@ -1,11 +1,11 @@
 
-   
-    
+
+
 // This example requires the Visualization library. Include the libraries=visualization
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
 let map, heatmap;
-
+var getlocale = []
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 13,
@@ -64,27 +64,26 @@ function changeOpacity() {
 
 // Heatmap data: 500 Points
 function getPoints() {
-  return [
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.02502397770961,99.94342031550569),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    new google.maps.LatLng(19.026074,99.938775),
-    
-    
 
-  ];
- }
+
+  return getlocale;
+
+
+
+}
 $(document).ready(function () {
-
+  $.ajax({
+    type: "GET",
+    url: "/showrequest",
+    success: function (response) {
+      for (let i = 0; i < response.length; i++) {
+        getlocale.push(new google.maps.LatLng(response[i].lat, response[i].lng))
+      }
+    }, error: function (xhr) {
+      Swal.fire({
+        icon: "error",
+        title: xhr.responseText,
+      });
+    }
+  });
 })
