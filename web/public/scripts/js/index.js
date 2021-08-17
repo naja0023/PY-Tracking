@@ -1,3 +1,5 @@
+const { route } = require("../../../routes/auth-routes");
+
 var lat
 var lng
 var beachMarker
@@ -46,6 +48,31 @@ $(document).ready(function () {
   $('.btn1').click(function () {
     $('.popup_box').css({
       "opacity": "0", "pointer-events": "none"
+    });
+    $.ajax({
+      type: "POST",
+      url: "/request",
+      data: { user_email:user_email,lat:lat,lng:lng,status:0,route:direc },
+      success: function (response) {
+        Swal.fire({
+          title: 'Add request success',
+          text: "Request success!!!! Please wait",
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace('/mapping')
+          }
+        })
+      },
+      error: function (xhr) {
+        Swal.fire({
+          icon: "error",
+          title: xhr.responseText,
+        });
+      }
     });
   });
   $('.btn2').click(function () {

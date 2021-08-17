@@ -20,7 +20,7 @@ html,body {
   padding-left: 10px;
 }
 
-.request, .popup_box{
+.request, .popup_box,.review{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -28,7 +28,8 @@ html,body {
   border-radius: 5px;
 
 }
-.request{
+
+.request,.review{
   background: #2981bc;
   color: white;
   font-family: arial;
