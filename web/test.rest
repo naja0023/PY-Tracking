@@ -142,16 +142,11 @@ content-type: application/json
     "lat" : "19.032320",
     "lng" : "99.926732",
     "status" : "0",
-    "route" : "1"
-=======
-{
-    "request_id" : "7"
-<<<<<<< HEAD
-}
-=======
+    "route" : "1",
+
    
     
->>>>>>> fe3d60b22a75aa4346ae3de61d3c48d668a4025f
+
 }
 
->>>>>>> e383dbe0d2db1df4d920aa296579d67e69733e72
+
