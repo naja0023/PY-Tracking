@@ -12,7 +12,8 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 //if login success, redirect here
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-    const payload = {email:req.user.email};
+    console.log(req.user)
+    const payload = {email:req.user.email,photo:req.user.photo,name:req.user.name};
     const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '1d' });
     const cookieOption = {
         maxAge: 24 * 60 * 60 * 1000,    //ms
@@ -51,6 +52,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 //log out
 router.get("/logout", (req, res) => {
     req.logOut();
+    var removing = browser.cookies.remove()
     res.redirect("/");
 })
 
