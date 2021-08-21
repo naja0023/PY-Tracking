@@ -40,6 +40,7 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   late String _name = '';
   late String _email = '';
+  late String driverid = '';
   double? lat, lng;
 
   bool _picture = true;
@@ -645,6 +646,7 @@ class _MapViewState extends State<MapView> {
     final box = GetStorage();
     _name = box.read('name').toString();
     _email = box.read('email').toString();
+    driverid = box.read('driver_id').toString();
   }
 
   Future get_location() async {
@@ -720,6 +722,7 @@ class _MapViewState extends State<MapView> {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
                           updateStatus('$marker_id');
+                          _publishMessage("diverid:" + driverid);
                         });
                       },
                     ),
@@ -742,7 +745,7 @@ class _MapViewState extends State<MapView> {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
                           updateStatus('$marker_id');
-                          ;
+                          _publishMessage("diverid:" + driverid);
                         });
                       },
                     ),
