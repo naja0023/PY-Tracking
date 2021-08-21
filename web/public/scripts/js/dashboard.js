@@ -1,12 +1,12 @@
-
-
-
 // This example requires the Visualization library. Include the libraries=visualization
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
 let map, heatmap;
 var getlocale = []
+var current_lat;
+var current_lng;
 function initMap() {
+  
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 15,
     center: { lat: 19.02502397770961, lng: 99.94342031550569 },
@@ -64,13 +64,9 @@ function changeOpacity() {
 
 // Heatmap data: 500 Points
 function getPoints() {
-
-
   return getlocale;
-
-
-
 }
+
 $(document).ready(function () {
   $.ajax({
     type: "GET",
