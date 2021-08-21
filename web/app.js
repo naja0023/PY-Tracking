@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 
 const path = require("path");
@@ -19,27 +20,34 @@ const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const cookieSession = require("cookie-session");
 var mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://broker.emqx.io')
+const jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
+const { decode } = require("punycode");
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(compression());
-
+app.use(cookieSession({
+    maxAge: 60 * 60 * 1000,
+    keys: [process.env.cookiekey]
+}))
 // app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/style", express.static(path.join(__dirname, '/public/styles')));
 app.use(passport.session());
+app.use(cookieParser(process.env.COOKIE_KEY));
 app.use("/auth", authRoutes);
 app.use(carmatchro)
 app.use(pageRoute);
 app.use(blogRoute);
 app.use(caroute);
 
-app.use("/profile", profile);
+app.use("/profileroute", profile);
 
 app.set('view engine', 'ejs');
 
@@ -72,6 +80,20 @@ app.post("/signUp", function(req, res) {
     });
 
 });
+
+app.get('/verify', (req, res) => {
+    const token = req.signedCookies['mytoken'] || req.headers['x-access-token'];
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+        if (err) {
+            console.log(err);
+            res.status(400).send('Invalid token');
+        } else {
+            // OK, decoding is done
+            console.log(decoded)
+            res.send(decoded);
+        }
+    });
+ });
 
 //-------------------------- Register ------------------------
 app.post("/register", function(req, res) {

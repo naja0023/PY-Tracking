@@ -1,20 +1,25 @@
 const router = require("express").Router();
 const passport = require("passport");
 const mysql = require("mysql");
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const config = require("../config/dbConfig");
-const { user } = require("../config/dbConfig");
 const con = mysql.createConnection(config)
-//show login page
-// router.get("/login", (req, res) => {
-//     res.render("Login.ejs", { user: req.user });
-// });
+
 
 //login using Google
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 //if login success, redirect here
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-    console.log(req.user.email)
+    const payload = {email:req.user.email};
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '1d' });
+    const cookieOption = {
+        maxAge: 24 * 60 * 60 * 1000,    //ms
+        httpOnly: true,
+        signed: true
+    };
+    res.cookie('mytoken', token, cookieOption);
     var sql = ("select * from driver where email = ?")
     con.query(sql, [req.user.email], function (err, result) {
         if (err) {
@@ -22,17 +27,15 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
         }
         else {
 
-             console.log(result.length)
             if (result.length == 1) {
                 if (result[0].role == 3) {
                     res.redirect('/check')
                     console.log("/chack")
                 } else {
-
-                    res.redirect("/mapping");
+                    res.render("index", { user: req.user });
+                    
                 }
                 // console.log(result)
-                console.log(result)
 
             }
             else {
