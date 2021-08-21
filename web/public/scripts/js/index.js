@@ -1,7 +1,12 @@
+// const { route } = require("../../../routes/auth-routes");
+
 var lat
 var lng
 var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
+var current_lat;
+var current_lng;
+var user_email
 connection.onopen = function () {
   // จะทำงานเมื่อเชื่อมต่อสำเร็จ
   console.log("connect webSocket");
@@ -12,17 +17,8 @@ connection.onerror = function (error) {
 };
 
 var maps;
-var position = { lat: 19.024647, lng: 99.943809 };
-function initMap() {
-  maps = new google.maps.Map(document.getElementById('map'), {
-    center: position,
-    zoom: 15,
-  });
-  var geocoder = new google.maps.Geocoder();
-  document.getElementById('submit').addEventListener('click', function () {
-    geocoderAddress(geocoder, maps);
-  });
-}
+// var position = { lat: current_lat, lng: current_lng};
+
 function geocoderAddress(geocoder, resultsMap) {
   var address = document.getElementById('address').value;
   geocoder.geocode({ 'address': address }, function (results, status) {
@@ -37,7 +33,24 @@ function geocoderAddress(geocoder, resultsMap) {
     }
   });
 }
+
+function getLocation() {
+  console.log('hi')
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  current_lat = position.coords.latitude
+  current_lng = position.coords.longitude;
+}
+
 $(document).ready(function () {
+  getemail()
+  getLocation();
   $('.request').click(function () {
     $('.popup_box').css({
       "opacity": "1", "pointer-events": "auto"
@@ -47,21 +60,64 @@ $(document).ready(function () {
     $('.popup_box').css({
       "opacity": "0", "pointer-events": "none"
     });
+    requesttodb(0)
   });
   $('.btn2').click(function () {
     $('.popup_box').css({
       "opacity": "0", "pointer-events": "none"
     });
+    requesttodb(1)
   });
   $("#Logout").click(function (e) {
     e.preventDefault();
     window.location.replace('/auth/logout')
   });
-  $("#profile").click(function (e) {
-    e.preventDefault();
-    window.location.replace('/profile')
-  });
+ 
 })
+
+function requesttodb(direction) {
+  $.ajax({
+    type: "POST",
+    url: "/request",
+    data: { user_email: user_email, lat: current_lat, lng: current_lng, status: 0, route: direction },
+    success: function (response) {
+      Swal.fire({
+        title: 'Add request success',
+        text: "Request success!!!! Please wait",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Yes'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.replace('/mapping')
+        }
+      })
+    },
+    error: function (xhr) {
+      Swal.fire({
+        icon: "error",
+        title: xhr.responseText,
+      });
+    }
+  });
+}
+
+function getemail(){
+  $.ajax({
+    type: "GET",
+    url: "/verify",
+    success: function (response) {
+      user_email = response.email
+    },
+    error: function (xhr) {
+      Swal.fire({
+        icon: "error",
+        title: xhr.responseText,
+      });
+    }
+  });
+}
 // This example creates a 2-pixel-wide red polyline showing the path of
 // the first trans-Pacific flight between Oakland, CA, and Brisbane,
 // Australia which was made by Charles Kingsford Smith.
@@ -69,8 +125,7 @@ function initMap() {
   const directionsService = new google.maps.DirectionsService();
   const directionsRenderer = new google.maps.DirectionsRenderer();
   const map = new google.maps.Map(document.getElementById("map"), {
-    // zoom: 18,
-    // center: { lat: 19.024647, lng: 99.943809 },
+
   });
 
   directionsRenderer.setMap(map);
@@ -90,7 +145,6 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-  // var driver = '"'+lat+','+lng+'"'
   directionsService
     .route({
       origin:
@@ -128,29 +182,3 @@ connection.onmessage = function (e) {
 
 };
 
-// var numDeltas = 100;
-// var delay = 10; //milliseconds
-// var i = 0;
-// var deltaLat;
-// var deltaLng;
-
-// function transition(result){
-//     i = 0;
-
-//     deltaLat = (result[0] - lat)/numDeltas;
-//     deltaLng = (result[1] - lng)/numDeltas;
-//     moveMarker();
-// }
-
-// function moveMarker(){
-//     lat += deltaLat;
-//     lng += deltaLng;
-//     var latlng = new google.maps.LatLng(lat, lng);
-// beachMarker.setTitle("Latitude:"+lat+" | Longitude:"+lng);
-//     beachMarker.setPosition(latlng);
-//     if(i!=numDeltas){
-//         i++;
-//         setTimeout(moveMarker, delay);
-//         // initMap()
-//     }
-// }
