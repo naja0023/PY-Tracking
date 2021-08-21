@@ -72,10 +72,6 @@ $(document).ready(function () {
     e.preventDefault();
     window.location.replace('/auth/logout')
   });
-  $("#profile").click(function (e) {
-    e.preventDefault();
-    window.location.replace('/profile')
-  });
  
 })
 
