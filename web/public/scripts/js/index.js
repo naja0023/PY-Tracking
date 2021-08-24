@@ -177,7 +177,6 @@ connection.onmessage = function (e) {
   lat = parseFloat(array[2])
   lng = parseFloat(array[4])
   var latlng = new google.maps.LatLng(lat, lng);
-  redraw()
   beachMarker.setPosition(latlng);
 
 };
