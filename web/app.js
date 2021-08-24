@@ -31,10 +31,10 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(compression());
 app.use(cookieSession({
-    maxAge: 60 * 60 * 1000,
-    keys: [process.env.cookiekey]
-}))
-// app.use(helmet());      //for header protection
+        maxAge: 60 * 60 * 1000,
+        keys: [process.env.cookiekey]
+    }))
+    // app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -93,7 +93,7 @@ app.get('/verify', (req, res) => {
             res.send(decoded);
         }
     });
- });
+});
 
 //-------------------------- Register ------------------------
 app.post("/register", function(req, res) {
@@ -216,7 +216,20 @@ app.post("/query_point", (req, res) => {
 
 app.put("/setstatus", (req, res) => {
     const { request_id } = req.body;
-    const sql = "UPDATE `user_request` SET `status` = '0' WHERE `user_request`.`request_id` = ?"
+    const sql = "UPDATE `user_request` SET `status` = '0',`res_date` =CURRENT_TIMESTAMP() WHERE `user_request`.`request_id` = ?"
+    con.query(sql, [request_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Update Successfully");
+        }
+    });
+});
+
+app.put("/res_date", (req, res) => {
+    const { request_id } = req.body;
+    const sql = "UPDATE `user_request` SET `res_date` =CURRENT_TIMESTAMP() WHERE `user_request`.`request_id` = ?"
     con.query(sql, [request_id], (err, result) => {
         if (err) {
             console.log(err);
@@ -242,11 +255,26 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
+app.post("/matchcar", (req, res) => {
+    const { driver_id, car_id } = req.body;
+
+    const sql = "INSERT INTO `car_match` (`driver_id`, `car_id`, `date`) VALUES (?,?,current_timestamp())"
+    con.query(sql, [driver_id, car_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Match Succesfully");
+
+        }
+    });
+});
+
 app.post("/review", (req, res) => {
-    const { driver_id,user_email,carmatch,point } = req.body;
+    const { driver_id, user_email, carmatch, point } = req.body;
     console.log(req.body)
     const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`, `carmatch`,`point`) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, carmatch,point], (err, result) => {
+    con.query(sql, [driver_id, user_email, carmatch, point], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -257,10 +285,10 @@ app.post("/review", (req, res) => {
 });
 
 app.post("/request", (req, res) => {
-    const {user_email,lat,lng,status,route } = req.body;
+    const { user_email, lat, lng, status, route } = req.body;
     console.log(req.body)
     const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`, `status`, `route`) VALUES (?,?,?,?,?)"
-    con.query(sql, [user_email,lat,lng,status,route], (err, result) => {
+    con.query(sql, [user_email, lat, lng, status, route], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -317,5 +345,5 @@ wss.on('connection', function connection(ws) { // สร้าง connection
         ws.send(message.toString());
         // client.end()
     })
-    
+
 });
