@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
+import 'package:fluttermqttnew/modules/screen/profile.dart';
 import 'package:fluttermqttnew/modules/widgets/show_title.dart';
 import 'package:fluttermqttnew/secrets.dart';
 import 'package:fluttermqttnew/utillity/my_constant.dart';
@@ -74,12 +75,13 @@ class _MapViewState extends State<MapView> {
   List wayPoint = [];
   @override
   void initState() {
+    getInfo();
     findposition();
 
     _getPolyline();
+
     finlatlng();
     _updatelocation();
-    getInfo();
     calculateStar();
 
     int counter = 0;
@@ -470,8 +472,8 @@ class _MapViewState extends State<MapView> {
   }
 
   void _publishMessage(String text) {
-    String osPrefix = 'Flutter_iOS';
-    final String message = osPrefix + ' says: ' + text;
+    String osPrefix = '$driverid:';
+    final String message = osPrefix + text;
     _manager.publish(message);
     // _messageTextController.clear();
   }
@@ -596,22 +598,62 @@ class _MapViewState extends State<MapView> {
 
   Container titleDrawer(double width) {
     return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ElevatedButton(
-          onPressed: () {
-            _disconnect();
-          },
-          child: Row(
-            children: [
-              Icon(Icons.logout),
-              SizedBox(
-                width: width * (10 / 100),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: MyConstant.primary,
+                shadowColor: Colors.black,
+                onSurface: Colors.black,
               ),
-              Text('Logout'),
-            ],
+              onPressed: () {
+                Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => profileScreen());
+                Navigator.push(context, route);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.account_circle),
+                  Text(
+                    'Profile',
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red[900],
+                shadowColor: Colors.black,
+                onSurface: Colors.black,
+              ),
+              onPressed: () {
+                _disconnect();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.logout),
+                  Text(
+                    'Logout',
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

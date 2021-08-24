@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttermqttnew/modules/screen/profile.dart';
 
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/login': (BuildContext context) => login(),
             '/map': (BuildContext context) => MapScreen(),
+            '/profile': (BuildContext context) => profileScreen(),
           }),
     );
   }
