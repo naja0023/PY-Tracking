@@ -146,21 +146,24 @@ app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username = ? AND DATE(car_match.date) = CURDATE()";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURDATE()";
+
     con.query(sql, [username], function(err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             const numrows = result.length;
             if (numrows != 1) {
-
                 res.status(401).send("เข้าสู่ระบบไม่สำเร็จ");
             } else {
                 bcrypt.compare(password, result[0].password, function(err, resp) {
                     if (err) {
+                        console.log(err);
                         res.status(503).send("การรับรองเซิร์ฟเวอร์ผิดพลาด");
+
                     } else if (resp == true) {
-                        res.send(result)
+                        console.log(result);
+                        res.send(result);
                     } else {
                         //wrong password
                         res.status(403).send("รหัสไม่ถูกต้อง");
@@ -204,6 +207,20 @@ app.post("/query_point", (req, res) => {
 
     const _id = req.body.driver_id;
     const sql = "SELECT * FROM `review_driver` WHERE driver_id=?"
+    con.query(sql, [_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.post("/date", (req, res) => {
+
+    const _id = req.body.carmatch;
+    const sql = "SELECT  DATE_FORMAT(str_date,'%Y-%m-%d') FROM `driver`LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE carmatch=?"
     con.query(sql, [_id], (err, result) => {
         if (err) {
             console.log(err);
@@ -306,6 +323,21 @@ app.get("/showrequest", (req, res) => {
         } else {
             res.status(200).send(result);
         }
+    });
+});
+
+app.post("/selectcar", function(req, res) {
+    const id = req.body.carmatch;
+
+
+    const sql = "SELECT * FROM car LEFT JOIN car_match on car.car_id = car_match.car_id WHERE car_match.carmatch =?";
+    con.query(sql, [id], function(err, result, fields) {
+        if (err) {
+            res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.status(200).send(result);
+        }
+
     });
 });
 

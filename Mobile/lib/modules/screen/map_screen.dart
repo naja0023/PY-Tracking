@@ -75,8 +75,8 @@ class _MapViewState extends State<MapView> {
   List wayPoint = [];
   @override
   void initState() {
-    getInfo();
     findposition();
+    getInfo();
 
     _getPolyline();
 
@@ -653,6 +653,7 @@ class _MapViewState extends State<MapView> {
               ),
             ),
           ),
+          Text('data')
         ],
       ),
     );
@@ -828,14 +829,16 @@ class _MapViewState extends State<MapView> {
       List data = jsonDecode(response.body);
       for (var i in data) {
         var point = double.parse('${i['point']}');
-        print('data_ : $point');
+        //print('data_ : $point');
         sum += point;
         count++;
       }
-      print('data_coubt : $count');
-      print('data_sum : $sum');
+      //print('data_coubt : $count');
+      //print('data_sum : $sum');
       p = sum / count;
-      print('data_point : $p');
+      box.write('total', "$count");
+      box.write('point', "$p");
+      //print('data_point : $p');
     } on TimeoutException catch (e) {
       print('Timeout : $e ');
     } catch (e) {

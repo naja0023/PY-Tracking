@@ -36,7 +36,7 @@ content-type: application/json
 
 
 ####
-post http://35.185.189.199:35000/loginmoblie
+post http://localhost:35000/loginmoblie
 content-type: application/json
 
 { 
@@ -61,6 +61,26 @@ content-type: application/json
     "car_id" : "1",
     "driver_id" : "1",
      "date" : "11/2/64"
+}
+
+####
+post http://localhost:35000/selectcar
+content-type: application/json
+
+{
+    
+    "carmatch" : "8"
+     
+}
+
+####
+post http://localhost:35000/date
+content-type: application/json
+
+{
+    
+    "carmatch" : "8"
+     
 }
 
 ####
