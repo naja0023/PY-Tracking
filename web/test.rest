@@ -41,7 +41,7 @@ content-type: application/json
 
 { 
     "username": "windoss",
-    "password": "12345",
+    "password": "12345"
 }
 
 ####
@@ -64,6 +64,26 @@ content-type: application/json
 }
 
 ####
+post http://localhost:35000/selectcar
+content-type: application/json
+
+{
+    
+    "carmatch" : "8"
+     
+}
+
+####
+post http://localhost:35000/date
+content-type: application/json
+
+{
+    
+    "carmatch" : "8"
+     
+}
+
+####
 post http://localhost:35000/updatecar
 content-type: application/json
 
@@ -74,14 +94,12 @@ content-type: application/json
 }
 
 ####
-post http://localhost:35000/updatecarmatch
+post http://35.185.189.199:35000/matchcar
 content-type: application/json
 
 {
-    "driver_id" : "1231",
-    "car_id" : "1",
-    "date" : "2021/7/21",
-    "carmatch" : "3"
+    "driver_id" : "6",
+    "car_id" : "2"
 }
 
 
@@ -120,8 +138,14 @@ content-type: application/json
 }
 
 ####
+put http://localhost:35000/setstatus
+content-type: application/json
 
+{
+    "request_id" : "13"
+}
 
+####
 post http://localhost:35000/review
 content-type: application/json
 

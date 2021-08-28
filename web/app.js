@@ -31,10 +31,10 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(compression());
 app.use(cookieSession({
-    maxAge: 60 * 60 * 1000,
-    keys: [process.env.cookiekey]
-}))
-// app.use(helmet());      //for header protection
+        maxAge: 60 * 60 * 1000,
+        keys: [process.env.cookiekey]
+    }))
+    // app.use(helmet());      //for header protection
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -93,7 +93,7 @@ app.get('/verify', (req, res) => {
             res.send(decoded);
         }
     });
- });
+});
 
 //-------------------------- Register ------------------------
 app.post("/register", function(req, res) {
@@ -146,21 +146,24 @@ app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username = ? AND DATE(car_match.date) = CURDATE()";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURDATE()";
+
     con.query(sql, [username], function(err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             const numrows = result.length;
             if (numrows != 1) {
-
                 res.status(401).send("เข้าสู่ระบบไม่สำเร็จ");
             } else {
                 bcrypt.compare(password, result[0].password, function(err, resp) {
                     if (err) {
+                        console.log(err);
                         res.status(503).send("การรับรองเซิร์ฟเวอร์ผิดพลาด");
+
                     } else if (resp == true) {
-                        res.send(result)
+                        console.log(result);
+                        res.send(result);
                     } else {
                         //wrong password
                         res.status(403).send("รหัสไม่ถูกต้อง");
@@ -214,9 +217,36 @@ app.post("/query_point", (req, res) => {
     });
 });
 
+app.post("/date", (req, res) => {
+
+    const _id = req.body.carmatch;
+    const sql = "SELECT  DATE_FORMAT(str_date,'%Y-%m-%d') FROM `driver`LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE carmatch=?"
+    con.query(sql, [_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 app.put("/setstatus", (req, res) => {
     const { request_id } = req.body;
-    const sql = "UPDATE `user_request` SET `status` = '0' WHERE `user_request`.`request_id` = ?"
+    const sql = "UPDATE `user_request` SET `status` = '0',`res_date` =CURRENT_TIMESTAMP() WHERE `user_request`.`request_id` = ?"
+    con.query(sql, [request_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Update Successfully");
+        }
+    });
+});
+
+app.put("/res_date", (req, res) => {
+    const { request_id } = req.body;
+    const sql = "UPDATE `user_request` SET `res_date` =CURRENT_TIMESTAMP() WHERE `user_request`.`request_id` = ?"
     con.query(sql, [request_id], (err, result) => {
         if (err) {
             console.log(err);
@@ -242,11 +272,26 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
+app.post("/matchcar", (req, res) => {
+    const { driver_id, car_id } = req.body;
+
+    const sql = "INSERT INTO `car_match` (`driver_id`, `car_id`, `date`) VALUES (?,?,current_timestamp())"
+    con.query(sql, [driver_id, car_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send("Match Succesfully");
+
+        }
+    });
+});
+
 app.post("/review", (req, res) => {
-    const { driver_id,user_email,carmatch,point } = req.body;
+    const { driver_id, user_email, carmatch, point } = req.body;
     console.log(req.body)
     const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`, `carmatch`,`point`) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, carmatch,point], (err, result) => {
+    con.query(sql, [driver_id, user_email, carmatch, point], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -257,10 +302,10 @@ app.post("/review", (req, res) => {
 });
 
 app.post("/request", (req, res) => {
-    const {user_email,lat,lng,status,route } = req.body;
+    const { user_email, lat, lng, status, route } = req.body;
     console.log(req.body)
     const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`, `status`, `route`) VALUES (?,?,?,?,?)"
-    con.query(sql, [user_email,lat,lng,status,route], (err, result) => {
+    con.query(sql, [user_email, lat, lng, status, route], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -278,6 +323,21 @@ app.get("/showrequest", (req, res) => {
         } else {
             res.status(200).send(result);
         }
+    });
+});
+
+app.post("/selectcar", function(req, res) {
+    const id = req.body.carmatch;
+
+
+    const sql = "SELECT * FROM car LEFT JOIN car_match on car.car_id = car_match.car_id WHERE car_match.carmatch =?";
+    con.query(sql, [id], function(err, result, fields) {
+        if (err) {
+            res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.status(200).send(result);
+        }
+
     });
 });
 
@@ -317,5 +377,5 @@ wss.on('connection', function connection(ws) { // สร้าง connection
         ws.send(message.toString());
         // client.end()
     })
-    
+
 });

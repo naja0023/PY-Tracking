@@ -227,13 +227,12 @@ class _loginState extends State<login> {
       if (response.statusCode == 200 && _check.length > 0) {
         final _driver = jsonDecode(response.body);
         final driver = _driver[0];
-        //print('titok ${driver['lastname']}');
 
-        box.write('carmatchid', driver['carmatch']);
+        box.write('carmatchid', "${driver['carmatch']}");
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
         box.write('driver_id', "${driver['driver_id']} ");
-
+        box.write('tell', "${driver['tell']} ");
         // print('เช็คๆๆ ${box.read('driver_id')}');
         _configureAndConnect();
       } else {
