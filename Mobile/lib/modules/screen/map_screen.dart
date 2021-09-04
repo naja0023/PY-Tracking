@@ -80,7 +80,7 @@ class _MapViewState extends State<MapView> {
 
     _getPolyline();
 
-    finlatlng();
+    //finlatlng();
     _updatelocation();
     calculateStar();
 
@@ -371,25 +371,23 @@ class _MapViewState extends State<MapView> {
 
   Widget buildMap() {
     return Container(
-      child: lat == null
-          ? Center(child: ShowProgress())
-          : GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(lat!, lng!),
-                zoom: 15,
-              ),
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              mapType: MapType.normal,
-              zoomGesturesEnabled: true,
-              zoomControlsEnabled: false,
-              mapToolbarEnabled: false,
-              markers: _marker.map((e) => e).toSet(),
-              polylines: Set<Polyline>.of(polylines.values),
-              onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
-              },
-            ),
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(19.0308, 99.9265),
+          zoom: 15,
+        ),
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        mapType: MapType.normal,
+        zoomGesturesEnabled: true,
+        zoomControlsEnabled: false,
+        mapToolbarEnabled: false,
+        markers: _marker.map((e) => e).toSet(),
+        polylines: Set<Polyline>.of(polylines.values),
+        onMapCreated: (GoogleMapController controller) {
+          mapController = controller;
+        },
+      ),
     );
   }
 
@@ -453,13 +451,13 @@ class _MapViewState extends State<MapView> {
     setState(() {});
   }
 
-  Future<Null> finlatlng() async {
-    Position? _position = await findposition();
-    setState(() {
-      lat = _position?.latitude;
-      lng = _position?.longitude;
-    });
-  }
+  // Future<Null> finlatlng() async {
+  //   Position? _position = await findposition();
+  //   setState(() {
+  //     lat = _position?.latitude;
+  //     lng = _position?.longitude;
+  //   });
+  // }
 
   Future<Position?> findposition() async {
     Position _position;

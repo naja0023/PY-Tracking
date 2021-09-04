@@ -129,6 +129,16 @@ content-type: application/json
 }
 
 ####
+post http://localhost:35000/request
+content-type: application/json
+
+{
+    "carmatch" : "1",
+    "lat" : "192.1111",
+    "lng" : "192.2222" 
+}
+
+####
 post http://localhost:35000/selectstar
 content-type: application/json
 
@@ -162,15 +172,11 @@ content-type: application/json
 post http://localhost:35000/request
 content-type: application/json
 
-{   "user_email" : "pipat massi",
+{   "user_email" : "namo",
     "lat" : "19.032320",
     "lng" : "99.926732",
     "status" : "0",
-    "route" : "1",
-
-   
-    
-
+    "route" : "1"
 }
 
 
