@@ -302,10 +302,10 @@ app.post("/review", (req, res) => {
 });
 
 app.post("/request", (req, res) => {
-    const { user_email, lat, lng, status, route } = req.body;
+    const { user_email, lat, lng, route } = req.body;
     console.log(req.body)
-    const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`, `status`, `route`) VALUES (?,?,?,?,?)"
-    con.query(sql, [user_email, lat, lng, status, route], (err, result) => {
+    const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`,  `route`) VALUES (?,?,?,?)"
+    con.query(sql, [user_email, lat, lng, route], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -351,8 +351,8 @@ client.on('connect', function() {
 
 client.on('message', function(topic, message) {
     // message is Buffer
-    console.log(message.toString())
-        // client.end()
+    //console.log(message.toString())
+    // client.end()
 })
 
 const PORT = 35000
