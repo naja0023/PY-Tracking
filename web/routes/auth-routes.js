@@ -52,7 +52,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 //log out
 router.get("/logout", (req, res) => {
     req.logOut();
-    var removing = browser.cookies.remove()
+    // var removing = browser.cookies.remove()
     res.redirect("/");
 })
 
