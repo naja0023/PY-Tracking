@@ -62,14 +62,14 @@ $(document).ready(function() {
             "opacity": "0",
             "pointer-events": "none"
         });
-        requesttodb(0)
+        requesttodb(1)
     });
     $('.btn2').click(function() {
         $('.popup_box').css({
             "opacity": "0",
             "pointer-events": "none"
         });
-        requesttodb(1)
+        requesttodb(0)
     });
     $("#Logout").click(function(e) {
         e.preventDefault();
