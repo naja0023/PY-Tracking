@@ -238,7 +238,7 @@ class _loginState extends State<login> {
       } else {
         final snackBar = SnackBar(
           duration: Duration(seconds: 2),
-          content: Text('ล็อกอืนไม่สำเร็จ'),
+          content: Text('ล็อกอินไม่สำเร็จ'),
         );
         // Find the ScaffoldMessenger in the widget tree
         // and use it to show a SnackBar.

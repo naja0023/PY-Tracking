@@ -150,8 +150,21 @@ function initMap() {
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     directionsService
         .route({
-            origin: "19.024647,99.943809",
-            destination: "19.040660, 99.931254",
+            origin: "19.031459,99.926547",
+            destination: "19.172379, 99.898241",
+            travelMode: google.maps.TravelMode.DRIVING,
+        })
+        .then((response) => {
+            directionsRenderer.setDirections(response);
+        })
+        .catch((e) => window.alert("Directions request failed due to " + status));
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    directionsService
+        .route({
+            origin: "19.172379, 99.898241",
+            destination: "19.031459,99.926547",
             travelMode: google.maps.TravelMode.DRIVING,
         })
         .then((response) => {

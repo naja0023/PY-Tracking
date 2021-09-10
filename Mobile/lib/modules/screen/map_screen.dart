@@ -651,7 +651,6 @@ class _MapViewState extends State<MapView> {
               ),
             ),
           ),
-          Text('data')
         ],
       ),
     );
