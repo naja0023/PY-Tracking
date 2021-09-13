@@ -34,6 +34,14 @@ content-type: application/json
 
 }
 
+####
+get http://localhost:35000/count_in
+content-type: application/json
+
+{ 
+  
+
+}
 
 ####
 post http://localhost:35000/loginmoblie

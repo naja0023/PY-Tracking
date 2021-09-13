@@ -325,6 +325,28 @@ app.get("/showrequest", (req, res) => {
         }
     });
 });
+app.get("/count_in", (req, res) => {
+    const sql = "SELECT COUNT(request_id) FROM `user_request` WHERE (status = 1 AND route =1)"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+app.get("/count_out", (req, res) => {
+    const sql = "SELECT COUNT(request_id) FROM `user_request` WHERE (status = 1 AND route =0)"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
 
 app.post("/selectcar", function(req, res) {
     const id = req.body.carmatch;

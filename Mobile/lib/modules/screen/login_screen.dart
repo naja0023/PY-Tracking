@@ -51,7 +51,7 @@ class _loginState extends State<login> {
             build_titleapp(),
             build_textForm_username(width, height),
             build_textForm_password(width, height),
-            build_button(width, height),
+            login_button(width, height),
           ],
         ),
       ),
@@ -157,7 +157,7 @@ class _loginState extends State<login> {
     );
   }
 
-  Row build_button(double width, double height) {
+  Row login_button(double width, double height) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -166,7 +166,7 @@ class _loginState extends State<login> {
           width: width * 0.6,
           child: ElevatedButton(
             child: Text("Login"),
-            style: MyConstant().MyButtonStlye(),
+            style: MyConstant().MyButtonStlye2(),
             onPressed: () {
               _login();
             },

@@ -69,6 +69,9 @@ class _MapViewState extends State<MapView> {
   double _originLatitude1 = 19.172379, _originLongitude1 = 99.898241;
   double _destLatitude1 = 19.031459, _destLongitude1 = 99.926547;
 
+  int _in = 0;
+  int _out = 0;
+
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<Marker> _marker = [];
@@ -87,9 +90,10 @@ class _MapViewState extends State<MapView> {
     int counter = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (counter == 1) {
+        if (counter == 2) {
           get_location();
-
+          get_count_in();
+          get_count_out();
           counter = 0;
           // timer.cancel();
         } else {
@@ -150,7 +154,103 @@ class _MapViewState extends State<MapView> {
             reviewBox(width, context, height),
             zoombutton(width, height),
             trackingbutton(width, height),
+            count(width, height),
           ],
+        ),
+      ),
+    );
+  }
+
+  Future get_count_in() async {
+    try {
+      http.Response response =
+          await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
+
+      List data = jsonDecode(response.body);
+      for (var i in data) {
+        setState(() {
+          _in = int.parse('${i['COUNT(request_id)']}');
+          // print('atyaty$count');
+        });
+      }
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
+  }
+
+  Future get_count_out() async {
+    try {
+      http.Response response =
+          await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
+
+      List data = jsonDecode(response.body);
+      for (var i in data) {
+        setState(() {
+          _out = int.parse('${i['COUNT(request_id)']}');
+          // print('atyaty$count');
+        });
+      }
+    } on TimeoutException catch (e) {
+      print('Timeout : $e ');
+    } catch (e) {
+      print('ERROR : $e ');
+    }
+  }
+
+  SafeArea count(double width, double height) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: width * (2 / 100), bottom: height * (4 / 100)),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: MyConstant.green1,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                ),
+                width: 100,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'เข้าเมือง : $_in',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: MyConstant.red2,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
+                  ),
+                  width: 100,
+                  height: 50,
+                  child: Center(
+                    child: Text(
+                      'ออกเมือง : $_out',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -431,7 +531,7 @@ class _MapViewState extends State<MapView> {
     PolylineId id = PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: Colors.red,
+      color: MyConstant.red1,
       points: polylineCoordinates,
       width: 8,
     );
@@ -443,7 +543,7 @@ class _MapViewState extends State<MapView> {
     PolylineId id = PolylineId("poly1");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: Colors.red,
+      color: MyConstant.red1,
       points: polylineCoordinates,
       width: 8,
     );
