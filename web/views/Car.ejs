@@ -12,27 +12,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2"></div>
-                <div class="col-8">
-                   
-                    <div class="row">
-                        <div class="col-md-4">
-                           
-                        </div>
-                        <div class="col-md-4">
-                           
-                        </div>
-                        <div class="col-md-4">
-                         
-                        </div>
-                    </div>
-                    <div class="row">
-                       
-                            
-                                
-                               
-                                    <canvas class="chart" width="250" height="200"></canvas>
-                                </div>
-                            </div>
+                
                         </div>
                     </div>
                     <div class="row">
@@ -66,8 +46,7 @@
                                         <td>
                                             <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= result[index].car_id %>">Delete</button> -->
-                                            <button type="button" class="btn btn-warning btnEdit"
-                                                blogData="<%= JSON.stringify(result[index]) %>">Edit</button>
+                                                <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
                                         </td>
                                     </tr>
                                     <% } %>

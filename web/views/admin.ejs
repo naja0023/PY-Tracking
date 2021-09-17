@@ -11,7 +11,7 @@
             <%- include('./partials/sidebar.ejs') %>
                 <div class="content">
                     <div class="container-fluid">
-                        <div class="row">
+                        <div class="row mb-5">
                             <div class="col-2"></div>
                             <div class="col-8">
                                 <!-- <div class="row">
@@ -43,6 +43,56 @@
                                 <div class="row">
                                     <Tabls class="col-md-12 fw-bold fs-3">Profile Member
                                         <button class="btn btn-primary" id="adduser">+</button>
+                                </div>
+
+
+                                <div class="row my-5">
+                                    <div class="col-4">
+                                        <div class="card" style="background-color: #343a40;">
+                                            <div class="card-body" >
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <P style="color: white;">900</P>
+                                                        <P style="color: white;">ผู้ใช้ทั้งหมด</P>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        ไอค่อน
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card" style="background-color: #343a40;">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <P style="color: white;">900</P>
+                                                        <P style="color: white;">ออนไลน์</P>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        ไอค่อน
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card" style="background-color: #343a40;">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <P style="color: white;">900</P>
+                                                        <P style="color: white;">ออฟไลน์</P>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        ไอค่อน
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+            
                                 </div>
 
                                 <div class="col-md-12">
@@ -93,122 +143,16 @@
                                                     <td>
                                                         <!-- <button type="button" class="btn btn-danger btnDelete"
                                                     blogID="<%= resule[index].driver_id %>">Delete</button> -->
-                                                        <button type="button" class="btn btn-warning btnEdit"
-                                                            blogData="<%= JSON.stringify(resule[index]) %>">Edit</button>
+                                                    <!-- <i class="fas fa-edit"></i> -->
+                                                    <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                                        
                                                     </td>
                                                 </tr>
                                                 <% } %>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mb-5 row">
-                                    <div class="mb-4 col-lg-3 col-sm-6">
-                                        <div class="h-100 card">
-                                            <div class="d-flex align-items-center justify-content-between card-body">
-                                                <div>
-                                                    <h4 class="fw-normal text-red">9999</h4>
-                                                    <p class="subtitle text-sm text-muted mb-0">จำนวนผู้ใช้งานทั้งหมด</p>
-                                                </div>
-                                                <div class="flex-shrink-0 ms-3"><svg class="svg-icon text-red">
-                                                        <use xlink:href="#speed-1"></use>
-                                                    </svg></div>
-                                            </div>
-                                            <div class="py-3 bg-red-light card-footer">
-                                                <div class="align-items-center text-red row">
-                                                   
-                                                    <div class="text-end col-2"><svg aria-hidden="true"
-                                                            focusable="false" data-prefix="fas" data-icon="caret-up"
-                                                            class="svg-inline--fa fa-caret-up fa-w-10 " role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                            <path fill="currentColor"
-                                                                d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
-                                                            </path>
-                                                        </svg></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4 col-lg-3 col-sm-6">
-                                        <div class="h-100 card">
-                                            <div class="d-flex align-items-center justify-content-between card-body">
-                                                <div>
-                                                    <h4 class="fw-normal text-blue">120</h4>
-                                                    <p class="subtitle text-sm text-muted mb-0">ออนไลน์</p>
-                                                </div>
-                                                <div class="flex-shrink-0 ms-3"><svg class="svg-icon text-blue">
-                                                        <use xlink:href="#news-1"></use>
-                                                    </svg></div>
-                                            </div>
-                                            <div class="py-3 bg-blue-light card-footer">
-                                                <div class="align-items-center text-blue row">
-                                                    <div class="col-10">
-                                                       
-                                                    </div>
-                                                    <div class="text-end col-2"><svg aria-hidden="true"
-                                                            focusable="false" data-prefix="fas" data-icon="caret-up"
-                                                            class="svg-inline--fa fa-caret-up fa-w-10 " role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                            <path fill="currentColor"
-                                                                d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
-                                                            </path>
-                                                        </svg></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4 col-lg-3 col-sm-6">
-                                        <div class="h-100 card">
-                                            <div class="d-flex align-items-center justify-content-between card-body">
-                                                <div>
-                                                    <h4 class="fw-normal text-primary">30</h4>
-                                                    <p class="subtitle text-sm text-muted mb-0">ออฟไลน์</p>
-                                                </div>
-                                                <div class="flex-shrink-0 ms-3"><svg class="svg-icon text-primary">
-                                                        <use xlink:href="#bookmark-1"></use>
-                                                    </svg></div>
-                                            </div>
-                                            <div class="py-3 bg-primary-light card-footer">
-                                                <div class="align-items-center text-primary row">
-                                                    
-                                                    <div class="text-end col-2"><svg aria-hidden="true"
-                                                            focusable="false" data-prefix="fas" data-icon="caret-up"
-                                                            class="svg-inline--fa fa-caret-up fa-w-10 " role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                            <path fill="currentColor"
-                                                                d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
-                                                            </path>
-                                                        </svg></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4 col-lg-3 col-sm-6">
-                                        <div class="h-100 card">
-                                            <div class="d-flex align-items-center justify-content-between card-body">
-                                                <div>
-                                                    <h4 class="fw-normal text-green">1</h4>
-                                                    <p class="subtitle text-sm text-muted mb-0">แอดมิน</p>
-                                                </div>
-                                                <div class="flex-shrink-0 ms-3"><svg class="svg-icon text-green">
-                                                        <use xlink:href="#world-map-1"></use>
-                                                    </svg></div>
-                                            </div>
-                                            <div class="py-3 bg-green-light card-footer">
-                                                <div class="align-items-center text-green row">
-                                                   
-                                                    <div class="text-end col-2"><svg aria-hidden="true"
-                                                            focusable="false" data-prefix="fas" data-icon="caret-up"
-                                                            class="svg-inline--fa fa-caret-up fa-w-10 " role="img"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                            <path fill="currentColor"
-                                                                d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z">
-                                                            </path>
-                                                        </svg></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
                                 <!-- Modal Add Edit User -->
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -299,10 +243,10 @@
                 </div>
                 </div>
     </body>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
 
 </html>
