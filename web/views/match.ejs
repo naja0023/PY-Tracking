@@ -27,19 +27,19 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                   
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-5" style="background-color: #343a40;" >
+                    <div class="card mt-5" style="background-color: #343a40;">
                         <div class="card-body">
-                            
-                            <canvas id="line-chart"width="30%" height="10%" ></canvas>
+
+                            <canvas id="line-chart" width="30%" height="10%"></canvas>
                         </div>
-                      </div>
-                   
-                   <button class="btn btn-primary" id="adduser">Add match</button>
+                    </div>
+
+                    <button class="btn btn-primary" id="adduser">Add match</button>
                     <div class="col-md-12">
                         <!-- table -->
                         <table class="table table-bordered table-striped">
@@ -69,11 +69,15 @@
                                             <%= resule[index].date %>
                                         </td>
                                         <td>
-                                            <i class="fas fa-trash btnDelete ml-3" style="font-size:27px; cursor: pointer; align-items: center;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                            <i class="fas fa-trash btnDelete ml-3"
+                                                style="font-size:23px; cursor: pointer; align-items: center;color: #f44336; ;"
+                                                blogData="<%= JSON.stringify(resule[index]) %>"></i>
 
                                             <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= resule[index].carmatch %>">Delete</button> -->
-                                                <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                            <i class="fas fa-edit editbut ml-3"
+                                                style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;"
+                                                blogData="<%= JSON.stringify(resule[index]) %>"></i>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -162,7 +166,7 @@
             style="background-color: #c5c8c9;
             
         -->
-     
+
     </body>
 
 </html>

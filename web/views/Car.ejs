@@ -46,7 +46,13 @@
                                         <td>
                                             <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= result[index].car_id %>">Delete</button> -->
-                                                <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                                <div class="row">
+                                                    <div class="col-5"></div>
+                                                    <div class="col-7"> <i class="fas fa-edit editbut"
+                                                style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;"
+                                                blogData="<%= JSON.stringify(result[index]) %>"></i></div>
+                                                </div>
+                                               
                                         </td>
                                     </tr>
                                     <% } %>

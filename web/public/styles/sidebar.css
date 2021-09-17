@@ -25,7 +25,7 @@
 }
 
 .sidebar a:hover:not(.active) {
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(19, 0, 88, 0.425);
     color: rgb(9, 16, 117);
 }
 @media screen and (max-width: 400px) {
@@ -50,6 +50,7 @@
     }
 
 }
+
 
 div.content {
     background-color: #f6f6f6;
