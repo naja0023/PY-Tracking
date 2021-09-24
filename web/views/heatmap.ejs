@@ -13,7 +13,13 @@
     <%- include('./partials/sidebar.ejs') %>
     
 
-   
+    <div id="floating-panel">
+      <button class="btn btn-primary" id="toggle-heatmap">Toggle Heatmap</button>
+      <button class="btn btn-primary" id="change-gradient">Change Gradient</button>
+      <button class="btn btn-primary" id="change-radius">Change Radius</button>
+      <button class="btn btn-primary" id="change-opacity">Change Opacity</button>
+    </div>
+    <div id="map"></div>
     
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script

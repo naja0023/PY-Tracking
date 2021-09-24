@@ -65,4 +65,9 @@ router.get("/review", (req, res) => {
     res.render('review') 
 
 })
+
+router.get("/heatmap", (req, res) => {
+    res.render('heatmap') 
+
+})
 module.exports = router;

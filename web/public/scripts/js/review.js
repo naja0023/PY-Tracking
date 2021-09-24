@@ -1,3 +1,4 @@
+$(document).ready(function() {
 const btn = document.querySelector("button");
 const post = document.querySelector(".post");
 const widget = document.querySelector(".star-widget");
@@ -12,18 +13,21 @@ btn.onclick = () => {
   }
 
   var data = $('.getdata').val();
+  var driver_id = 7;
+  var user_email = "pipat@getemail.com";
   var point = document.getElementsByName('rate');
   var score
-  for (let i = 0; i < point.length; i++) {
-    if (point[i].checked) {
-      score = point[i].value
-    }
+  // for (let i = 0; i < point.length; i++) {
+  //   if (point[i].checked) {
+  //     score = point[i].value
+  //   }
+  //   alert(score)
 
-  }
+  // }
   $.ajax({
     type: "POST",
     url: "/review",
-    data: { driver_id: carmatch,user_email:user_email,carmatch:carmatch,point:point },
+    data: { driver_id: driver_id,user_email:user_email,point:point },
     success: function (response) {
       Swal.fire({
         title: 'Add score success',
@@ -47,3 +51,4 @@ btn.onclick = () => {
   });
 
 }
+})

@@ -4,6 +4,7 @@ var lat
 var lng
 var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
+
 var current_lat;
 var current_lng;
 var user_email
@@ -15,6 +16,7 @@ connection.onopen = function() {
 connection.onerror = function(error) {
     console.error('WebSocket Error ' + error);
 };
+
 
 var maps;
 // var position = { lat: current_lat, lng: current_lng};
@@ -33,6 +35,8 @@ function geocoderAddress(geocoder, resultsMap) {
         }
     });
 }
+
+
 
 function getLocation() {
     console.log('hi')
@@ -75,6 +79,7 @@ $(document).ready(function() {
         e.preventDefault();
         window.location.replace('/auth/logout')
     });
+    
 
 })
 
@@ -86,13 +91,14 @@ function requesttodb(direction) {
         success: function(response) {
             Swal.fire({
                 title: 'Add request success',
-                text: "Request success!!!! Please wait",
-                icon: 'warning',
+                text: "Request success✔✔✔ Please wait",
+                icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    sessionStorage.setItem("requestid",response)
                     window.location.replace('/mapping')
                 }
             })
@@ -105,6 +111,35 @@ function requesttodb(direction) {
         }
     });
 }
+function check_request(){
+    $.ajax({
+        type: "POST",
+        url: "/request",
+        data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
+        success: function(response) {
+            Swal.fire({
+                title: 'Add request success',
+                text: "Request success✔✔✔ Please wait",
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sessionStorage.setItem("requestid",response)
+                    window.location.replace('/mapping')
+                }
+            })
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: "error",
+                title: xhr.responseText,
+            });
+        }
+    });
+}
+
 
 function getemail() {
     $.ajax({

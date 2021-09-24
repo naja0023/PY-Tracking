@@ -288,10 +288,10 @@ app.post("/matchcar", (req, res) => {
 });
 
 app.post("/review", (req, res) => {
-    const { driver_id, user_email, carmatch, point } = req.body;
+    const { driver_id, user_email, point } = req.body;
     console.log(req.body)
-    const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`, `carmatch`,`point`) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, carmatch, point], (err, result) => {
+    const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`,`point`) VALUES (?,?,?)"
+    con.query(sql, [driver_id, user_email, point], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -303,17 +303,19 @@ app.post("/review", (req, res) => {
 
 app.post("/request", (req, res) => {
     const { user_email, lat, lng, route } = req.body;
-    console.log(req.body)
     const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`,  `route`) VALUES (?,?,?,?)"
     con.query(sql, [user_email, lat, lng, route], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send("requestsuccessed");
+            console.log(result.insertId)
+            let num = (result.insertId).toString()
+            res.send(num);
         }
     });
 });
+
 app.get("/showrequest", (req, res) => {
     const sql = "SELECT * FROM `user_request`"
     con.query(sql, (err, result) => {
@@ -383,6 +385,27 @@ app.listen(PORT, function() {
 });
 const wss = new WebSocket.Server({ port: 34000 });
 wss.on('connection', function connection(ws) { // สร้าง connection
+    ws.on('message', function incoming(message) {
+        // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
+        console.log('received: %s', message);
+    });
+    ws.on('close', function close() {
+        // จะทำงานเมื่อปิด Connection ในตัวอย่างคือ ปิด Browser
+        console.log('disconnected');
+    });
+
+    // ส่ง data ไปที่ client เชื่อมกับ websocket server นี้
+    client.on('message', function(topic, message) {
+        // message is Buffer
+        console.log(message.toString())
+        ws.send(message.toString());
+        // client.end()
+    })
+
+});
+const websocket = new WebSocket.Server({ port: 33000 });
+
+websocket.on('connection', function connection(ws) { // สร้าง connection
     ws.on('message', function incoming(message) {
         // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
         console.log('received: %s', message);

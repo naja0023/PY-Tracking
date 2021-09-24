@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
+  
 <%- include('./partials/header.ejs') %>
   <link rel="stylesheet" type="text/css" href="/style/index.css">
+  <link rel ="stylesheet" href="file:///E:/fontawesome/css/all.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet" type="text/css" href="/style/review.css">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
   <body>
     <div id="floating-panel">
-      <input id="address" type="text" value="พะเยา">
-      <input id="submit" type="button" value="ค้นหาข้อมูล">
       <input type="button" id="Logout" value="Logout">
     </div>
-
-    <div id="review"><a href="/review" class="review" style="position: absolute;">Review</a></div>
-    <div id="eiei"><a href="#" class="request" style="position: absolute;">Request</a></div>
+    <!-- <div id="review"  class="btn btn-primary" data-toggle="modal" data-target="#myModal ">Review</div> -->
+    <div id="review" class="btn btn-primary" data-toggle="modal" data-target="#myModal " ><a  class="review" style="position: absolute;" >Review</a></div>
+    <div id="eiei" style="display: block;"><a href="#" class="request" style="position: absolute;">Request</a></div>
+    
     <div class="popup_box">
       <h1>คุณต้องการที่จะไป</h1>
       <label>are you sure to proceed?</label>
@@ -26,6 +29,48 @@
     <%- include('./partials/map.ejs') %>
 
       <script src="/scripts/js/index.js"></script>
+
+      <!-- Modal -->
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+              <div class="star-widget">
+                <input type="radio" name="rate" id="rate-5" value="5">
+                <label for="rate-5" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate-4" value="4">
+                <label for="rate-4" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate-3" value="3">
+                <label for="rate-3" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate-2" value="2">
+                <label for="rate-2" class="fas fa-star"></label>
+                <input type="radio" name="rate" id="rate-1" value="1">
+                <label for="rate-1" class="fas fa-star"></label>
+                <form >
+                  <header></header>
+                  <div class="textarea">
+                    <textarea class="getdata" cols="30" placeholder="Describe your experience.."></textarea>
+                  </div>
+                  <div class="btn">
+                    <button type="submit">Post</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
   </body>
 
 </html>
