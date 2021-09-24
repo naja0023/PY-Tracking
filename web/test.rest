@@ -160,7 +160,8 @@ put http://localhost:35000/setstatus
 content-type: application/json
 
 {
-    "request_id" : "13"
+    "request_id" : "44",
+    "res_driver" : "6"
 }
 
 ####

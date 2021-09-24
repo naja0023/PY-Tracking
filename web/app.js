@@ -233,8 +233,9 @@ app.post("/date", (req, res) => {
 
 app.put("/setstatus", (req, res) => {
     const { request_id } = req.body;
-    const sql = "UPDATE `user_request` SET `status` = '0',`res_date` =CURRENT_TIMESTAMP() WHERE `user_request`.`request_id` = ?"
-    con.query(sql, [request_id], (err, result) => {
+    const { res_driver } = req.body;
+    const sql = "UPDATE `user_request` SET `status` = '0',`res_date` =CURRENT_TIMESTAMP(),`res_driver` =? WHERE `user_request`.`request_id` = ?"
+    con.query(sql, [res_driver, request_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");

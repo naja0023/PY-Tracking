@@ -90,7 +90,7 @@ class _MapViewState extends State<MapView> {
     int counter = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (counter == 2) {
+        if (counter == 1) {
           get_location();
           get_count_in();
           get_count_out();
@@ -861,7 +861,7 @@ class _MapViewState extends State<MapView> {
                         setState(() {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
-                          updateStatus('$marker_id');
+                          updateStatus('$marker_id', '$driverid');
                           _publishMessage("diverid:" + driverid);
                         });
                       },
@@ -884,7 +884,7 @@ class _MapViewState extends State<MapView> {
                         setState(() {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
-                          updateStatus('$marker_id');
+                          updateStatus('$marker_id', '$driverid');
                           _publishMessage("diverid:" + driverid);
                         });
                       },
@@ -899,11 +899,12 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  Future updateStatus(var id) async {
+  Future updateStatus(var id, var drverid) async {
     try {
       http.Response response =
           await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
         'request_id': id,
+        'res_driver': drverid,
       }).timeout(Duration(seconds: 4));
     } on TimeoutException catch (e) {
       print('Timeout : $e ');
