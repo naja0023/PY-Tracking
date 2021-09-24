@@ -1,6 +1,53 @@
 $(document).ready(function () {
     var mode = "";
     var carmatch = 0;
+
+ 
+
+    new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+          labels: ['Mon','Tue','Wed',"Thu",'Fri','Sat','Sun'],
+          
+          datasets: [{ 
+              data: [86,114,106,106,107,111,133],
+              label: "จำนวนคน",
+              borderColor: "#3e95cd",labelColor : "#fff",
+              fill: false,
+              hoverBackgroundColor: "rgba(232,105,90,0.8)",
+            hoverBorderColor: "orange",
+            }
+          ]
+        },
+        options: {
+            responsive: true,
+          title: {
+            display: true,
+            text: 'จำนวนผู้ลงทะเบียนขับรายสัปดาห์',
+            fontColor: "#FFF",
+          },
+          scales: {
+            yAxes: [{
+                ticks: {
+                    fontColor: "white",
+                    // fontSize: 18,
+                    // stepSize: 1,
+
+                    
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor: "white",
+                    // fontSize: 14,
+                    // stepSize: 1,
+                   
+                }
+            }]
+        }
+        }
+      });
+     
     $(".closes").click(function(){
         $("#exampleModal").modal("toggle");  
     })
@@ -74,7 +121,7 @@ $(document).ready(function () {
     });
 
     // Edit button
-    $(".btnEdit").click(function () {
+    $(".editbut").click(function () {
         $("#btnModalSave").html("EDIT")
         mode = "edit";
         // change the modal title
@@ -101,6 +148,8 @@ $(document).ready(function () {
                 window.location.replace(data)
         })
     })
+
+    
 
 });
 

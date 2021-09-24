@@ -1,7 +1,7 @@
 <!--navbar-->
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #141414;">
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #85144b; background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-upppercase" href="#">ADMIN</a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -9,24 +9,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <form class="d-flex ms-auto">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Recipient's username"
-                        aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
-                </div>
+                
             </form>
             <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">ADMIN</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
-                    </ul>
-                </li>
+                <i class="fa fa-sign-out-alt" style="font-size:36px;cursor: pointer; color: white;" onclick="window.location.replace('/auth/logout')"></i>
+                <!-- <a class="dropdown-item fixed-right"  >Logout</a> -->
             </ul>
         </div>
     </div>

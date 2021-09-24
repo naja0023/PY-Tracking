@@ -71,7 +71,7 @@ $(document).ready(function () {
     });
 
     // Edit button
-    $(".btnEdit").click(function () {
+    $(".editbut").click(function () {
         $("#btnModalSave").html("EDIT")
         mode = "edit";
         // change the modal title

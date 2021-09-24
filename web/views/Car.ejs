@@ -12,31 +12,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2"></div>
-                <div class="col-8">
-                   
-                    <div class="row">
-                        <div class="col-md-4">
-                           
-                        </div>
-                        <div class="col-md-4">
-                           
-                        </div>
-                        <div class="col-md-4">
-                         
+                
                         </div>
                     </div>
                     <div class="row">
-                       
-                            
-                                
-                               
-                                    <canvas class="chart" width="250" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <Tabls class="col-md-12 fw-bold fs-3">Car
+                        <Tabls class="col-md-12 fw-bold fs-3">Car Manage
                             <button class="btn btn-primary" id="adduser">+</button>
                     </div>
 
@@ -66,8 +46,13 @@
                                         <td>
                                             <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= result[index].car_id %>">Delete</button> -->
-                                            <button type="button" class="btn btn-warning btnEdit"
-                                                blogData="<%= JSON.stringify(result[index]) %>">Edit</button>
+                                                <div class="row">
+                                                    <div class="col-5"></div>
+                                                    <div class="col-7"> <i class="fas fa-edit editbut"
+                                                style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;"
+                                                blogData="<%= JSON.stringify(result[index]) %>"></i></div>
+                                                </div>
+                                               
                                         </td>
                                     </tr>
                                     <% } %>

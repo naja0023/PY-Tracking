@@ -79,7 +79,7 @@ $(document).ready(function () {
     });
 
     // Edit button
-    $(".btnEdit").click(function () {
+    $(".editbut").click(function () {
         mode = "edit";
         // change the modal title
         $("#exampleModalLabel").text("Edit User");

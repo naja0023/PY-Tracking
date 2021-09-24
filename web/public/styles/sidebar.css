@@ -4,6 +4,7 @@
     width: 250px;
     background-color: #141414;
     position: fixed;
+    color: white;
     height: 100%;
     overflow: auto;
     
@@ -24,7 +25,7 @@
 }
 
 .sidebar a:hover:not(.active) {
-    background-color: white;
+    background-color: rgba(19, 0, 88, 0.425);
     color: rgb(9, 16, 117);
 }
 @media screen and (max-width: 400px) {
@@ -50,6 +51,7 @@
 
 }
 
+
 div.content {
     background-color: #f6f6f6;
     margin-top: 50px;
@@ -57,4 +59,6 @@ div.content {
     padding: 1px 16px;
     min-height: 1000px;
     height: auto;
+    color: rgb(0, 4, 255);
+  
 }
