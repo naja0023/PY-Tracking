@@ -31,7 +31,6 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
             if (result.length == 1) {
                 if (result[0].role == 3) {
                     res.redirect('/check')
-                    console.log("/chack")
                 } else {
                     res.render("index", { user: req.user });
                     
@@ -40,6 +39,7 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 
             }
             else {
+                res.clearCookie('mytoken');
                 res.redirect("/mapping");
             }
         }
@@ -53,6 +53,8 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 router.get("/logout", (req, res) => {
     req.logOut();
     // var removing = browser.cookies.remove()
+    res.clearCookie('mytoken');
+
     res.redirect("/");
 })
 

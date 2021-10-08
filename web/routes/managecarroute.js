@@ -2,8 +2,9 @@ const router = require('express').Router();
 const config = require("../config/dbConfig.js");
 const mysql = require("mysql");
 const con = mysql.createConnection(config);
+const checkUser = require('./middleware');
 
-router.get("/carinfo", (req, res) => {
+router.get("/carinfo",checkUser, (req, res) => {
     const sql = "SELECT * FROM car";
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -16,7 +17,7 @@ router.get("/carinfo", (req, res) => {
     });
 })
 
-router.post("/addcar", (req, res) => {
+router.post("/addcar",checkUser,  (req, res) => {
     const { License_plate, seat } = req.body;
     const sql = "INSERT INTO `car`(`License_plate`, `seat`) VALUES (?,?)"
     con.query(sql, [License_plate, seat], (err, result) => {
@@ -37,7 +38,7 @@ router.post("/addcar", (req, res) => {
     });
 });
 
-router.put("/updatecar", (req, res) => {
+router.put("/updatecar",checkUser,  (req, res) => {
     const { License_plate, seat, car_id } = req.body;
     const sql = "UPDATE car SET License_plate=?,seat=? WHERE car_id = ?"
     con.query(sql, [License_plate, seat, car_id], (err, result) => {
@@ -50,7 +51,7 @@ router.put("/updatecar", (req, res) => {
     });
 });
 
-// router.delete("/deletecar", (req, res) => {
+// router.delete("/deletecar",checkUser,  (req, res) => {
 //     const { car_id } = req.body;
 //     console.log(car_id)
 //     const sql = "DELETE FROM car WHERE car_id = ?"

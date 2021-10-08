@@ -2,9 +2,10 @@ const router = require('express').Router();
 const config = require("../config/dbConfig.js");
 const mysql = require("mysql");
 const con = mysql.createConnection(config);
+const checkUser = require('./middleware');
 
 
-router.get("/adminse", (req, res) => {
+router.get("/adminse",checkUser, (req, res) => {
     const sql = "SELECT * FROM driver";
     con.query(sql,  function (err, result, fields) {
         if (err) {
@@ -18,7 +19,7 @@ router.get("/adminse", (req, res) => {
 })
 
 //  --- add new post ---
-router.post('/adminse/new', (req, res) => {
+router.post('/adminse/new',checkUser, (req, res) => {
     const username = req.body.username;
     const lastname = req.body.lastname;
      const tell = req.body.tell;
@@ -47,7 +48,7 @@ router.post('/adminse/new', (req, res) => {
 });
 
 //  --- edit a post ---
-router.put('/adminse/edit', (req, res) => {
+router.put('/adminse/edit',checkUser, (req, res) => {
     const { name,lastname, tell,idcard,email,licenseplate, id,role } = req.body;
     console.log(req.body)
     const sql = "UPDATE driver SET name = ?,lastname = ?,tell =?, email = ?,id_card = ?, role = ? WHERE driver_id= ?"
@@ -62,7 +63,7 @@ router.put('/adminse/edit', (req, res) => {
 });
 
 // --- delete selected blog of a user ---
-router.delete('/adminse/:id',  (req, res) => {
+router.delete('/adminse/:id',checkUser,  (req, res) => {
     const blogID = req.params.id;
     const sql = "DELETE FROM driver WHERE driver_id =?"
     con.query(sql, [blogID], (err, result) => {
