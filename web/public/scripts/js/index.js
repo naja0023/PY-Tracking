@@ -72,7 +72,7 @@ $(document).ready(function() {
             "pointer-events": "none"
         });
         requesttodb(1)
-        checksendrequest ()
+        checksendrequest()
     });
     $('.btn2').click(function() {
         $('.popup_box').css({
@@ -246,10 +246,7 @@ function getemail() {
 function initMap() {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-
-    const map = new google.maps.Map(document.getElementById("map"), {
-
-    });
+    const map = new google.maps.Map(document.getElementById("map"), {});
 
     directionsRenderer.setMap(map);
     calculateAndDisplayRoute(directionsService, directionsRenderer);
@@ -268,12 +265,36 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    var waypts = [];
+
+    stop = new google.maps.LatLng(19.161438, 99.913639)
+    waypts.push({
+        location: stop,
+        stopover: true
+    });
+    stop = new google.maps.LatLng(19.168859, 99.903858)
+    waypts.push({
+        location: stop,
+        stopover: true
+    });
+    stop = new google.maps.LatLng(19.172269, 99.898099)
+    waypts.push({
+        location: stop,
+        stopover: true
+    });
+    stop = new google.maps.LatLng(19.170169, 99.897192)
+    waypts.push({
+        location: stop,
+        stopover: true
+    });
+
+
     directionsService
         .route({
-            origin: "19.031459,99.926547",
-            destination: "19.172379, 99.898241",
+            origin: "19.030976, 99.926385",
+            destination: "19.030976, 99.926385",
             travelMode: google.maps.TravelMode.DRIVING,
-
+            waypoints: waypts,
 
         })
         .then((response) => {
