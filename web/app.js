@@ -146,13 +146,14 @@ app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURDATE()";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURDATE() AND role=2";
 
     con.query(sql, [username], function(err, result, fields) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             const numrows = result.length;
+
             if (numrows != 1) {
                 res.status(401).send("เข้าสู่ระบบไม่สำเร็จ");
             } else {
@@ -289,9 +290,9 @@ app.post("/matchcar", (req, res) => {
 });
 
 app.post("/review", (req, res) => {
-    const { driver_id, user_email, point,report } = req.body;
+    const { driver_id, user_email, point, report } = req.body;
     const sql = "INSERT INTO  review_driver( driver_id, user_email,point,report) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, point,report], (err, result) => {
+    con.query(sql, [driver_id, user_email, point, report], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -368,7 +369,7 @@ app.post("/selectcar", function(req, res) {
 app.post("/requestinfo", (req, res) => {
     const requestdata = req.body.requestdata;
     const sql = "SELECT * FROM user_request where request_id = ?";
-    con.query(sql,[requestdata], function (err, result, fields) {
+    con.query(sql, [requestdata], function(err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("Database error");
