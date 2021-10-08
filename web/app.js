@@ -289,10 +289,9 @@ app.post("/matchcar", (req, res) => {
 });
 
 app.post("/review", (req, res) => {
-    const { driver_id, user_email, point } = req.body;
-    console.log(req.body)
-    const sql = "INSERT INTO `review_driver`( `driver_id`, `user_email`,`point`) VALUES (?,?,?)"
-    con.query(sql, [driver_id, user_email, point], (err, result) => {
+    const { driver_id, user_email, point,report } = req.body;
+    const sql = "INSERT INTO  review_driver( driver_id, user_email,point,report) VALUES (?,?,?,?)"
+    con.query(sql, [driver_id, user_email, point,report], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -365,6 +364,20 @@ app.post("/selectcar", function(req, res) {
 
     });
 });
+
+app.post("/requestinfo", (req, res) => {
+    const requestdata = req.body.requestdata;
+    const sql = "SELECT * FROM user_request where request_id = ?";
+    con.query(sql,[requestdata], function (err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("Database error");
+            return;
+        } else {
+            res.status(200).send(result);
+        }
+    });
+})
 
 client.on('connect', function() {
     client.subscribe('moyanyo', function(err) {

@@ -51,6 +51,8 @@ router.put("/updatecar",checkUser,  (req, res) => {
     });
 });
 
+
+
 // router.delete("/deletecar",checkUser,  (req, res) => {
 //     const { car_id } = req.body;
 //     console.log(car_id)

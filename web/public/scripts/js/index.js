@@ -8,12 +8,15 @@ var connection = new WebSocket('ws://localhost:34000')
 var current_lat;
 var current_lng;
 var user_email
-connection.onopen = function() {
+var driver_id
+var score
+var comment
+connection.onopen = function () {
     // จะทำงานเมื่อเชื่อมต่อสำเร็จ
     console.log("connect webSocket");
     // connection.send("Hello ESUS"); // ส่ง Data ไปที่ Server
 };
-connection.onerror = function(error) {
+connection.onerror = function (error) {
     console.error('WebSocket Error ' + error);
 };
 
@@ -23,7 +26,7 @@ var maps;
 
 function geocoderAddress(geocoder, resultsMap) {
     var address = document.getElementById('address').value;
-    geocoder.geocode({ 'address': address }, function(results, status) {
+    geocoder.geocode({ 'address': address }, function (results, status) {
         if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
@@ -52,34 +55,78 @@ function showPosition(position) {
     current_lng = position.coords.longitude;
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     getemail()
     getLocation();
-    $('.request').click(function() {
+    checksendrequest()
+
+    $('#eiei').click(function () {
         $('.popup_box').css({
             "opacity": "1",
             "pointer-events": "auto"
         });
     });
-    $('.btn1').click(function() {
+    $('.btn1').click(function () {
         $('.popup_box').css({
             "opacity": "0",
             "pointer-events": "none"
         });
         requesttodb(1)
     });
-    $('.btn2').click(function() {
+    $('.btn2').click(function () {
         $('.popup_box').css({
             "opacity": "0",
             "pointer-events": "none"
         });
         requesttodb(0)
     });
-    $("#Logout").click(function(e) {
+    $("#Logout").click(function (e) {
         e.preventDefault();
         window.location.replace('/auth/logout')
     });
-    
+    $('#sendinfo').click(function () {
+        score = $('.fa-star').val()
+        var point = document.getElementsByName('rate');
+        for (let i = 0; i < point.length; i++) {
+            if (point[i].checked) {
+                score = point[i].value
+            }
+           comment =$('.getdata').val();
+
+        }
+       
+        $.ajax({
+            type: "POST",
+            url: "/review",
+            data: { user_email: user_email, driver_id: driver_id, point: score, report: comment },
+            success: function(response) {
+                Swal.fire({
+                    title: 'Add request success',
+                    text: "Request success✔✔✔ Please wait",
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        sessionStorage.setItem("requestid",response)
+                        var x = document.getElementById("review");
+                        var y = document.getElementById("eiei");
+                        x.style.display = 'none'
+                        y.style.display = 'block'
+                        sessionStorage.removeItem("requestid")
+                        window.location.reload()
+                    }
+                })
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+    })
 
 })
 
@@ -88,7 +135,7 @@ function requesttodb(direction) {
         type: "POST",
         url: "/request",
         data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
-        success: function(response) {
+        success: function (response) {
             Swal.fire({
                 title: 'Add request success',
                 text: "Request success✔✔✔ Please wait",
@@ -98,12 +145,12 @@ function requesttodb(direction) {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    sessionStorage.setItem("requestid",response)
+                    sessionStorage.setItem("requestid", response)
                     window.location.replace('/mapping')
                 }
             })
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire({
                 icon: "error",
                 title: xhr.responseText,
@@ -111,12 +158,12 @@ function requesttodb(direction) {
         }
     });
 }
-function check_request(){
+function check_request() {
     $.ajax({
         type: "POST",
         url: "/request",
         data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
-        success: function(response) {
+        success: function (response) {
             Swal.fire({
                 title: 'Add request success',
                 text: "Request success✔✔✔ Please wait",
@@ -126,12 +173,12 @@ function check_request(){
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    sessionStorage.setItem("requestid",response)
+                    sessionStorage.setItem("requestid", response)
                     window.location.replace('/mapping')
                 }
             })
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire({
                 icon: "error",
                 title: xhr.responseText,
@@ -140,15 +187,48 @@ function check_request(){
     });
 }
 
+function checksendrequest() {
+    var request = sessionStorage.getItem("requestid")
+    if (request) {
+        var x = document.getElementById("review");
+        var y = document.getElementById("eiei");
+        x.style.display = 'none'
+        y.style.display = 'none'
+
+        $.ajax({
+            type: "POST",
+            url: "/requestinfo",
+            data: { requestdata: request },
+            success: function (response) {
+                if (response[0].res_driver) {
+                    driver_id = response[0].res_driver
+                    x.style.display = 'block'
+                }
+
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+    } else {
+        var x = document.getElementById("review");
+        var y = document.getElementById("eiei");
+        y.style.display = 'block'
+        x.style.display = 'none'
+    }
+}
 
 function getemail() {
     $.ajax({
         type: "GET",
         url: "/verify",
-        success: function(response) {
+        success: function (response) {
             user_email = response.email
         },
-        error: function(xhr) {
+        error: function (xhr) {
             Swal.fire({
                 icon: "error",
                 title: xhr.responseText,
@@ -208,10 +288,10 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
         .catch((e) => window.alert("Directions request failed due to " + status));
 }
 
-connection.onmessage = function(e) {
+connection.onmessage = function (e) {
     var yourString = e.data;
     var array = [];
-    yourString.split(':').forEach(function(value) {
+    yourString.split(':').forEach(function (value) {
         array.push(value.split(' '));
     });
     // log ค่าที่ถูกส่งมาจาก server

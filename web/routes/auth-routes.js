@@ -39,7 +39,6 @@ router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
 
             }
             else {
-                res.clearCookie('mytoken');
                 res.redirect("/mapping");
             }
         }
