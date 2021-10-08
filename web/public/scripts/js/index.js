@@ -58,7 +58,7 @@ function showPosition(position) {
 $(document).ready(function () {
     getemail()
     getLocation();
-    checksendrequest()
+    setInterval(checksendrequest, 1000); //ทำทุก 1 วินาที
 
     $('#eiei').click(function () {
         $('.popup_box').css({
@@ -72,6 +72,7 @@ $(document).ready(function () {
             "pointer-events": "none"
         });
         requesttodb(1)
+        checksendrequest ()
     });
     $('.btn2').click(function () {
         $('.popup_box').css({
@@ -79,6 +80,7 @@ $(document).ready(function () {
             "pointer-events": "none"
         });
         requesttodb(0)
+        checksendrequest()
     });
     $("#Logout").click(function (e) {
         e.preventDefault();
@@ -115,6 +117,7 @@ $(document).ready(function () {
                         x.style.display = 'none'
                         y.style.display = 'block'
                         sessionStorage.removeItem("requestid")
+                        checksendrequest()
                         window.location.reload()
                     }
                 })
