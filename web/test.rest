@@ -44,7 +44,7 @@ content-type: application/json
 }
 
 ####
-post http://localhost:35000/loginmoblie
+post https://pytransit.szo.me/loginmoblie
 content-type: application/json
 
 { 
@@ -59,6 +59,14 @@ content-type: application/json
 {
     "License_plate" : "454465",
     "seat" : "15"
+}
+
+####
+DELETE  http://localhost:35000/deletecarmatch
+content-type: application/json
+
+{
+    "carmatch" : "8"
 }
 
 ####
@@ -156,11 +164,11 @@ content-type: application/json
 }
 
 ####
-put http://localhost:35000/setstatus
+put http://pytransit.szo.me/setstatus
 content-type: application/json
 
 {
-    "request_id" : "44",
+    "request_id" : "65",
     "res_driver" : "6"
 }
 

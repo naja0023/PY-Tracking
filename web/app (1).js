@@ -7,6 +7,12 @@ const mysql = require("mysql");
 const config = require("./config/dbConfig.js");
 const multer = require("multer");
 const bodyParser = require("body-parser");
+
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+
 const app = express();
 const con = mysql.createConnection(config);
 const passportSetup = require("./config/passport-setup");
@@ -27,6 +33,15 @@ const jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const { decode } = require("punycode");
 
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/pytransit.szo.me/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/pytransit.szo.me/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/pytransit.szo.me/chain.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+};
 
 app.use(bodyParser.urlencoded({ extended: true })); //when you post service
 app.use(bodyParser.json());
@@ -148,7 +163,7 @@ app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = DATE(CURRENT_TIMESTAMP()) AND role=2;";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURRENT_TIMESTAMP() AND role=2";
 
     con.query(sql, [username], function(err, result, fields) {
         if (err) {
@@ -396,33 +411,26 @@ client.on('message', function(topic, message) {
     // client.end()
 })
 
-const PORT = 35000
-app.listen(PORT, function() {
-    console.log("Server is running at " + PORT);
+const PORT = 80
+
+// Starting both http & https servers
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(PORT, () => {
+    console.log(`HTTP Server running on port ${PORT} `);
 });
-const wss = new WebSocket.Server({ port: 34000 });
+
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+});
+
+// app.listen(PORT, function() {
+//     console.log("Server is running at " + PORT);
+// });
+
+const wss = new WebSocket.Server({ server: httpsServer });
 wss.on('connection', function connection(ws) { // สร้าง connection
-    ws.on('message', function incoming(message) {
-        // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
-        console.log('received: %s', message);
-    });
-    ws.on('close', function close() {
-        // จะทำงานเมื่อปิด Connection ในตัวอย่างคือ ปิด Browser
-        console.log('disconnected');
-    });
-
-    // ส่ง data ไปที่ client เชื่อมกับ websocket server นี้
-    client.on('message', function(topic, message) {
-        // message is Buffer
-        console.log(message.toString())
-        ws.send(message.toString());
-        // client.end()
-    })
-
-});
-const websocket = new WebSocket.Server({ port: 33000 });
-
-websocket.on('connection', function connection(ws) { // สร้าง connection
     ws.on('message', function incoming(message) {
         // รอรับ data อะไรก็ตาม ที่มาจาก client แบบตลอดเวลา
         console.log('received: %s', message);

@@ -41,10 +41,10 @@ router.get("/check", checkUser, (req, res) => {
 
 })
 
-router.get("/admin", checkUser, (req, res) => {
-    res.render('manageuser')
+// router.get("/admin", checkUser, (req, res) => {
+//     res.render('manageuser')
 
-})
+// })
 
 router.get("/profile", (req, res) => {
     res.render('profile')

@@ -45,6 +45,7 @@ class _MapViewState extends State<MapView> {
   double? lat, lng;
 
   bool _picture = true;
+  // final _url = Uri.parse('http://pytransit.szo.me/addlocation');
   final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
 
   late GoogleMapController mapController;
@@ -165,6 +166,7 @@ class _MapViewState extends State<MapView> {
     try {
       http.Response response =
           await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/count_in'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
@@ -184,6 +186,7 @@ class _MapViewState extends State<MapView> {
     try {
       http.Response response =
           await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/count_out'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
@@ -793,12 +796,14 @@ class _MapViewState extends State<MapView> {
     try {
       http.Response response =
           await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/query_location'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
         var user_lat = double.parse('${i['lat']}');
         var user_lng = double.parse('${i['lng']}');
         var user_status = int.parse('${i['status']}');
+        // var user_status = int.parse('${i['status']}');
         var user_route = int.parse('${i['route']}');
         var marker_id = int.parse('${i['request_id']}');
 
@@ -903,6 +908,7 @@ class _MapViewState extends State<MapView> {
     try {
       http.Response response =
           await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
+        // await http.put(Uri.parse('http://pytransit.szo.me/setstatus'), body: {
         'request_id': id,
         'res_driver': drverid,
       }).timeout(Duration(seconds: 4));
@@ -922,6 +928,8 @@ class _MapViewState extends State<MapView> {
     try {
       http.Response response = await http
           .post(Uri.parse('http://10.0.2.2:35000/query_point'), body: {
+        // await http
+        //     .post(Uri.parse('http://pytransit.szo.me/query_point'), body: {
         'driver_id': id,
       }).timeout(Duration(seconds: 4));
       List data = jsonDecode(response.body);

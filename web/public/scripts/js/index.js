@@ -4,6 +4,7 @@ var lat
 var lng
 var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
+    // var connection = new WebSocket('ws://pytransit.szo.me')
 
 var current_lat;
 var current_lng;
