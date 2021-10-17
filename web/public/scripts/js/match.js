@@ -7,10 +7,10 @@ $(document).ready(function () {
     new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-          labels: ['Mon','Tue','Wed',"Thu",'Fri','Sat','Sun'],
+          labels: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
           
           datasets: [{ 
-              data: [86,114,106,106,107,111,133],
+              data: [86,114,106,106,107,111,133,123,321,1],
               label: "จำนวนคน",
               borderColor: "#3e95cd",labelColor : "#fff",
               fill: false,
@@ -23,7 +23,7 @@ $(document).ready(function () {
             responsive: true,
           title: {
             display: true,
-            text: 'จำนวนผู้ลงทะเบียนขับรายสัปดาห์',
+            text: 'จำนวนผู้ลงทะเบียนขับรายเดือน',
             fontColor: "#FFF",
           },
           scales: {
