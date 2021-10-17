@@ -20,7 +20,9 @@ $(document).ready(function () {
 
         // add       
         let data = {
-            username: $("#name").val(),
+            username: $("#username").val(),
+            password: $("#password").val(),
+            name: $("#name").val(),
             lastname: $("#editer").val(),
             tell: $("#tel").val(),
             email: $("#email").val(),
@@ -34,6 +36,8 @@ $(document).ready(function () {
         // edit
         if (mode == "edit") {
             data = {
+                username: $("#username").val(),
+                password: $("#password").val(),
                 name: $("#name").val(),
                 lastname: $("#editer").val(),
                 tell: $("#tel").val(),
@@ -69,7 +73,10 @@ $(document).ready(function () {
         // change the modal title
         $("#exampleModalLabel").text("Add User");
         // console.log(postData);
+        $("#username").val('');
+        $("#password").val('');
         $("#name").val('');
+        $("#editer").val('');
         $("#email").val('');
         $("#tel").val('');
         $("#selectrole").val('');
@@ -88,7 +95,9 @@ $(document).ready(function () {
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
          console.log(postData);
-        $("#name").val(postData.name);
+         $("#username").val(postData.username);
+         $("#name").val(postData.name);
+        $("#editer").val(postData.lastname);
         $("#email").val(postData.email);
         $("#tel").val(postData.tell);
         $("#selectrole").val('');

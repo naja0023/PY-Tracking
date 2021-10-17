@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" type="text/css" href="/style/review.css">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
   <!-- <meta http-equiv="refresh" content="30"> -->
 
   <body>
@@ -14,8 +15,8 @@
       <input type="button" id="Logout" value="Logout">
     </div>
     <!-- <div id="review"  class="btn btn-primary" data-toggle="modal" data-target="#myModal ">Review</div> -->
-    <div id="review" class="btn btn-primary" data-toggle="modal" data-target="#myModal " ><a  class="review" style="position: absolute;" >Review</a></div>
-    <div id="eiei" ><a href="#" class="request" style="position: absolute;">Request</a></div>
+    <div id="review" class="btn btn-primary" data-toggle="modal" data-target="#myModal " ><a  class="review" style="position: absolute;" >REVIEW</a></div>
+    <div id="eiei" ><a href="#" class="request" style="position: absolute;">REQUEST</a></div>
     
     <div class="popup_box">
       <h1>คุณต้องการที่จะไป</h1>
@@ -23,6 +24,8 @@
       <div class="btns">
         <a href="#" class="btn1">เข้าเมือง</a>
         <a href="#" class="btn2">หน้ามอ</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">ปิด</button>
+        
       </div>
     </div>
 
@@ -58,12 +61,12 @@
                     <textarea class="getdata" cols="30" placeholder="Describe your experience.."></textarea>
                   </div>
                   <div class="btn">
-                    <button id="sendinfo" >OK</button>
+                    <button id="sendinfo" >ตกลง</button>
                   </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
             </div>
           </div>
 
