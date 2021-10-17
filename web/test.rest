@@ -35,7 +35,7 @@ content-type: application/json
 }
 
 ####
-get http://localhost:35000/count_in
+get http://localhost:35000/reqdata
 content-type: application/json
 
 { 

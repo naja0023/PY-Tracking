@@ -406,6 +406,18 @@ app.get("/graph_carmatch", (req, res) => {
     });
 });
 
+app.get("/reqdata", (req, res) => {
+    const sql = "SELECT * FROM `user_request` LEFT JOIN driver ON driver.driver_id = user_request.res_driver"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
 
 
 client.on('connect', function() {
