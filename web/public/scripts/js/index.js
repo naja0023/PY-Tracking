@@ -4,7 +4,7 @@ var lat
 var lng
 var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
-    // var connection = new WebSocket('ws://pytransit.szo.me')
+    // var connection = new WebSocket('wss://pytransit.szo.me')
 
 var current_lat;
 var current_lng;
@@ -57,7 +57,7 @@ function showPosition(position) {
 }
 
 $(document).ready(function() {
-    
+
     getemail()
     getLocation();
     setInterval(checksendrequest, 1000); //ทำทุก 1 วินาที
@@ -140,12 +140,13 @@ $(document).ready(function() {
     })
     setmarker()
 })
-function setmarker(){
+
+function setmarker() {
     var lat
-   
+
     var lng
-    // if (sessionStorage.getItem("lat")&&sessionStorage.getItem("lng")) {
-           
+        // if (sessionStorage.getItem("lat")&&sessionStorage.getItem("lng")) {
+
     //     const map = new google.maps.Map(document.getElementById("map"), {});
     //    // Try HTML5 geolocation.
     //     const pos = {
@@ -155,18 +156,18 @@ function setmarker(){
     //      beachMarker = new google.maps.Marker({
     //             position: pos,
     //             map: map,
-                
+
     //         });
     //         // map.setCenter(pos);
     //   if (navigator.geolocation) {
     //     navigator.geolocation.getCurrentPosition(
     //       (position) => {
-           
+
 
     //         // infoWindow.setPosition(pos);
     //         // infoWindow.setContent("Location found.");
     //         // infoWindow.open(map);
-            
+
     //       },
     //       () => {
     //         handleLocationError(true, infoWindow, map.getCenter());
@@ -177,7 +178,7 @@ function setmarker(){
     //     handleLocationError(false, infoWindow, map.getCenter());
     //   }
 
-        
+
     // }
 }
 
@@ -200,8 +201,8 @@ function requesttodb(direction) {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    sessionStorage.setItem("lat",current_lat)
-                    sessionStorage.setItem("lng",current_lng)
+                    sessionStorage.setItem("lat", current_lat)
+                    sessionStorage.setItem("lng", current_lng)
                     sessionStorage.setItem("requestid", response)
                     window.location.replace('/mapping')
                 }
@@ -231,8 +232,8 @@ function check_request() {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    sessionStorage.setItem("lat",current_lat)
-                    sessionStorage.setItem("lng",current_lng)
+                    sessionStorage.setItem("lat", current_lat)
+                    sessionStorage.setItem("lng", current_lng)
                     sessionStorage.setItem("requestid", response)
                     window.location.replace('/mapping')
                 }
@@ -319,62 +320,62 @@ function initMap() {
         icon: image
 
     });
-    
-   
+
+
 
     infoWindow = new google.maps.InfoWindow();
 
     const locationButton = document.createElement("button");
-  
-   
+
+
     locationButton.classList.add("custom-map-control-button");
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
     // addEventListener("click", () => {
-        if (sessionStorage.getItem("lat")&&sessionStorage.getItem("lng")) {
-           
-           
-           // Try HTML5 geolocation.
-            const pos = {
-                  lat: 19.024647,
-                  lng: 99.943809,
-                };
-             beachMarker = new google.maps.Marker({
-                    position: pos,
-                    map: map,
-                    
-                });
-                // map.setCenter(pos);
-          if (navigator.geolocation) {
+    if (sessionStorage.getItem("lat") && sessionStorage.getItem("lng")) {
+
+
+        // Try HTML5 geolocation.
+        const pos = {
+            lat: 19.024647,
+            lng: 99.943809,
+        };
+        beachMarker = new google.maps.Marker({
+            position: pos,
+            map: map,
+
+        });
+        // map.setCenter(pos);
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-              (position) => {
-               
-    
-                // infoWindow.setPosition(pos);
-                // infoWindow.setContent("Location found.");
-                // infoWindow.open(map);
-                
-              },
-              () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-              }
+                (position) => {
+
+
+                    // infoWindow.setPosition(pos);
+                    // infoWindow.setContent("Location found.");
+                    // infoWindow.open(map);
+
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
             );
-          } else {
+        } else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
-          }
-    
-            
         }
+
+
+    }
     // });
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-      browserHasGeolocation
-        ? "Error: The Geolocation service failed."
-        : "Error: Your browser doesn't support geolocation."
-    );
-    infoWindow.open(map);
-  }
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation ?
+            "Error: The Geolocation service failed." :
+            "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(map);
+    }
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
