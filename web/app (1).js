@@ -397,6 +397,42 @@ app.post("/requestinfo", (req, res) => {
     });
 })
 
+app.get("/graph_reqdata", (req, res) => {
+    const sql = "SELECT MONTH(`req_date`),COUNT(`request_id`) FROM `user_request`WHERE YEAR(`req_date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`req_date`)"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.get("/graph_carmatch", (req, res) => {
+    const sql = "SELECT MONTH(`date`),COUNT(`carmatch`) FROM `car_match`WHERE YEAR(`date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`date`)"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.get("/reqdata", (req, res) => {
+    const sql = "SELECT * FROM `user_request` LEFT JOIN driver ON driver.driver_id = user_request.res_driver"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
 client.on('connect', function() {
     client.subscribe('moyanyo', function(err) {
         if (!err) {
