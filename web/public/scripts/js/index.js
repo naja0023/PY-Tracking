@@ -2,6 +2,8 @@
 
 var lat
 var lng
+var _lat
+var _lng
 var beachMarker
     // var connection = new WebSocket('ws://localhost:34000')
 var connection = new WebSocket('wss://pytransit.szo.me')
@@ -95,92 +97,52 @@ $(document).ready(function() {
         window.location.replace('/auth/logout')
     });
     $('#sendinfo').click(function() {
-            score = $('.fa-star').val()
-            var point = document.getElementsByName('rate');
-            for (let i = 0; i < point.length; i++) {
-                if (point[i].checked) {
-                    score = point[i].value
-                }
-                comment = $('.getdata').val();
-
+        score = $('.fa-star').val()
+        var point = document.getElementsByName('rate');
+        for (let i = 0; i < point.length; i++) {
+            if (point[i].checked) {
+                score = point[i].value
             }
+            comment = $('.getdata').val();
 
-            $.ajax({
-                type: "POST",
-                url: "/review",
-                data: { user_email: user_email, driver_id: driver_id, point: score, report: comment },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'ให้คะแนนสำเร็จ✔✔✔',
-                        text: "ขอขอบคุณสำหรับความคิดเห็น",
-                        icon: 'success',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            sessionStorage.setItem("requestid", response)
-                            var x = document.getElementById("review");
-                            var y = document.getElementById("eiei");
-                            x.style.display = 'none'
-                            y.style.display = 'block'
-                            sessionStorage.removeItem("requestid")
-                            checksendrequest()
-                            window.location.reload()
-                        }
-                    })
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: "error",
-                        title: xhr.responseText,
-                    });
-                }
-            });
-        })
-        // setmarker()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/review",
+            data: { user_email: user_email, driver_id: driver_id, point: score, report: comment },
+            success: function(response) {
+                Swal.fire({
+                    title: 'ให้คะแนนสำเร็จ✔✔✔',
+                    text: "ขอขอบคุณสำหรับความคิดเห็น",
+                    icon: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        sessionStorage.setItem("requestid", response)
+                        var x = document.getElementById("review");
+                        var y = document.getElementById("eiei");
+                        x.style.display = 'none'
+                        y.style.display = 'block'
+                        sessionStorage.removeItem("requestid")
+                        checksendrequest()
+                        window.location.reload()
+                    }
+                })
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+    })
+
 })
 
-// function setmarker() {
-//     var lat
-
-//     var lng
-//         // if (sessionStorage.getItem("lat")&&sessionStorage.getItem("lng")) {
-
-//     //     const map = new google.maps.Map(document.getElementById("map"), {});
-//     //    // Try HTML5 geolocation.
-//     //     const pos = {
-//     //           lat: sessionStorage.getItem("lat"),
-//     //           lng: sessionStorage.getItem("lng"),
-//     //         };
-//     //      beachMarker = new google.maps.Marker({
-//     //             position: pos,
-//     //             map: map,
-
-//     //         });
-//     //         // map.setCenter(pos);
-//     //   if (navigator.geolocation) {
-//     //     navigator.geolocation.getCurrentPosition(
-//     //       (position) => {
-
-
-//     //         // infoWindow.setPosition(pos);
-//     //         // infoWindow.setContent("Location found.");
-//     //         // infoWindow.open(map);
-
-//     //       },
-//     //       () => {
-//     //         handleLocationError(true, infoWindow, map.getCenter());
-//     //       }
-//     //     );
-//     //   } else {
-//     //     // Browser doesn't support Geolocation
-//     //     handleLocationError(false, infoWindow, map.getCenter());
-//     //   }
-
-
-//     // }
-// }
 
 function requesttodb(direction) {
     $('.popup_box').css({
@@ -335,21 +297,17 @@ function initMap() {
 
 
         // Try HTML5 geolocation.
-        const pos = {
-            lat: 19.024647,
-            lng: 99.943809,
-        };
-        myMarker = new google.maps.Marker({
-            position: pos,
-            map: map,
-
-        });
-        // map.setCenter(pos);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-
-
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    myMarker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                    });
                     // infoWindow.setPosition(pos);
                     // infoWindow.setContent("Location found.");
                     // infoWindow.open(map);
