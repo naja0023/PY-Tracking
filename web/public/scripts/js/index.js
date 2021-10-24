@@ -193,8 +193,8 @@ function requesttodb(direction) {
         data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
         success: function(response) {
             Swal.fire({
-                title: 'Add request success',
-                text: "Request success✔✔✔ Please wait",
+                title: 'เรียกรถสำเร็จ✔✔✔',
+                text: "โปรดรอ... คนขับรถกำลังจะมารับท่าน",
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
