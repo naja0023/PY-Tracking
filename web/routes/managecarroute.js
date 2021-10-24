@@ -18,9 +18,9 @@ router.get("/carinfo",checkUser, (req, res) => {
 })
 
 router.post("/addcar",checkUser,  (req, res) => {
-    const { License_plate, seat } = req.body;
-    const sql = "INSERT INTO `car`(`License_plate`, `seat`) VALUES (?,?)"
-    con.query(sql, [License_plate, seat], (err, result) => {
+    const { License_plate, seat,brand,color } = req.body;
+    const sql = "INSERT INTO `car`(`License_plate`, `seat`,`brand`,`color`) VALUES (?,?,?,?)"
+    con.query(sql, [License_plate, seat,brand,color], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -39,9 +39,9 @@ router.post("/addcar",checkUser,  (req, res) => {
 });
 
 router.put("/updatecar",checkUser,  (req, res) => {
-    const { License_plate, seat, car_id } = req.body;
-    const sql = "UPDATE car SET License_plate=?,seat=? WHERE car_id = ?"
-    con.query(sql, [License_plate, seat, car_id], (err, result) => {
+    const { License_plate, seat,brand,color,car_id } = req.body;
+    const sql = "UPDATE car SET License_plate=?,seat=?,brand=?,color=? WHERE car_id = ?"
+    con.query(sql, [License_plate, seat,brand,color, car_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");

@@ -22,6 +22,8 @@ $(document).ready(function () {
         let data = {
             License_plate: $("#editer").val(),
             seat: $("#seat").val(),
+            brand: $("#brand").val(),
+            color: $("#color").val(),
             
 
         };
@@ -33,6 +35,8 @@ $(document).ready(function () {
             data = {
                 License_plate: $("#editer").val(),
                 seat: $("#seat").val(),
+                brand: $("#brand").val(),
+                color: $("#color").val(),
                 car_id: car_id
             };
             method = "PUT";
@@ -65,6 +69,8 @@ $(document).ready(function () {
         // console.log(postData);
         $("#editer").val('');
         $("#seat").val('');
+        $("#brand").val('');
+        $("#color").val('');
         // show modal
         $("#exampleModal").modal("toggle");
 
@@ -83,6 +89,8 @@ $(document).ready(function () {
          console.log(postData);
         $("#editer").val(postData.License_plate);
         $("#seat").val(postData.seat);
+        $("#brand").val(postData.brand);
+        $("#color").val(postData.color);
        
         car_id = postData.car_id;
         
