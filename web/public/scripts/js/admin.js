@@ -44,7 +44,7 @@ $(document).ready(function() {
                 id_card: $("#card").val(),
                 email: $("#email").val(),
                 role: $("#selectrole").val(),
-                id: blogID
+                driver_id: blogID
             };
             method = "PUT";
             url = "/adminse/edit";
