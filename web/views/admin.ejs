@@ -49,14 +49,14 @@
                                 <div class="row my-5">
                                     <div class="col-4">
                                         <div class="card" style="background-color: #343a40;">
-                                            <div class="card-body" >
+                                            <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-8">
                                                         <P style="color: white;">900</P>
                                                         <P style="color: white;">ผู้ใช้ทั้งหมด</P>
                                                     </div>
                                                     <div class="col-4">
-                                                        <i class="fas fa-users mt-2"style="font-size: 40pt ;color: #fff; "></i>
+                                                        <i class="fas fa-users mt-2" style="font-size: 40pt ;color: #fff; "></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,7 +71,7 @@
                                                         <P style="color: white;">ออนไลน์</P>
                                                     </div>
                                                     <div class="col-4">
-                                                        <i class="fas fa-user mt-2"style="font-size: 40pt ;color: #fff; "></i>
+                                                        <i class="fas fa-user mt-2" style="font-size: 40pt ;color: #fff; "></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -86,14 +86,14 @@
                                                         <P style="color: white;">ออฟไลน์</P>
                                                     </div>
                                                     <div class="col-4">
-                                                        <i class="fas fa-user-alt-slash mt-2"style="font-size: 40pt ;color: #fff; "></i>
-                                                        
+                                                        <i class="fas fa-user-alt-slash mt-2" style="font-size: 40pt ;color: #fff; "></i>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-            
+
                                 </div>
 
                                 <div class="col-md-12">
@@ -101,7 +101,7 @@
                                     <table class="table table-bordered table-striped">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>เลขที่</th>
+                                                <th>ลำดับที่</th>
                                                 <th>ชื่อ</th>
                                                 <th>นามสกุล</th>
                                                 <th>อีเมลล์</th>
@@ -144,28 +144,24 @@
                                                     <td>
                                                         <!-- <button type="button" class="btn btn-danger btnDelete"
                                                     blogID="<%= resule[index].driver_id %>">Delete</button> -->
-                                                    <!-- <i class="fas fa-edit"></i> -->
-                                                    <i class="fas fa-edit editbut ml-3"
-                                                style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;"
-                                                blogData="<%= JSON.stringify(resule[index]) %>"></i>
-                                                        
+                                                        <!-- <i class="fas fa-edit"></i> -->
+                                                        <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+
                                                     </td>
                                                 </tr>
                                                 <% } %>
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
 
                                 <!-- Modal Add Edit User -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">เพิ่มยูสเซอร์</h5>
-                                                <button type="button" class="close closes" data-dismiss="modal"
-                                                    aria-label="Close">
+                                                <button type="button" class="close closes" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -173,36 +169,30 @@
                                                 <form>
                                                     <div class="form-group">
                                                         <label for="message-text" class="col-form-label">ไอดีผู้ใช้:</label>
-                                                        <input class="form-control" 
-                                                            id="username"></input>
+                                                        <input class="form-control" id="username"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="message-text" class="col-form-label">รหัสผ่าน:</label>
-                                                        <input class="form-control" 
-                                                            id="password"></input>
+                                                        <input class="form-control" id="password"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="recipient-name" class="col-form-label">ชื่อ:</label>
                                                         <input type="text" class="form-control" id="name">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="recipient-name"
-                                                            class="col-form-label">นามสกุล:</label>
+                                                        <label for="recipient-name" class="col-form-label">นามสกุล:</label>
                                                         <input type="text" class="form-control" id="editer">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="message-text" class="col-form-label">อีเมลล์:</label>
-                                                        <input class="form-control" type="email"
-                                                            placeholder="example@mail.com" id="email"></input>
+                                                        <input class="form-control" type="email" placeholder="example@mail.com" id="email"></input>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="message-text" class="col-form-label">เบอร์โทร:</label>
-                                                        <input class="form-control" type="tel" placeholder="08xxxxxxxx"
-                                                            id="tel"></input>
+                                                        <input class="form-control" type="tel" placeholder="08xxxxxxxx" id="tel"></input>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="recipient-name" class="col-form-label">ID
-                                                            CARD:</label>
+                                                        <label for="recipient-name" class="col-form-label">เลขบัตรประชาชน:</label>
                                                         <input type="text" class="form-control" id="card">
                                                     </div>
                                                     <div>
@@ -214,10 +204,8 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="closes btn btn-secondary"
-                                                    data-dismiss="modal">ปิด</button>
-                                                <button type="button" class="btn btn-primary"
-                                                    id="btnModalSave">แอด</button>
+                                                <button type="button" class="closes btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                                <button type="button" class="btn btn-primary" id="btnModalSave">แอด</button>
                                             </div>
                                         </div>
                                     </div>

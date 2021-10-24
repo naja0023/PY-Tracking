@@ -50,10 +50,10 @@ router.post('/adminse/new', checkUser, (req, res) => {
 
 //  --- edit a post ---
 router.put('/adminse/edit', checkUser, (req, res) => {
-    const { username, password, name, lastname, email, tell, id_card, role } = req.body;
+    const { username, password, name, lastname, email, tell, id_card, role, driver_id } = req.body;
     console.log(req.body)
-    const sql = "UPDATE driver SET username=?,password=?,name=?,lastname=?,email=?,tell=?,id_card=?, role=? WHERE driver_id= ?"
-    con.query(sql, [name, lastname, tell, email, id_card, role, id], (err, result) => {
+    const sql = "UPDATE driver SET username=?,password=?,name=?,lastname=?,email=?,tell=?,id_card=?, role=? WHERE driver_id=?"
+    con.query(sql, [username, password, name, lastname, tell, email, id_card, role, driver_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
