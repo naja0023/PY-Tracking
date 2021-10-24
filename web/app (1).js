@@ -163,7 +163,7 @@ app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = CURRENT_TIMESTAMP() AND role=2";
+    const sql = "SELECT * FROM driver LEFT JOIN car_match on driver.driver_id = car_match.driver_id WHERE driver.username =? AND DATE(car_match.date) = DATE(CURRENT_TIMESTAMP()) AND role=2";
 
     con.query(sql, [username], function(err, result, fields) {
         if (err) {

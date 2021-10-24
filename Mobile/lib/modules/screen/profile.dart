@@ -188,28 +188,31 @@ class _profileScreenState extends State<profileScreen> {
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "คะแนนเฉลี่ย",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: MyConstant.dark,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "คะแนนเฉลี่ย",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: MyConstant.dark,
+                          fontSize: 21,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      _point.toStringAsFixed(1),
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: MyConstant.primary,
+                      SizedBox(
+                        height: 5.0,
                       ),
-                    )
-                  ],
+                      Text(
+                        _point.toStringAsFixed(1),
+                        style: TextStyle(
+                          fontSize: 19,
+                          color: MyConstant.primary,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Expanded(
@@ -308,9 +311,9 @@ class _profileScreenState extends State<profileScreen> {
     id = box.read('carmatchid').toString();
     try {
       http.Response response =
-          await http.post(Uri.parse('http://10.0.2.2:35000/selectcar'), body: {
-        // await http
-        //     .post(Uri.parse('http://pytransit.szo.me/selectcar'), body: {
+          // await http.post(Uri.parse('http://10.0.2.2:35000/selectcar'), body: {
+          await http
+              .post(Uri.parse('http://pytransit.szo.me/selectcar'), body: {
         'carmatch': id,
       }).timeout(Duration(seconds: 4));
       final _car = jsonDecode(response.body);
@@ -334,8 +337,8 @@ class _profileScreenState extends State<profileScreen> {
 
     try {
       http.Response response =
-          await http.post(Uri.parse('http://10.0.2.2:35000/date'), body: {
-        // await http.post(Uri.parse('http://pytransit.szo.me/date'), body: {
+          // await http.post(Uri.parse('http://10.0.2.2:35000/date'), body: {
+          await http.post(Uri.parse('http://pytransit.szo.me/date'), body: {
         'carmatch': id,
       }).timeout(Duration(seconds: 4));
       final _date = jsonDecode(response.body);
