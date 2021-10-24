@@ -27,7 +27,14 @@ $(document).ready(function() {
             tell: $("#tel").val(),
             email: $("#email").val(),
             id_card: $("#card").val(),
+            address: $("#address").val(),
+            sub: $("#sub").val(),
+            dist: $("#dist").val(),
+            prov: $("#prov").val(),
+            zip: $("#zip").val(),
+            sex: $("#sex").val(),
             role: $("#selectrole").val(),
+            
 
         };
         let method = "POST";
@@ -43,6 +50,12 @@ $(document).ready(function() {
                 tell: $("#tel").val(),
                 id_card: $("#card").val(),
                 email: $("#email").val(),
+                address: $("#address").val(),
+                sub: $("#sub").val(),
+                dist: $("#dist").val(),
+                prov: $("#prov").val(),
+                zip: $("#zip").val(),
+                sex: $("#sex").val(),
                 role: $("#selectrole").val(),
                 driver_id: blogID
             };
@@ -80,7 +93,14 @@ $(document).ready(function() {
         $("#email").val('');
         $("#tel").val('');
         $("#card").val('');
+        $("#address").val('');
+        $("#sub").val('');
+        $("#dist").val('');
+        $("#prov").val('');
+        $("#zip").val('');
+        $("#sex").val('');
         $("#selectrole").val('');
+
         // show modal
         $("#exampleModal").modal("toggle");
 
@@ -102,6 +122,12 @@ $(document).ready(function() {
         $("#email").val(postData.email);
         $("#tel").val(postData.tell);
         $("#card").val(postData.id_card);
+        $("#address").val(postData.address);
+        $("#sub").val(postData.sub);
+        $("#dist").val(postData.dist);
+        $("#prov").val(postData.prov);
+        $("#zip").val(postData.zip);
+        $("#sex").val(postData.sex);
         $("#selectrole").val(postData.role);
         blogID = postData.driver_id;
 

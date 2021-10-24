@@ -27,10 +27,16 @@ router.post('/adminse/new', checkUser, (req, res) => {
     const email = req.body.email;
     const tell = req.body.tell;
     const id_card = req.body.id_card;
-    const role = req.body.role
+    const address = req.body.address;
+    const sub = req.body.sub;
+    const dist = req.body.dist;
+    const prov = req.body.prov;
+    const zip = req.body.zip;
+    const sex = req.body.sex;
+    const role = req.body.role;
 
-    const sql = "INSERT INTO driver(username,password,name,lastname,email,tell,id_card, role)VALUES(?,?,?,?,?,?,?,?)"
-    con.query(sql, [username, password, name, lastname, email, tell, id_card, role], function(err, result, fields) {
+    const sql = "INSERT INTO driver(username,password,name,lastname,email,tell,id_card,address,sub,dist,prov,zip,sex,role)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    con.query(sql, [username, password, name, lastname, email, tell, id_card,address,sub,dist,prov,zip,sex,role], function(err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("Database error");
@@ -57,11 +63,17 @@ router.put('/adminse/edit', checkUser, (req, res) => {
     const email = req.body.email;
     const tell = req.body.tell;
     const id_card = req.body.id_card;
+    const address = req.body.address;
+    const sub = req.body.sub;
+    const dist = req.body.dist;
+    const prov = req.body.prov;
+    const zip = req.body.zip;
+    const sex = req.body.sex
     const role = req.body.role;
     const driver_id = req.body.driver_id;
     console.log(req.body)
-    const sql = "UPDATE driver SET username=?,password=?,name=?,lastname=?,email=?,tell=?,id_card=?, role=? WHERE driver_id=?"
-    con.query(sql, [username, password, name, lastname, email,tell, id_card, role, driver_id], (err, result) => {
+    const sql = "UPDATE driver SET username=?,password=?,name=?,lastname=?,email=?,tell=?,id_card=?,address=?,sub=?,dist=?,prov=?,zip=?,sex=?,role=? WHERE driver_id=?"
+    con.query(sql, [username, password, name, lastname, email,tell, id_card,address,sub,dist,prov,zip,sex, role, driver_id], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
