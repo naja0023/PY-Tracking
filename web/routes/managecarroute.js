@@ -31,7 +31,7 @@ router.post("/addcar",checkUser,  (req, res) => {
                 res.status(503).send("Database error");
             }
             else {
-                res.send("/newcar");
+                res.send("/newcars");
             }
 
         }
@@ -46,7 +46,7 @@ router.put("/updatecar",checkUser,  (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send('/newcar');
+            res.status(200).send('/newcars');
         }
     });
 });

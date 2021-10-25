@@ -142,6 +142,31 @@
                                         <th>แก้ไข</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    <% for( let index=0; index < resule.length; index++ ) { %>
+                                        <tr>
+                                            <td>
+                                                <%= index+1 %>
+                                            </td>
+                                            <td>
+                                                <%= resule[index].name %>
+                                                    <%= resule[index].lastname %>
+                                            </td>
+                                            <td>
+                                                <%= resule[index].License_plate %>
+                                            </td>
+                                            <td>
+                                                <%= resule[index].date %>
+                                            </td>
+                                            <td>
+    
+                                                <!-- <button type="button" class="btn btn-danger btnDelete"
+                                                    blogID="<%= resule[index].carmatch %>">Delete</button> -->
+                                                <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
                             </table>
                         </div>
                     </div>

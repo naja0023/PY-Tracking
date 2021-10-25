@@ -107,6 +107,12 @@ router.get("/newrequdata", checkUser, (req, res) => {
 
 })
 
+router.get("/newcar", checkUser, (req, res) => {
+    res.render('newcar')
+
+})
+
+
 
 
 module.exports = router;

@@ -5,7 +5,7 @@ const con = mysql.createConnection(config);
 const checkUser = require('./middleware');
 
 router.get("/newcarmatch",checkUser, (req, res) => {
-    const sql = "SELECT * FROM car_match,driver,car WHERE date(date)=CURRENT_DATE AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
+    const sql = "SELECT * FROM car_match,driver,car WHERE MONTH(date)=MONTH(CURRENT_TIMESTAMP) AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
     con.query(sql, function(err, result, fields) {
         if (err) {
             console.error(err.message);

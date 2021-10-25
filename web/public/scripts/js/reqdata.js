@@ -1,17 +1,17 @@
 $(document).ready(function () {
     var mode = "";
-    var carmatch = 0;
+    var reqid = 0;
     var label =['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
     var data=[86,114,106,106,107,111,133,123,321,1]
-
-    new Chart(document.getElementById("line-chart"), {
-        type: 'line',
+    
+    new Chart(document.getElementById("bar-chart"), {
+        type: 'bar',
         data: {
           labels:label,
           
           datasets: [{ 
               data: data,
-              label: "จำนวนคน",
+              label: "จำนวนคนเรียกรถ",
               borderColor: "#3e95cd",labelColor : "#fff",
               fill: false,
               hoverBackgroundColor: "rgba(232,105,90,0.8)",
@@ -57,7 +57,7 @@ $(document).ready(function () {
     })
 
     $(".btnDelete").click(function () {
-        carmatch = $(this).attr("blogID");
+        reqid = $(this).attr("blogID");
         $("#exampleModal2").modal("toggle");
     })
 
@@ -82,7 +82,7 @@ $(document).ready(function () {
                 name: $("#name").val(),
                 lastname: $("#lastname").val(),
                 License_plate: $("#carplate").val(),
-                carmatch:carmatch
+                carmatch:reqid
             };
             method = "PUT";
             url = "/updatecarmatch";
@@ -134,7 +134,7 @@ $(document).ready(function () {
         $("#name").val(postData.name);
         $("#lastname").val(postData.lastname);
         $("#carplate").val(postData.License_plate);
-        carmatch = postData.carmatch;
+        reqid = postData.carmatch;
         
     });
 
@@ -142,7 +142,7 @@ $(document).ready(function () {
         $.ajax({
             type: "DELETE",
             url: "/deletecarmatch" ,
-            data: { carmatch: carmatch },
+            data: { carmatch: reqid },
         }).done(function (data, state, xhr) {
             alert("delete success")
                 window.location.replace(data)
