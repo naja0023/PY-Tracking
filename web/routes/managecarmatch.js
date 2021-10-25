@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const con = mysql.createConnection(config);
 const checkUser = require('./middleware');
 
-router.get("/carmatchinfo",checkUser, (req, res) => {
+router.get("/newcarmatch",checkUser, (req, res) => {
     const sql = "SELECT * FROM car_match,driver,car WHERE date(date)=CURRENT_DATE AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -12,7 +12,7 @@ router.get("/carmatchinfo",checkUser, (req, res) => {
             res.status(503).send("Database error");
             return;
         } else {
-            res.render('match', { resule: result })
+            res.render('newmatch', { resule: result })
         }
     });
 })
@@ -25,7 +25,7 @@ router.delete("/deletecarmatch",checkUser, (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send("/carmatchinfo");
+            res.status(200).send("/newcarmatch");
         }
     });
 });
@@ -38,7 +38,7 @@ router.put("/updatecarmatch",checkUser, (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send("/carmatchinfo");
+            res.status(200).send("/newcarmatch");
         }
     });
 });
@@ -58,7 +58,7 @@ router.post("/addcarmatch",checkUser, (req, res) => {
                 res.status(503).send("Database error");
             }
             else {
-                res.send("/carmatchinfo");
+                res.send("/newcarmatch");
             }
         }
     });

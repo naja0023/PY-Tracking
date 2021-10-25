@@ -81,4 +81,32 @@ router.get("/requestdata", checkUser, (req, res) => {
     res.render('requestdata')
 
 })
+
+router.get("/newdashboard", checkUser, (req, res) => {
+    res.render('newdashboard')
+
+})
+
+router.get("/newheatmap", checkUser, (req, res) => {
+    res.render('newheatmap')
+
+})
+
+router.get("/newadmin", checkUser, (req, res) => {
+    res.render('newadmin')
+
+})
+
+router.get("/newmatch", checkUser, (req, res) => {
+    res.render('newmatch')
+
+})
+
+router.get("/newrequdata", checkUser, (req, res) => {
+    res.render('newrequdata')
+
+})
+
+
+
 module.exports = router;

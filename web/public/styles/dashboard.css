@@ -39,3 +39,17 @@
         top: 55px;
         z-index: 5;
       }
+
+      .bg{
+
+        padding: 10px;
+    }
+    .crad-contain{
+        padding: 20px;
+        height: 750px;
+        box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+          border-radius: 20px;
+          float: left;
+           width: 49%;
+          /* background: rgb(238, 237, 237); */
+    }

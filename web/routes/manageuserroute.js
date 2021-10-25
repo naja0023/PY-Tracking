@@ -5,7 +5,7 @@ const con = mysql.createConnection(config);
 const checkUser = require('./middleware');
 
 
-router.get("/adminse", checkUser, (req, res) => {
+router.get("/newadminse", checkUser, (req, res) => {
     const sql = "SELECT * FROM driver WHERE  role = 2";
     con.query(sql, function(err, result, fields) {
         if (err) {
@@ -13,7 +13,7 @@ router.get("/adminse", checkUser, (req, res) => {
             res.status(503).send("Database error");
             return;
         } else {
-            res.render('admin', { resule: result })
+            res.render('newadmin', { resule: result })
         }
     });
 })
@@ -49,7 +49,7 @@ router.post('/adminse/new', checkUser, (req, res) => {
             console.error("can not insert data");
             res.status(503).send("Database error");
         } else {
-            res.send("/adminse");
+            res.send("/newadminse");
         }
     });
 });
@@ -78,7 +78,7 @@ router.put('/adminse/edit', checkUser, (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send('/adminse');
+            res.status(200).send('/newadminse');
         }
     });
 });
@@ -92,7 +92,7 @@ router.delete('/adminse/:id', checkUser, (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send('/adminse');
+            res.status(200).send('/newadminse');
         }
     });
 });

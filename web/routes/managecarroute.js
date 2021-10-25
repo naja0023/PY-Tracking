@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const con = mysql.createConnection(config);
 const checkUser = require('./middleware');
 
-router.get("/carinfo",checkUser, (req, res) => {
+router.get("/newcars",checkUser, (req, res) => {
     const sql = "SELECT * FROM car";
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -12,7 +12,7 @@ router.get("/carinfo",checkUser, (req, res) => {
             res.status(503).send("Database error");
             return;
         } else {
-            res.render('car', { result: result })
+            res.render('newcar', { result: result })
         }
     });
 })
@@ -31,7 +31,7 @@ router.post("/addcar",checkUser,  (req, res) => {
                 res.status(503).send("Database error");
             }
             else {
-                res.send("/carinfo");
+                res.send("/newcar");
             }
 
         }
@@ -46,7 +46,7 @@ router.put("/updatecar",checkUser,  (req, res) => {
             console.log(err);
             res.status(503).send("Server error");
         } else {
-            res.status(200).send('/carinfo');
+            res.status(200).send('/newcar');
         }
     });
 });
