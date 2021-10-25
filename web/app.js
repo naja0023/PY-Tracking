@@ -304,9 +304,26 @@ app.post("/review", (req, res) => {
     });
 });
 
+// app.post("/request", (req, res) => {
+//     const { user_email,user_name,lat, lng, route } = req.body;
+//     const sql = "INSERT INTO `user_request`( `user_email`,`user_name`, `lat`, `lng`,  `route`) VALUES (?,?,?,?,?)"
+//     const sql1 = "INSERT INTO user_info( email, name) VALUES (?,?)"
+//     con.query(sql, [user_email,user_name, lat, lng, route], (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             res.status(503).send("Server error");
+//         } else {
+//             console.log(result.insertId)
+//             let num = (result.insertId).toString()
+//             res.send(num);
+//         }
+//     });
+// });
+
 app.post("/request", (req, res) => {
-    const { user_email, lat, lng, route } = req.body;
-    const sql = "INSERT INTO `user_request`( `user_email`, `lat`, `lng`,  `route`) VALUES (?,?,?,?)"
+    const { user_email,user_name,lat, lng, route } = req.body;
+    const sql = "INSERT INTO user_request( user_email, lat, lng,  route) VALUES (?,?,?,?)"
+    const sql1 = "INSERT INTO user_info( email, name) VALUES (?,?)"
     con.query(sql, [user_email, lat, lng, route], (err, result) => {
         if (err) {
             console.log(err);
@@ -314,7 +331,15 @@ app.post("/request", (req, res) => {
         } else {
             console.log(result.insertId)
             let num = (result.insertId).toString()
-            res.send(num);
+            con.query(sql1, [user_email,user_name], (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(503).send("Server error");
+                } else {
+                    res.send(num);
+                }
+            });
+
         }
     });
 });

@@ -11,6 +11,7 @@ var connection = new WebSocket('wss://pytransit.szo.me')
 var current_lat;
 var current_lng;
 var user_email
+var user_name
 var driver_id
 var score
 var comment
@@ -152,7 +153,7 @@ function requesttodb(direction) {
     $.ajax({
         type: "POST",
         url: "/request",
-        data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
+        data: { user_email: user_email,user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
         success: function(response) {
             Swal.fire({
                 title: 'เรียกรถสำเร็จ✔✔✔',
@@ -183,7 +184,7 @@ function check_request() {
     $.ajax({
         type: "POST",
         url: "/request",
-        data: { user_email: user_email, lat: current_lat, lng: current_lng, route: direction },
+        data: { user_email: user_email,user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
         success: function(response) {
             Swal.fire({
                 title: 'เรียกรถสำเร็จ✔✔✔',
@@ -253,6 +254,7 @@ function getemail() {
         url: "/verify",
         success: function(response) {
             user_email = response.email
+            user_name = response.name
         },
         error: function(xhr) {
             Swal.fire({
