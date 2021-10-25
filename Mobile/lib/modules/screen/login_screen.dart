@@ -30,8 +30,8 @@ class _loginState extends State<login> {
   late Timer _timer;
   late MQTTManager _manager;
   var _counter = 0;
-  final _url = Uri.parse('http://pytransit.szo.me/loginmoblie');
-  // final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
+  // final _url = Uri.parse('http://pytransit.szo.me/loginmoblie');
+  final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
 
@@ -233,6 +233,11 @@ class _loginState extends State<login> {
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
         box.write('driver_id', "${driver['driver_id']} ");
+        box.write('adrs', "ที่อยู่ ${driver['address']} ");
+        box.write('adrs1',
+            "ตำบล/แขวง ${driver['sub']} \nอำเภอ/เขต ${driver['dist']}");
+        box.write('adrs2', "จังหวัด ${driver['prov']} ${driver['zip']}");
+        box.write('sex', "เพศ ${driver['sex']} ");
         box.write('tell', "${driver['tell']} ");
         // print('เช็คๆๆ ${box.read('driver_id')}');
         _configureAndConnect();

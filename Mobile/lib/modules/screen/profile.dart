@@ -24,6 +24,12 @@ class _profileScreenState extends State<profileScreen> {
   late String point = '';
   late String total = '';
   late String plateId = '';
+  late String brand = '';
+  late String _color = '';
+  late String adrs = '';
+  late String adrs1 = '';
+  late String adrs2 = '';
+  late String sex = '';
   late String seat = '';
   late Timer _timer;
   late double _point = 0;
@@ -270,7 +276,11 @@ class _profileScreenState extends State<profileScreen> {
             Text(
               'ชื่อ $name\n'
               'เบอร์โทรศัพท์ $tell\n'
-              'E-mail $email\n',
+              'E-mail $email\n'
+              '$adrs\n'
+              '$adrs1\n'
+              '$adrs2\n'
+              '$sex\n',
               style: TextStyle(
                 fontSize: 22.0,
                 fontStyle: FontStyle.normal,
@@ -290,7 +300,8 @@ class _profileScreenState extends State<profileScreen> {
             ),
             Text(
               'เลขทะเบียนรถ $plateId\n'
-              'ความจุที่นั่ง $seat ที่นั่ง\n',
+              'ความจุที่นั่ง $seat ที่นั่ง รุ่นรถ $brand \n'
+              'สี $_color \n',
               style: TextStyle(
                 fontSize: 22.0,
                 fontStyle: FontStyle.normal,
@@ -311,9 +322,9 @@ class _profileScreenState extends State<profileScreen> {
     id = box.read('carmatchid').toString();
     try {
       http.Response response =
-          // await http.post(Uri.parse('http://10.0.2.2:35000/selectcar'), body: {
-          await http
-              .post(Uri.parse('http://pytransit.szo.me/selectcar'), body: {
+          await http.post(Uri.parse('http://10.0.2.2:35000/selectcar'), body: {
+        // await http
+        //     .post(Uri.parse('http://pytransit.szo.me/selectcar'), body: {
         'carmatch': id,
       }).timeout(Duration(seconds: 4));
       final _car = jsonDecode(response.body);
@@ -321,6 +332,8 @@ class _profileScreenState extends State<profileScreen> {
       setState(() {
         plateId = "${car['License_plate']}";
         seat = "${car['seat']}";
+        brand = "${car['brand']}";
+        _color = "${car['color']}";
       });
       //print('titok' + "${car['License_plate']}");
     } on TimeoutException catch (e) {
@@ -337,8 +350,8 @@ class _profileScreenState extends State<profileScreen> {
 
     try {
       http.Response response =
-          // await http.post(Uri.parse('http://10.0.2.2:35000/date'), body: {
-          await http.post(Uri.parse('http://pytransit.szo.me/date'), body: {
+          await http.post(Uri.parse('http://10.0.2.2:35000/date'), body: {
+        // await http.post(Uri.parse('http://pytransit.szo.me/date'), body: {
         'carmatch': id,
       }).timeout(Duration(seconds: 4));
       final _date = jsonDecode(response.body);
@@ -358,6 +371,10 @@ class _profileScreenState extends State<profileScreen> {
       email = box.read('email').toString();
       point = box.read('point').toString();
       total = box.read('total').toString();
+      adrs = box.read('adrs').toString();
+      adrs1 = box.read('adrs1').toString();
+      adrs2 = box.read('adrs2').toString();
+      sex = box.read('sex').toString();
       _point = double.parse('$point');
 
       date = box.read('_date').toString();

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttermqttnew/modules/screen/history_screen.dart';
 import 'package:fluttermqttnew/modules/screen/login_screen.dart';
 import 'package:fluttermqttnew/modules/screen/profile.dart';
 import 'package:fluttermqttnew/modules/widgets/show_title.dart';
@@ -45,8 +46,8 @@ class _MapViewState extends State<MapView> {
   double? lat, lng;
 
   bool _picture = true;
-  final _url = Uri.parse('http://pytransit.szo.me/addlocation');
-  // final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
+  // final _url = Uri.parse('http://pytransit.szo.me/addlocation');
+  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
 
   late GoogleMapController mapController;
   late Timer _timer;
@@ -165,8 +166,8 @@ class _MapViewState extends State<MapView> {
   Future get_count_in() async {
     try {
       http.Response response =
-          // await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
-          await http.get(Uri.parse('http://pytransit.szo.me/count_in'));
+          await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/count_in'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
@@ -185,8 +186,8 @@ class _MapViewState extends State<MapView> {
   Future get_count_out() async {
     try {
       http.Response response =
-          // await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
-          await http.get(Uri.parse('http://pytransit.szo.me/count_out'));
+          await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/count_out'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
@@ -534,7 +535,7 @@ class _MapViewState extends State<MapView> {
     PolylineId id = PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: MyConstant.red1,
+      color: MyConstant.blue,
       points: polylineCoordinates,
       width: 8,
     );
@@ -546,7 +547,7 @@ class _MapViewState extends State<MapView> {
     PolylineId id = PolylineId("poly1");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: MyConstant.red1,
+      color: MyConstant.blue,
       points: polylineCoordinates,
       width: 8,
     );
@@ -733,6 +734,34 @@ class _MapViewState extends State<MapView> {
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                shadowColor: Colors.black,
+                onSurface: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                MaterialPageRoute route =
+                    MaterialPageRoute(builder: (value) => historyScreen());
+                Navigator.push(context, route);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.history),
+                  Text(
+                    'History',
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
                 primary: Colors.red[900],
                 shadowColor: Colors.black,
                 onSurface: Colors.black,
@@ -795,8 +824,8 @@ class _MapViewState extends State<MapView> {
   Future get_location() async {
     try {
       http.Response response =
-          // await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
-          await http.get(Uri.parse('http://pytransit.szo.me/query_location'));
+          await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
+      // await http.get(Uri.parse('http://pytransit.szo.me/query_location'));
 
       List data = jsonDecode(response.body);
       for (var i in data) {
@@ -907,8 +936,8 @@ class _MapViewState extends State<MapView> {
   Future updateStatus(var id, var drverid) async {
     try {
       http.Response response =
-          // await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
-          await http.put(Uri.parse('http://pytransit.szo.me/setstatus'), body: {
+          await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
+        // await http.put(Uri.parse('http://pytransit.szo.me/setstatus'), body: {
         'request_id': id,
         'res_driver': drverid,
       }).timeout(Duration(seconds: 4));
@@ -926,11 +955,10 @@ class _MapViewState extends State<MapView> {
     double sum = 0;
     int count = 0;
     try {
-      http.Response response =
-          // await http
-          //     .post(Uri.parse('http://10.0.2.2:35000/query_point'), body: {
-          await http
-              .post(Uri.parse('http://pytransit.szo.me/query_point'), body: {
+      http.Response response = await http
+          .post(Uri.parse('http://10.0.2.2:35000/query_point'), body: {
+        // await http
+        //     .post(Uri.parse('http://pytransit.szo.me/query_point'), body: {
         'driver_id': id,
       }).timeout(Duration(seconds: 4));
       List data = jsonDecode(response.body);
