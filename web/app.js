@@ -321,7 +321,7 @@ app.post("/review", (req, res) => {
 // });
 
 app.post("/request", (req, res) => {
-    const { user_email,user_name,lat, lng, route } = req.body;
+    const { user_email, user_name, lat, lng, route } = req.body;
     const sql = "INSERT INTO user_request( user_email, lat, lng,  route) VALUES (?,?,?,?)"
     const sql1 = "INSERT INTO user_info( email, name) VALUES (?,?)"
     con.query(sql, [user_email, lat, lng, route], (err, result) => {
@@ -331,7 +331,7 @@ app.post("/request", (req, res) => {
         } else {
             console.log(result.insertId)
             let num = (result.insertId).toString()
-            con.query(sql1, [user_email,user_name], (err, result) => {
+            con.query(sql1, [user_email, user_name], (err, result) => {
                 if (err) {
                     console.log(err);
                     res.status(503).send("Server error");
@@ -443,7 +443,18 @@ app.get("/reqdata", (req, res) => {
     });
 });
 
+app.post("/hist", function(req, res) {
+    const id = req.body.driver_id;
+    const sql = "SELECT DATE_FORMAT(date,'%d/%m/%Y') as date ,License_plate,brand,color FROM `car_match` LEFT JOIN `car` ON `car_match`.`car_id` = `car`.`car_id` WHERE MONTH(`date`) = MONTH(CURRENT_TIMESTAMP) AND `driver_id` = ?";
+    con.query(sql, [id], function(err, result) {
+        if (err) {
+            res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.status(200).send(result);
+        }
 
+    });
+});
 
 client.on('connect', function() {
     client.subscribe('moyanyo', function(err) {

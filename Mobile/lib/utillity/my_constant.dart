@@ -13,6 +13,7 @@ class MyConstant {
   static Color red1 = Color(0xffb71c1c);
   static Color red2 = Color(0xff9a0007);
   static Color green1 = Color(0xff005005);
+  static Color blue = Color(0xff34515e);
 
   //style
   TextStyle h1_Stlye() => TextStyle(

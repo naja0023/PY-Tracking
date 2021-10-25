@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttermqttnew/modules/screen/history_screen.dart';
 import 'package:fluttermqttnew/modules/screen/profile.dart';
 
 import 'package:provider/provider.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
             '/login': (BuildContext context) => login(),
             '/map': (BuildContext context) => MapScreen(),
             '/profile': (BuildContext context) => profileScreen(),
+            '/hist': (BuildContext context) => historyScreen(),
           }),
     );
   }

@@ -70,13 +70,13 @@ content-type: application/json
 }
 
 ####
-post http://localhost:35000/addcarmacht
+post http://localhost:35000/hist
 content-type: application/json
 
 {
-    "car_id" : "1",
-    "driver_id" : "1",
-     "date" : "11/2/64"
+    
+    "driver_id" : "6"
+   
 }
 
 ####
