@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('./partials/header.ejs') %>
 
     <head>
+
         <link rel="stylesheet" type="text/css" href="/style/login.css">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,42 +12,52 @@
         <title>
             Servies Car Admin
         </title>
-        <!-- GOOGLE FONT-->
+        <!-- GOOGLE FONT -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
-        <!-- BOXICONS -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <!-- BOXICONS-->
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <!-- APP CSS -->
         <link rel="stylesheet" href="/styles/grid.css">
         <link rel="stylesheet" href="/styles/app.css">
+        <style>
+            body {
+                background-image: url('/image/blackground.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
     </head>
 
     <body>
+
+
+
         <div class="container" id="container">
             <div class="form-container sign-up-container">
-             
+
             </div>
             <div class="form-container sign-in-container">
                 <form action="#">
                     <h1>LOGIN GOOGLE</h1>
-                    <div class="social-container">
-                        <a href="#" class="social" id="btnlogin" ><i class="fab fa-google-plus-g"  ></i></a>
+                    <div class="border-login">
+                        <a href="#" id="btnlogin"><img src="/image/search.png" alt="HTML tutorial" style="width:42px;height:42px;"></a>
                     </div>
-                    <div style="background-image: url('car_13260.png');"></div>
-
                 </form>
             </div>
-            <div class="overlay-panel overlay-right">
-				<h1>ยินดีตอนรับ</h1>
-             <p>ระบบติดตามรถขนส่งสาธารณะจังหวัดพะเยา</p>
-				
-				
-			</div>
-        </div>
+            <div class="overlay-panel overlay-right" style="background-color:SlateBlue;">
+                <div class="padd">
+                    <h1 style="color:white;">ยินดีตอนรับสู่</h1>
+                </div>
+                <div class="border-text">
+                    <h3 style="color:white;">ระบบติดตามรถขนส่งสารธารณะจังหวัดพะเยา</h3>
+                </div>
+                <img class="padd_" src="/image/logo.png" alt="logo" style="width:160px;height:120px;">
+
+            </div>
     </body>
 
 </html>
-<script src="/scripts/js/login.js"></script>
+<script src=" /scripts/js/login.js "></script>

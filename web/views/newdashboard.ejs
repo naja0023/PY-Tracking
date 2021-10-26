@@ -12,9 +12,7 @@
         <!-- GOOGLE FONT-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         <!-- BOXICONS -->
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <!-- APP CSS -->
@@ -26,21 +24,23 @@
 
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="sidebar-logo">
-                <img src="/image/car_13260.png" alt="Comapy logo">
-                <ul class="sidebar-close" id="sidebar-close">
-                    <i class='bx bxs-chevrons-left'></i>
-                </ul>
-            </div>
-            <div class="sidebar-user">
-                <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">
-                        PY-Transit [ADMIN]
-                    </div>
+            <div class="sidebar-head">
+                <div class="sidebar-logo">
+                    <img src="/image/logo.png" alt="logo" style="width:120px;height:80px;">
+                    <ul class="sidebar-close" id="sidebar-close">
+                        <i class='bx bxs-chevrons-left'></i>
+                    </ul>
                 </div>
-                <button class="btn btn-outline">
-                    <i class='bx bx-log-out bx-rotate-180' onclick="window.location.replace('/auth/logout')"></i>
+                <div class="sidebar-user">
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">
+                            PY-Transit [ADMIN]
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">
+                    <i class='bx bx-log-out bx-rotate-180' style='color:#ffffff' onclick="window.location.replace('/auth/logout')" ></i>
                 </button>
+                </div>
             </div>
             <!-- SIDEBAR MENU -->
             <ul class="sidebar-menu">
@@ -53,7 +53,7 @@
                 <li>
                     <a href="/newheatmap">
                         <i class='bx bx-map-alt'></i>
-                        <span>ใหม่แผนที่ความหนาแน่น</span>
+                        <span>แผนที่ความหนาแน่น</span>
                     </a>
                 </li>
                 <li>
@@ -116,24 +116,20 @@
                     <i class='bx bx-menu-alt-left'></i>
                 </div>
                 <div class="main-tittle">
-                    dashboard
+                    <h1>สถิติรายวัน</h1>
                 </div>
             </div>
             <div class="main-content">
                 <div class="row">
-                    <div class="col-6 col-md-6 col-sm-12">
-                        <div class="box box-hover">
-                            <div class="counter">
-                                <div id="map" style="height: 300px; width: 725px;"></div>
-                            </div>
-                        </div>
+                    <div class="col-6 col-md-12 col-sm-12" style="height: 425px">
+                        <div id="map" class="border-map" style="height: 100%; width: 100%"></div>
                     </div>
-                    <div class="col-6 col-md-6 col-sm-12">
+                    <div class="col-6 col-md-12 col-sm-12">
                         <div class="box box-hover">
                             <div class="counter">
                                 <div class="card" style="background-color: #343a40;">
                                     <div class="card-body">
-                                        <canvas id="line-chart" width= 725px height= 278px></canvas>
+                                        <canvas id="line-chart" style="height: 350px; width: 100%;"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -142,10 +138,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-12 col-md-6 col-sm-12">
+                    <div class="col-12 col-md-12 col-sm-12">
                         <!-- CHART -->
                         <div class="box f-height">
-                            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                            <div id="chartContainer" style="height: 350px; width: 100%;"></div>
                         </div>
                         <!-- END CHART -->
                     </div>
@@ -157,9 +153,7 @@
         <!-- END MAIN CONTENT-->
 
         <!-- SCRIPT -->
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly"
-            async></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly" async></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="/scripts/js/dashboard.js"></script>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -172,7 +166,7 @@
         <script src="/scripts/js/dropdown.js"></script>
 
         <script language="JavaScript">
-            window.onload = function () {
+            window.onload = function() {
                 var chart = new CanvasJS.Chart("chartContainer", {
                     animationEnabled: true,
                     theme: "light2", // "light1", "light2", "dark1", "dark2"
@@ -220,11 +214,11 @@
                         }, {
                             y: 190,
                             label: "ธันวาคม"
-                        },]
+                        }, ]
                     }]
                 });
                 chart.render();
-    
+
             }
         </script>
 

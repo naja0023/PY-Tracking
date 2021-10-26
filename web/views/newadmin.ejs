@@ -12,9 +12,7 @@
         <!-- GOOGLE FONT-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         <!-- BOXICONS -->
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <!-- APP CSS -->
@@ -26,26 +24,29 @@
 
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="sidebar-logo">
-                <img src="/image/car_13260.png" alt="Comapy logo">
-                <ul class="sidebar-close" id="sidebar-close">
-                    <i class='bx bxs-chevrons-left'></i>
-                </ul>
-            </div>
-            <div class="sidebar-user">
-                <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">
-                        PY-Transit [ADMIN]
-                    </div>
+            <div class="sidebar-head">
+                <div class="sidebar-logo">
+                    <img src="/image/logo.png" alt="logo" style="width:120px;height:80px;">
+                    <ul class="sidebar-close" id="sidebar-close">
+                        <i class='bx bxs-chevrons-left'></i>
+                    </ul>
                 </div>
-                <button class="btn btn-outline">
-                    <i class='bx bx-log-out bx-rotate-180' onclick="window.location.replace('/auth/logout')"></i>
+                <div class="sidebar-user">
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">
+                            PY-Transit [ADMIN]
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">
+                    <i class='bx bx-log-out bx-rotate-180' style='color:#ffffff' onclick="window.location.replace('/auth/logout')" ></i>
                 </button>
+                </div>
             </div>
+
             <!-- SIDEBAR MENU -->
             <ul class="sidebar-menu">
                 <li>
-                    <a href="/newdashboard" >
+                    <a href="/newdashboard">
                         <i class='bx bxs-bar-chart-alt-2'></i>
                         <span>สถิติ</span>
                     </a>
@@ -53,7 +54,7 @@
                 <li>
                     <a href="/newheatmap">
                         <i class='bx bx-map-alt'></i>
-                        <span>ใหม่แผนที่ความหนาแน่น</span>
+                        <span>แผนที่ความหนาแน่น</span>
                     </a>
                 </li>
                 <li>
@@ -116,7 +117,7 @@
                     <i class='bx bx-menu-alt-left'></i>
                 </div>
                 <div class="main-tittle">
-                    Profile Member
+                    <h1>ข้อมูลคนขับรถ</h1>
                 </div>
             </div>
             <div class="main-content">
@@ -242,9 +243,7 @@
                                                 <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= resule[index].driver_id %>">Delete</button> -->
                                                 <!-- <i class="fas fa-edit"></i> -->
-                                                <i class="fas fa-edit editbut ml-3"
-                                                    style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;"
-                                                    blogData="<%= JSON.stringify(resule[index]) %>"></i>
+                                                <i class="fas fa-edit editbut ml-3" style="font-size:27px; cursor: pointer; align-items: center; color: #1976d2;" blogData="<%= JSON.stringify(resule[index]) %>"></i>
 
                                             </td>
                                         </tr>
@@ -255,8 +254,7 @@
                     </div>
                 </div>
                 <!-- Modal Add Edit User -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -285,13 +283,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">อีเมลล์:</label>
-                                        <input class="form-control" type="email" placeholder="example@mail.com"
-                                            id="email"></input>
+                                        <input class="form-control" type="email" placeholder="example@mail.com" id="email"></input>
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">เบอร์โทร:</label>
-                                        <input class="form-control" type="tel" placeholder="08xxxxxxxx"
-                                            id="tel"></input>
+                                        <input class="form-control" type="tel" placeholder="08xxxxxxxx" id="tel"></input>
                                     </div>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">เลขบัตรประชาชน:</label>
@@ -299,8 +295,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">ที่อยู่:</label>
-                                        <input class="form-control" placeholder="ตัวอย่าง'107 ม.2 บ้านอะไรก็ไม่รู้'"
-                                            id="address"></input>
+                                        <input class="form-control" placeholder="ตัวอย่าง'107 ม.2 บ้านอะไรก็ไม่รู้'" id="address"></input>
                                     </div>
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">ตำบล/แขวง:</label>
