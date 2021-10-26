@@ -1,67 +1,95 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var mode = "";
     var carmatch = 0;
-    var label =['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
-    var data=[86,114,106,106,107,111,133,123,321,1]
+    var label = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฏาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+    var data = []
 
-    new Chart(document.getElementById("line-chart"), {
-        type: 'line',
-        data: {
-          labels:label,
-          
-          datasets: [{ 
-              data: data,
-              label: "จำนวนคน",
-              borderColor: "#3e95cd",labelColor : "#fff",
-              fill: false,
-              hoverBackgroundColor: "rgba(232,105,90,0.8)",
-            hoverBorderColor: "orange",
+    $.ajax({
+        type: "GET",
+        url: "/graph_carmatch",
+        success: function(response) {
+            var j = 0
+            for (var i = 1; i <= 12; i++) {
+                if (i == response[j]._month) {
+                    data.push(response[j].num)
+                    if (j == response.length - 1) {
+                        j = response.length - 1
+                    } else {
+                        j++
+                    }
+                } else {
+                    data.push(0)
+                }
             }
-          ]
+            // alert(response[0].num)
+            // window.location.replace(response);
+            new Chart(document.getElementById("line-chart"), {
+                type: 'line',
+                data: {
+                    labels: label,
+                    datasets: [{
+                        data: data,
+                        label: "จำนวนคน",
+                        borderColor: "#3e95cd",
+                        labelColor: "#fff",
+                        fill: false,
+                        hoverBackgroundColor: "rgba(232,105,90,0.8)",
+                        hoverBorderColor: "orange",
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'จำนวนผู้ลงทะเบียนขับรายเดือน',
+                        fontColor: "#FFF",
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                fontColor: "white",
+                                // fontSize: 18,
+                                // stepSize: 1,
+
+
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: "white",
+                                // fontSize: 14,
+                                // stepSize: 1,
+
+                            }
+                        }]
+                    }
+                }
+            });
         },
-        options: {
-            responsive: true,
-          title: {
-            display: true,
-            text: 'จำนวนผู้ลงทะเบียนขับรายเดือน',
-            fontColor: "#FFF",
-          },
-          scales: {
-            yAxes: [{
-                ticks: {
-                    fontColor: "white",
-                    // fontSize: 18,
-                    // stepSize: 1,
+        error: function(xhr) {
+            Swal.fire({
+                icon: "error",
+                title: xhr.responseText,
+            });
+        }
+    });
 
-                    
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    fontColor: "white",
-                    // fontSize: 14,
-                    // stepSize: 1,
-                   
-                }
-            }]
-        }
-        }
-      });
-     
-    $(".closes").click(function(){
-        $("#exampleModal").modal("toggle");  
+
+
+    $(".closes").click(function() {
+        $("#exampleModal").modal("toggle");
     })
 
-    $(".close2").click(function(){
-        $("#exampleModal2").modal("toggle");  
+    $(".close2").click(function() {
+        $("#exampleModal2").modal("toggle");
     })
 
-    $(".btnDelete").click(function () {
+    $(".btnDelete").click(function() {
         carmatch = $(this).attr("blogID");
         $("#exampleModal2").modal("toggle");
     })
 
-    $("#btnModalSave").click(function () {
+    $("#btnModalSave").click(function() {
         // close modal
         $("#exampleModal").modal("toggle");
 
@@ -70,8 +98,6 @@ $(document).ready(function () {
             name: $("#name").val(),
             lastname: $("#lastname").val(),
             License_plate: $("#carplate").val(),
-           
-
         };
         let method = "POST";
         let url = "/addcarmatch";
@@ -82,7 +108,7 @@ $(document).ready(function () {
                 name: $("#name").val(),
                 lastname: $("#lastname").val(),
                 License_plate: $("#carplate").val(),
-                carmatch:carmatch
+                carmatch: carmatch
             };
             method = "PUT";
             url = "/updatecarmatch";
@@ -92,11 +118,11 @@ $(document).ready(function () {
             type: method,
             url: url,
             data: data,
-            success: function (response) {
+            success: function(response) {
                 alert("Success")
                 window.location.replace(response);
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 Swal.fire({
                     icon: "error",
                     title: xhr.responseText,
@@ -105,7 +131,8 @@ $(document).ready(function () {
         });
     });
 
-    $("#adduser").click(function () {
+
+    $("#adduser").click(function() {
         $("#btnModalSave").html("ADD")
         mode = "add";
         // change the modal title
@@ -121,7 +148,7 @@ $(document).ready(function () {
     });
 
     // Edit button
-    $(".editbut").click(function () {
+    $(".editbut").click(function() {
         $("#btnModalSave").html("EDIT")
         mode = "edit";
         // change the modal title
@@ -130,26 +157,25 @@ $(document).ready(function () {
         $("#exampleModal").modal("toggle");
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
-         console.log(postData);
+        console.log(postData);
         $("#name").val(postData.name);
         $("#lastname").val(postData.lastname);
         $("#carplate").val(postData.License_plate);
         carmatch = postData.carmatch;
-        
+
     });
 
-    $("#deletekiki").click(function () {
+    $("#deletekiki").click(function() {
         $.ajax({
             type: "DELETE",
-            url: "/deletecarmatch" ,
+            url: "/deletecarmatch",
             data: { carmatch: carmatch },
-        }).done(function (data, state, xhr) {
+        }).done(function(data, state, xhr) {
             alert("delete success")
-                window.location.replace(data)
+            window.location.replace(data)
         })
     })
 
-    
+
 
 });
-

@@ -1,155 +1,54 @@
-$(document).ready(function () {
-    var mode = "";
-    var reqid = 0;
-    var label =['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']
-    var data=[86,114,106,106,107,111,133,123,321,1]
-    
-    new Chart(document.getElementById("bar-chart"), {
-        type: 'bar',
-        data: {
-          labels:label,
-          
-          datasets: [{ 
-              data: data,
-              label: "จำนวนคนเรียกรถ",
-              borderColor: "#3e95cd",labelColor : "#fff",
-              fill: false,
-              hoverBackgroundColor: "rgba(232,105,90,0.8)",
-            hoverBorderColor: "orange",
-            }
-          ]
+window.onload = function() {
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2", // "light1", "light2", "dark1", "dark2"
+        title: {
+            text: "กราฟเรียกรถ"
         },
-        options: {
-            responsive: true,
-          title: {
-            display: true,
-            text: 'จำนวนผู้ลงทะเบียนขับรายเดือน',
-            fontColor: "#FFF",
-          },
-          scales: {
-            yAxes: [{
-                ticks: {
-                    fontColor: "white",
-                    // fontSize: 18,
-                    // stepSize: 1,
-
-                    
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    fontColor: "white",
-                    // fontSize: 14,
-                    // stepSize: 1,
-                   
-                }
-            }]
-        }
-        }
-      });
-     
-    $(".closes").click(function(){
-        $("#exampleModal").modal("toggle");  
-    })
-
-    $(".close2").click(function(){
-        $("#exampleModal2").modal("toggle");  
-    })
-
-    $(".btnDelete").click(function () {
-        reqid = $(this).attr("blogID");
-        $("#exampleModal2").modal("toggle");
-    })
-
-    $("#btnModalSave").click(function () {
-        // close modal
-        $("#exampleModal").modal("toggle");
-
-        // add       
-        let data = {
-            name: $("#name").val(),
-            lastname: $("#lastname").val(),
-            License_plate: $("#carplate").val(),
-           
-
-        };
-        let method = "POST";
-        let url = "/addcarmatch";
-
-        // edit
-        if (mode == "edit") {
-            data = {
-                name: $("#name").val(),
-                lastname: $("#lastname").val(),
-                License_plate: $("#carplate").val(),
-                carmatch:reqid
-            };
-            method = "PUT";
-            url = "/updatecarmatch";
-        }
-
-        $.ajax({
-            type: method,
-            url: url,
-            data: data,
-            success: function (response) {
-                alert("Success")
-                window.location.replace(response);
-            },
-            error: function (xhr) {
-                Swal.fire({
-                    icon: "error",
-                    title: xhr.responseText,
-                });
-            }
-        });
+        axisY: {
+            title: "จำนวนการเรียกรถ(ครั้ง)"
+        },
+        data: [{
+            type: "column",
+            dataPoints: [{
+                y: 100,
+                label: "มกราคม"
+            }, {
+                y: 150,
+                label: "กุมภาพันธ์"
+            }, {
+                y: 120,
+                label: "มีนาคม"
+            }, {
+                y: 180,
+                label: "เมษายน"
+            }, {
+                y: 90,
+                label: "พฤษภาคม"
+            }, {
+                y: 200,
+                label: "มิถุนายน"
+            }, {
+                y: 123,
+                label: "กฤกฏาคม"
+            }, {
+                y: 185,
+                label: "สิงหาคม"
+            }, {
+                y: 240,
+                label: "กันยายน"
+            }, {
+                y: 210,
+                label: "ตุลาคม"
+            }, {
+                y: 80,
+                label: "พฤษจิกายน"
+            }, {
+                y: 190,
+                label: "ธันวาคม"
+            }, ]
+        }]
     });
+    chart.render();
 
-    $("#adduser").click(function () {
-        $("#btnModalSave").html("ADD")
-        mode = "add";
-        // change the modal title
-        // change the modal title
-        $("#exampleModalLabel").text("Add Carmatch");
-        // console.log(postData);
-        $("#name").val('');
-        $("#lastnamel").val('');
-        $("#carplate").val('');
-        // show modal
-        $("#exampleModal").modal("toggle");
-
-    });
-
-    // Edit button
-    $(".editbut").click(function () {
-        $("#btnModalSave").html("EDIT")
-        mode = "edit";
-        // change the modal title
-        $("#exampleModalLabel").text("Edit match");
-        // show modal
-        $("#exampleModal").modal("toggle");
-        // get selected post data
-        const postData = JSON.parse($(this).attr("blogData"));
-         console.log(postData);
-        $("#name").val(postData.name);
-        $("#lastname").val(postData.lastname);
-        $("#carplate").val(postData.License_plate);
-        reqid = postData.carmatch;
-        
-    });
-
-    $("#deletekiki").click(function () {
-        $.ajax({
-            type: "DELETE",
-            url: "/deletecarmatch" ,
-            data: { carmatch: reqid },
-        }).done(function (data, state, xhr) {
-            alert("delete success")
-                window.location.replace(data)
-        })
-    })
-
-    
-
-});
-
+}

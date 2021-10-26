@@ -102,11 +102,6 @@ router.get("/newmatch", checkUser, (req, res) => {
 
 })
 
-router.get("/newrequdata", checkUser, (req, res) => {
-    res.render('newrequdata')
-
-})
-
 router.get("/newcar", checkUser, (req, res) => {
     res.render('newcar')
 

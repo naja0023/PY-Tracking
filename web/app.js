@@ -18,6 +18,7 @@ const compression = require('compression');
 const blogRoute = require('./routes/manageuserroute');
 const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
+const reqdata = require('./routes/managereqdata');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
@@ -48,6 +49,7 @@ app.use(carmatchro)
 app.use(pageRoute);
 app.use(blogRoute);
 app.use(caroute);
+app.use(reqdata);
 
 app.use("/profileroute", profile);
 
@@ -178,21 +180,6 @@ app.post("/loginmoblie", function(req, res) {
 });
 
 
-
-app.delete("/deleteuser", (req, res) => {
-    const { id } = req.body;
-    console.log(req.body)
-    const sql = "DELETE FROM user WHERE Id =?"
-    con.query(sql, [id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("Delete successed");
-        }
-    });
-});
-
 app.get("/query_location", (req, res) => {
 
     const sql = "SELECT * FROM `user_request`"
@@ -276,20 +263,6 @@ app.post("/addlocation", (req, res) => {
     });
 });
 
-app.post("/matchcar", (req, res) => {
-    const { driver_id, car_id } = req.body;
-
-    const sql = "INSERT INTO `car_match` (`driver_id`, `car_id`, `date`) VALUES (?,?,current_timestamp())"
-    con.query(sql, [driver_id, car_id], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send("Match Succesfully");
-
-        }
-    });
-});
 
 app.post("/review", (req, res) => {
     const { driver_id, user_email, point, report } = req.body;
@@ -380,8 +353,6 @@ app.get("/count_out", (req, res) => {
 
 app.post("/selectcar", function(req, res) {
     const id = req.body.carmatch;
-
-
     const sql = "SELECT * FROM car LEFT JOIN car_match on car.car_id = car_match.car_id WHERE car_match.carmatch =?";
     con.query(sql, [id], function(err, result, fields) {
         if (err) {
@@ -408,7 +379,7 @@ app.post("/requestinfo", (req, res) => {
 })
 
 app.get("/graph_reqdata", (req, res) => {
-    const sql = "SELECT MONTH(`req_date`),COUNT(`request_id`) FROM `user_request`WHERE YEAR(`req_date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`req_date`)"
+    const sql = "SELECT MONTH(`req_date`)as _month,COUNT(`request_id`)as num FROM `user_request`WHERE YEAR(`req_date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`req_date`)"
     con.query(sql, (err, result) => {
         if (err) {
             console.log(err);
@@ -419,17 +390,6 @@ app.get("/graph_reqdata", (req, res) => {
     });
 });
 
-app.get("/graph_carmatch", (req, res) => {
-    const sql = "SELECT MONTH(`date`),COUNT(`carmatch`) FROM `car_match`WHERE YEAR(`date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`date`)"
-    con.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
 
 app.get("/reqdata", (req, res) => {
     const sql = "SELECT * FROM `user_request` LEFT JOIN driver ON driver.driver_id = user_request.res_driver"

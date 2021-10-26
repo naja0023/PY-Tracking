@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const con = mysql.createConnection(config);
 const checkUser = require('./middleware');
 
-router.get("/newcarmatch",checkUser, (req, res) => {
+router.get("/newcarmatch", checkUser, (req, res) => {
     const sql = "SELECT * FROM car_match,driver,car WHERE MONTH(date)=MONTH(CURRENT_TIMESTAMP) AND car_match.driver_id =driver.driver_id AND car_match.car_id = car.car_id";
     con.query(sql, function(err, result, fields) {
         if (err) {
@@ -56,10 +56,21 @@ router.post("/addcarmatch", checkUser, (req, res) => {
             if (numrows != 1) {
                 console.error("can not insert data");
                 res.status(503).send("Database error");
-            }
-            else {
+            } else {
                 res.send("/newcarmatch");
             }
+        }
+    });
+});
+
+router.get("/graph_carmatch", (req, res) => {
+    const sql = "SELECT MONTH(`date`)as _month,COUNT(`carmatch`) as num FROM `car_match`WHERE YEAR(`date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`date`)"
+    con.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(503).send("Server error");
+        } else {
+            res.status(200).send(result);
         }
     });
 });

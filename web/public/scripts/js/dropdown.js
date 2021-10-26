@@ -14,58 +14,61 @@ document.querySelectorAll('.sidebar-submenu').forEach(e => {
     }
 })
 
-let category_options = {
-    series: [10, 30, 25, 100],
-    labels: ['นิสิต', 'อาจารย์', 'หมอ', 'โควิด'],
-    chart: {
-        type: 'donut',
-    },
-    colors: ['#6ab04c', '#2980b9', '#f39c12', '#d35400']
+window.onload = function() {
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2", // "light1", "light2", "dark1", "dark2"
+        title: {
+            text: "กราฟเรียกรถ"
+        },
+        axisY: {
+            title: "จำนวนการเรียกรถ(ครั้ง)"
+        },
+        data: [{
+            type: "column",
+            dataPoints: [{
+                y: 100,
+                label: "มกราคม"
+            }, {
+                y: 150,
+                label: "กุมภาพันธ์"
+            }, {
+                y: 120,
+                label: "มีนาคม"
+            }, {
+                y: 180,
+                label: "เมษายน"
+            }, {
+                y: 90,
+                label: "พฤษภาคม"
+            }, {
+                y: 200,
+                label: "มิถุนายน"
+            }, {
+                y: 123,
+                label: "กฤกฏาคม"
+            }, {
+                y: 185,
+                label: "สิงหาคม"
+            }, {
+                y: 240,
+                label: "กันยายน"
+            }, {
+                y: 210,
+                label: "ตุลาคม"
+            }, {
+                y: 80,
+                label: "พฤษจิกายน"
+            }, {
+                y: 190,
+                label: "ธันวาคม"
+            }, ]
+        }]
+    });
+    chart.render();
+
 }
 
-let category_chart = new ApexCharts(document.querySelector("#category-chart"), category_options)
-category_chart.render()
-
-let customer_options = {
-    series: [{
-        name: "Store Customers",
-        data: [40, 70, 20, 90, 36, 80, 30, 91, 60]
-    },{
-        name: "Online Customers",
-        data: [20, 30, 10, 20, 16, 40, 20, 51, 10]
-    }],
-    colors: ['#6ab04c', '#2980b9'],
-    chart: {
-        height: 350,
-        type: 'line',
-    },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth'
-    },
-    xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    },
-    legend: {
-        position: 'top'
-    }
-}
-
-let customer_chart = new ApexCharts(document.querySelector("#customer-chart"), customer_options)
-customer_chart.render()
-
-setDarkChart = (dark) => {
-    let theme = {
-        theme: {
-            mode: dark ? 'dark' : 'light'
-        }
-    }
-
-    customer_chart.updateOptions(theme)
-    category_chart.updateOptions(theme)
-} 
 
 // DARK MODE TOGGLE
 let darkmode_toggle = document.querySelector('#darkmode-toggle')

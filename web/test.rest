@@ -35,7 +35,7 @@ content-type: application/json
 }
 
 ####
-get http://localhost:35000/reqdata
+get http://localhost:35000/graph_carmatch
 content-type: application/json
 
 { 

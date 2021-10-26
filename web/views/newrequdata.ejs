@@ -1,215 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        GRAPH CAR
-    </title>
-    <!-- GOOGLE FONT-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <!-- BOXICONS -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- APP CSS -->
-    <link rel="stylesheet" href="/styles/grid.css">
-    <link rel="stylesheet" href="/styles/app.css">
-</head>
+<%- include('./partials/header.ejs') %>
 
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            GRAPH CAR
+        </title>
+        <!-- GOOGLE FONT-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <!-- BOXICONS -->
+        <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+        <!-- APP CSS -->
+        <link rel="stylesheet" href="/styles/grid.css">
+        <link rel="stylesheet" href="/styles/app.css">
+    </head>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-head">
-            <div class="sidebar-logo">
-                <img src="/image/logo.png" alt="logo" style="width:120px;height:80px;">
-                <ul class="sidebar-close" id="sidebar-close">
-                    <i class='bx bxs-chevrons-left'></i>
-                </ul>
-            </div>
-            <div class="sidebar-user">
-                <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">
-                        PY-Transit [ADMIN]
-                    </div>
+    <body>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-head">
+                <div class="sidebar-logo">
+                    <img src="/image/logo.png" alt="logo" style="width:120px;height:80px;">
+                    <ul class="sidebar-close" id="sidebar-close">
+                        <i class='bx bxs-chevrons-left'></i>
+                    </ul>
                 </div>
-                <button class="btn btn-outline">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">
+                            PY-Transit [ADMIN]
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">
                 <i class='bx bx-log-out bx-rotate-180' style='color:#ffffff' onclick="window.location.replace('/auth/logout')" ></i>
             </button>
+                </div>
             </div>
-        </div>
-        <!-- SIDEBAR MENU -->
-        <ul class="sidebar-menu">
-            <li>
-                <a href="/newdashboard">
-                    <i class='bx bxs-bar-chart-alt-2'></i>
-                    <span>สถิติ</span>
-                </a>
-            </li>
-            <li>
-                <a href="/newheatmap">
-                    <i class='bx bx-map-alt'></i>
-                    <span>แผนที่ความหนาแน่น</span>
-                </a>
-            </li>
-            <li>
-                <a href="/newadminse">
-                    <i class='bx bxs-contact'></i>
-                    <span>จัดการข้อมูลคนขับรถ</span>
-                </a>
-            </li>
-            <li>
-                <a href="/newcars">
-                    <i class='bx bxs-car'></i>
-                    <span>จัดการข้อมูลรถ</span>
-                </a>
-            </li>
-            <!-- DROPDOWN -->
-            <li class="sidebar-submenu">
-                <a href="#" class="sidebar-menu-dropdown">
-                    <i class='bx bx-line-chart'></i>
-                    <span>ดูกราฟ</span>
-                    <div class="dropdown-icon"></div>
-                </a>
-                <ul class="sidebar-menu sidebar-menu-dropdown-content">
-                    <li>
-                        <a href="/newcarmatch">
+            <!-- SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="/newdashboard">
+                        <i class='bx bxs-bar-chart-alt-2'></i>
+                        <span>สถิติ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/newheatmap">
+                        <i class='bx bx-map-alt'></i>
+                        <span>แผนที่ความหนาแน่น</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/newadminse">
+                        <i class='bx bxs-contact'></i>
+                        <span>จัดการข้อมูลคนขับรถ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/newcars">
+                        <i class='bx bxs-car'></i>
+                        <span>จัดการข้อมูลรถ</span>
+                    </a>
+                </li>
+                <!-- DROPDOWN -->
+                <li class="sidebar-submenu">
+                    <a href="#" class="sidebar-menu-dropdown">
+                        <i class='bx bx-line-chart'></i>
+                        <span>ดูกราฟ</span>
+                        <div class="dropdown-icon"></div>
+                    </a>
+                    <ul class="sidebar-menu sidebar-menu-dropdown-content">
+                        <li>
+                            <a href="/newcarmatch">
                             จับคู่รถ
                         </a>
-                    </li>
-                    <li>
-                        <a href="/newrequdata" class="active">
+                        </li>
+                        <li>
+                            <a href="/newrequdata" class="active">
                             สถิติการเรียกรถ
                         </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-submenu">
-                <a href="#" class="sidebar-menu-dropdown">
-                    <i class='bx bxs-wrench'></i>
-                    <span>ตั้งค่า</span>
-                    <div class="dropdown-icon"></div>
-                </a>
-                <ul class="sidebar-menu sidebar-menu-dropdown-content">
-                    <li>
-                        <a href="#" class="darkmode-toggle" id="darkmode-toggle">
-                            <span>darkmode</span>
-                            <span class="darkmode-switch"></span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-submenu">
+                    <a href="#" class="sidebar-menu-dropdown">
+                        <i class='bx bxs-wrench'></i>
+                        <span>ตั้งค่า</span>
+                        <div class="dropdown-icon"></div>
+                    </a>
+                    <ul class="sidebar-menu sidebar-menu-dropdown-content">
+                        <li>
+                            <a href="#" class="darkmode-toggle" id="darkmode-toggle">
+                                <span>darkmode</span>
+                                <span class="darkmode-switch"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-        </ul>
-        <!-- END SIDEBAR MENU-->
-    </div>
-    <!-- END SIDEBAR -->
-
-    <!-- MAIN CONTENT -->
-    <div class="main">
-        <div class="main-header">
-            <div class="mobile-toggle" id="mobile-toggle">
-                <i class='bx bx-menu-alt-left'></i>
-            </div>
-            <div class="main-tittle">
-                <h1>ข้อมูลการเรียกรถ</h1>
-            </div>
+            </ul>
+            <!-- END SIDEBAR MENU-->
         </div>
-        <div class="main-content">
-            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-            <div class="col-12">
-                <!-- TABLE -->
-                <div class="box">
-                    <div class="box-body overflow-scroll">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>อีเมลล์ผู้โดยสาร</th>
-                                    <th>เส้นทาง</th>
-                                    <th>วันที่เรียกรถ</th>
-                                    <th>วันที่รับขึ้นรถ</th>
-                                    <th>คนขับรถ</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+        <!-- END SIDEBAR -->
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <div class="main-header">
+                <div class="mobile-toggle" id="mobile-toggle">
+                    <i class='bx bx-menu-alt-left'></i>
                 </div>
-                <!-- END TABLE -->
+                <div class="main-tittle">
+                    <h1>ข้อมูลการเรียกรถ</h1>
+                </div>
             </div>
+            <div class="main-content">
+                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                <div class="col-12">
+                    <!-- TABLE -->
+                    <div class="box">
+                        <div class="box-body overflow-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>อีเมลล์ผู้โดยสาร</th>
+                                        <th>เส้นทาง</th>
+                                        <th>วันที่เรียกรถ</th>
+                                        <th>วันที่รับขึ้นรถ</th>
+                                        <th>คนขับรถ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for( let index=0; index < resule.length; index++ ) { %>
+                                        <tr>
+                                            <td>
+                                                <%= resule[index].em %>
+                                            </td>
+                                            <td>
+                                                <% if (resule[index].route == 1){ %>
+                                                    เข้าเมือง
+                                                    <% }else{%>
+                                                        ออกเมือง
+                                                        <%  }%>
 
 
+                                            </td>
+                                            <td>
+                                                <%= resule[index].req %>
+                                            </td>
+                                            <td>
+                                                <%= resule[index].res %>
+                                            </td>
+                                            <td>
+                                                <%= resule[index].name %>
+                                                    <%= resule[index].last %>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END TABLE -->
+                </div>
+
+
+            </div>
         </div>
-    </div>
-    <!-- END MAIN CONTENT-->
+        <!-- END MAIN CONTENT-->
 
-    <!-- SCRIPT -->
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly" async></script>
-    <!-- APEX CHART -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!--- APP JS -->
-    <script src="/scripts/js/dropdown.js"></script>
+        <!-- SCRIPT -->
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly" async></script>
+        <!-- APEX CHART -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <!--- APP JS -->
+        <script src="/scripts/js/reqdata.js"></script>
+        <script src="/scripts/js/dropdown.js"></script>
 
-    <script language="JavaScript">
-        window.onload = function() {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                title: {
-                    text: "กราฟเรียกรถ"
-                },
-                axisY: {
-                    title: "จำนวนการเรียกรถ(ครั้ง)"
-                },
-                data: [{
-                    type: "column",
-                    dataPoints: [{
-                        y: 100,
-                        label: "มกราคม"
-                    }, {
-                        y: 150,
-                        label: "กุมภาพันธ์"
-                    }, {
-                        y: 120,
-                        label: "มีนาคม"
-                    }, {
-                        y: 180,
-                        label: "เมษายน"
-                    }, {
-                        y: 90,
-                        label: "พฤษภาคม"
-                    }, {
-                        y: 200,
-                        label: "มิถุนายน"
-                    }, {
-                        y: 123,
-                        label: "กฤกฏาคม"
-                    }, {
-                        y: 185,
-                        label: "สิงหาคม"
-                    }, {
-                        y: 240,
-                        label: "กันยายน"
-                    }, {
-                        y: 210,
-                        label: "ตุลาคม"
-                    }, {
-                        y: 80,
-                        label: "พฤษจิกายน"
-                    }, {
-                        y: 190,
-                        label: "ธันวาคม"
-                    }, ]
-                }]
-            });
-            chart.render();
 
-        }
-    </script>
-
-</body>
+    </body>
 
 </html>
