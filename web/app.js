@@ -322,9 +322,9 @@ app.post("/review", (req, res) => {
 
 app.post("/request", (req, res) => {
     const { user_email, user_name, lat, lng, route } = req.body;
-    const sql = "INSERT INTO user_request( user_email, lat, lng,  route) VALUES (?,?,?,?)"
+    const sql = "INSERT INTO user_request( user_email, user_name,lat, lng,  route) VALUES (?,?,?,?,?)"
     const sql1 = "INSERT INTO user_info( email, name) VALUES (?,?)"
-    con.query(sql, [user_email, lat, lng, route], (err, result) => {
+    con.query(sql, [user_email, user_name, lat, lng, route], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
