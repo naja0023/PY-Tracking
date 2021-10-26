@@ -10,19 +10,24 @@
         <title>
             GRAPH CAR
         </title>
+
         <!-- GOOGLE FONT-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+            rel="stylesheet">
         <!-- BOXICONS -->
         <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
         <!-- APP CSS -->
         <link rel="stylesheet" href="/styles/grid.css">
         <link rel="stylesheet" href="/styles/app.css">
+
     </head>
 
     <body>
-
+        <script src="/scripts/js/reqdata.js"></script>
+        <script src="/scripts/js/dropdown.js"></script>
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-head">
@@ -39,8 +44,9 @@
                         </div>
                     </div>
                     <button class="btn btn-outline">
-                <i class='bx bx-log-out bx-rotate-180' style='color:#ffffff' onclick="window.location.replace('/auth/logout')" ></i>
-            </button>
+                        <i class='bx bx-log-out bx-rotate-180' style='color:#ffffff'
+                            onclick="window.location.replace('/auth/logout')"></i>
+                    </button>
                 </div>
             </div>
             <!-- SIDEBAR MENU -->
@@ -79,13 +85,13 @@
                     <ul class="sidebar-menu sidebar-menu-dropdown-content">
                         <li>
                             <a href="/newcarmatch">
-                            จับคู่รถ
-                        </a>
+                                จับคู่รถ
+                            </a>
                         </li>
                         <li>
                             <a href="/newrequdata" class="active">
-                            สถิติการเรียกรถ
-                        </a>
+                                สถิติการเรียกรถ
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -143,11 +149,11 @@
                                                 <%= resule[index].em %>
                                             </td>
                                             <td>
-                                                <% if (resule[index].route == 1){ %>
+                                                <% if (resule[index].route==1){ %>
                                                     เข้าเมือง
                                                     <% }else{%>
                                                         ออกเมือง
-                                                        <%  }%>
+                                                        <% }%>
 
 
                                             </td>
@@ -177,12 +183,11 @@
 
         <!-- SCRIPT -->
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly" async></script>
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSaaROLQQlFY4xMlTf9plC925bsdnbDGg&callback=initMap&libraries=visualization&v=weekly" async></script> -->
         <!-- APEX CHART -->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!--- APP JS -->
-        <script src="/scripts/js/reqdata.js"></script>
-        <script src="/scripts/js/dropdown.js"></script>
+
 
 
     </body>

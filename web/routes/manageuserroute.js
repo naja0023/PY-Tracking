@@ -13,7 +13,40 @@ router.get("/newadminse", checkUser, (req, res) => {
             res.status(503).send("Database error");
             return;
         } else {
-            res.render('newadmin', { resule: result })
+            const sql2 = "SELECT COUNT(driver_id) AS num FROM `driver` WHERE role =2";
+            con.query(sql2, function(err, result2, fields) {
+                if (err) {
+                    console.error(err.message);
+                    res.status(503).send("Database error");
+                    return;
+                } else {
+                    const sql3 = "SELECT COUNT(driver_id) AS num1 FROM `driver` WHERE role =2 AND MONTH(`str_date`)=MONTH(CURRENT_TIMESTAMP)";
+                    con.query(sql3, function(err, result3, fields) {
+                        if (err) {
+                            console.error(err.message);
+                            res.status(503).send("Database error");
+                            return;
+                        } else {
+                           
+                            res.render('newadmin', { count: result2 ,resule: result,count1: result3 })           
+                        }
+                    })
+                    
+                }
+            })
+        }
+    });
+})
+
+router.get("/countdriver", checkUser, (req, res) => {
+    const sql = "SELECT COUNT(driver_id) AS num FROM `driver` WHERE role =2";
+    con.query(sql, function(err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("Database error");
+            return;
+        } else {
+            res.render('newadmin', { count: result })
         }
     });
 })
@@ -83,18 +116,8 @@ router.put('/adminse/edit', checkUser, (req, res) => {
     });
 });
 
-// --- delete selected blog of a user ---
-router.delete('/adminse/:id', checkUser, (req, res) => {
-    const blogID = req.params.id;
-    const sql = "DELETE FROM driver WHERE driver_id =?"
-    con.query(sql, [blogID], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send('/newadminse');
-        }
-    });
-});
+
+
+
 
 module.exports = router;

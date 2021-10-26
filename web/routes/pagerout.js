@@ -82,10 +82,7 @@ router.get("/requestdata", checkUser, (req, res) => {
 
 })
 
-router.get("/newdashboard", checkUser, (req, res) => {
-    res.render('newdashboard')
 
-})
 
 router.get("/newheatmap", checkUser, (req, res) => {
     res.render('newheatmap')
