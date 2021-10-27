@@ -41,7 +41,7 @@ $(document).ready(function() {
                     responsive: true,
                     title: {
                         display: true,
-                        text: 'จำนวนผู้ลงทะเบียนขับรายเดือน',
+                        text: 'จำนวนการจับคู่รายเดือน',
                         fontColor: "#FFF",
                     },
                     scales: {
