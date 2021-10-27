@@ -153,7 +153,7 @@ function requesttodb(direction) {
     $.ajax({
         type: "POST",
         url: "/request",
-        data: { user_email: user_email,user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
+        data: { user_email: user_email, user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
         success: function(response) {
             Swal.fire({
                 title: 'เรียกรถสำเร็จ✔✔✔',
@@ -184,7 +184,7 @@ function check_request() {
     $.ajax({
         type: "POST",
         url: "/request",
-        data: { user_email: user_email,user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
+        data: { user_email: user_email, user_name: user_name, lat: current_lat, lng: current_lng, route: direction },
         success: function(response) {
             Swal.fire({
                 title: 'เรียกรถสำเร็จ✔✔✔',
