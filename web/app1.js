@@ -24,6 +24,8 @@ const compression = require('compression');
 const blogRoute = require('./routes/manageuserroute');
 const caroute = require('./routes/managecarroute');
 const carmatchro = require('./routes/managecarmatch');
+const reqdata = require('./routes/managereqdata');
+const dash = require('./routes/managedashboard');
 // const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
@@ -63,6 +65,8 @@ app.use(carmatchro)
 app.use(pageRoute);
 app.use(blogRoute);
 app.use(caroute);
+app.use(reqdata);
+app.use(dash);
 
 app.use("/profileroute", profile);
 
