@@ -18,18 +18,28 @@ router.get("/newadminse", checkUser, (req, res) => {
             con.query(sql2, function(err, result2, fields) {
                 if (err) {
                     console.error(err.message);
-                    res.status(503).send("Database error");
+                    res.status(503).send("Database error1");
                     return;
                 } else {
                     const sql3 = "SELECT COUNT(driver_id) AS num1 FROM `driver` WHERE role =2 AND MONTH(`str_date`)=MONTH(CURRENT_TIMESTAMP)";
                     con.query(sql3, function(err, result3, fields) {
                         if (err) {
                             console.error(err.message);
-                            res.status(503).send("Database error");
+                            res.status(503).send("Database error2");
                             return;
                         } else {
-
-                            res.render('newadmin', { count: result2, resule: result, count1: result3 })
+                            const sql4 = "SELECT  user_name,name,lastname,point,report,DATE_FORMAT(rv_date,'%d-%m-%Y %r') as rd_date FROM review_driver  LEFT JOIN driver ON driver.driver_id = review_driver.driver_id ORDER BY rv_date DESC";
+                            con.query(sql4, function(err, result4, fields) {
+                                if (err) {
+                                    console.error(err.message);
+                                    res.status(503).send("Database error3");
+                                    return;
+                                } else {
+        
+                                    res.render('newadmin', { count: result2, resule: result, count1: result3 , count2: result4})
+                                }
+                            })
+                         
                         }
                     })
 
