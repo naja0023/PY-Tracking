@@ -125,10 +125,10 @@ $(document).ready(function() {
                 animationEnabled: true,
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 title: {
-                    text: "สถิติเรียกรถประจำสัปดาห์\n(จ. - อา.)"
+                    text: "จำนวนการจับคู่รถ\n(จ. - อา.)"
                 },
                 axisY: {
-                    title: "จำนวนการเรียกรถ(ครั้ง)"
+                    title: "จำนวน(บัญชี)"
                 },
                 data: [{
                     type: "column",
