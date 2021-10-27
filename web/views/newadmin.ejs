@@ -159,8 +159,9 @@
                 </div>
                 <div class="col-12">
                     <div class="box">
+
+                        <button class="button button2" id="adduser">เพิ่ม</button>
                         <div class="box-body overflow-scroll">
-                            <button class="button button2" id="adduser">เพิ่ม</button>
                             <table>
                                 <thead>
                                     <tr>
@@ -176,7 +177,10 @@
                                         <th>จังหวัด</th>
                                         <th>รหัสไปรษณีย์</th>
                                         <th>เพศ</th>
+<<<<<<< HEAD
                                         <th>ตำแหน่ง</th>
+=======
+>>>>>>> e06bd8c29d993f69d86253cffd093e9dea83bfc4
 
                                         <th>แก้ไข</th>
                                     </tr>
@@ -220,15 +224,7 @@
                                             <td>
                                                 <%= resule[index].sex %>
                                             </td>
-                                            <td>
-                                                <% if (resule[index].role==1) { %>
-                                                    User
-                                                    <% } else if(resule[index].role==2) { %>
-                                                        Driver
-                                                        <% } else{ %>
-                                                            Admin
-                                                            <% } %>
-                                            </td>
+
                                             <td>
                                                 <!-- <button type="button" class="btn btn-danger btnDelete"
                                                 blogID="<%= resule[index].driver_id %>">Delete</button> -->

@@ -111,7 +111,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "/review",
-            data: { user_email: user_email, driver_id: driver_id, point: score, report: comment },
+            data: { user_email: user_email, user_name: user_name, driver_id: driver_id, point: score, report: comment },
             success: function(response) {
                 Swal.fire({
                     title: 'ให้คะแนนสำเร็จ✔✔✔',

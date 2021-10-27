@@ -223,9 +223,9 @@ app.post("/addlocation", (req, res) => {
 
 
 app.post("/review", (req, res) => {
-    const { driver_id, user_email, point, report } = req.body;
-    const sql = "INSERT INTO  review_driver( driver_id, user_email,point,report) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, point, report], (err, result) => {
+    const { driver_id, user_email, user_name, point, report } = req.body;
+    const sql = "INSERT INTO  review_driver( driver_id, user_email,user_name,point,report) VALUES (?,?,?,?,?)"
+    con.query(sql, [driver_id, user_email, user_name, point, report], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
