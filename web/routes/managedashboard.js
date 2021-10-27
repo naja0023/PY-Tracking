@@ -6,7 +6,7 @@ const checkUser = require('./middleware');
 
 
 router.get("/newdashboard", checkUser, (req, res) => {
-    const sql = "SELECT driver.name,driver.lastname,COUNT(request_id) AS num_req ,driver.tell,driver.sex,driver.email FROM `user_request` LEFT JOIN driver ON driver.driver_id = user_request.res_driver GROUP BY`res_driver` ORDER BY COUNT(request_id) DESC LIMIT 5";
+    const sql = "SELECT driver.name,driver.lastname,COUNT(request_id) AS num_req ,driver.tell,driver.sex,driver.email FROM `user_request` LEFT JOIN driver ON driver.driver_id = user_request.res_driver WHERE user_request.status = 0 GROUP BY`res_driver` ORDER BY COUNT(request_id) DESC LIMIT 5";
     con.query(sql, function(err, result, fields) {
         if (err) {
             console.error(err.message);
@@ -20,7 +20,7 @@ router.get("/newdashboard", checkUser, (req, res) => {
                     res.status(503).send("Database error");
                     return;
                 } else {
-                    res.render('newdashboard', { resule1: result1,resule: result })
+                    res.render('newdashboard', { resule1: result1, resule: result })
                 }
             });
         }
