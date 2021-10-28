@@ -767,6 +767,7 @@ class _MapViewState extends State<MapView> {
                 onSurface: Colors.black,
               ),
               onPressed: () {
+                _publishMessage('0');
                 _disconnect();
               },
               child: Row(
