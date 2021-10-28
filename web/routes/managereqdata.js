@@ -17,6 +17,7 @@ router.get("/newrequdata", checkUser, (req, res) => {
         }
     });
 })
+
 router.get("/graph_reqdata", (req, res) => {
     const sql = "SELECT MONTH(`req_date`)as _month,COUNT(`request_id`)as num FROM `user_request`WHERE YEAR(`req_date`)= YEAR(CURRENT_TIMESTAMP) GROUP BY MONTH(`req_date`)"
     con.query(sql, (err, result) => {

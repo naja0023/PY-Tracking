@@ -26,11 +26,37 @@ content-type: application/json
     "tell" : "0999999999"
 }
 ####
-get http://localhost:35000/query_location
+post http://localhost:35000/get_province
 content-type: application/json
 
 { 
   
+
+}
+
+####
+post http://localhost:35000/get_amphures
+content-type: application/json
+
+{ 
+  "province_id" : "1" 
+
+}
+
+####
+post http://localhost:35000/get_dist
+content-type: application/json
+
+{ 
+  "amphure_id" : "1" 
+
+}
+####
+post http://localhost:35000/get_amphures
+content-type: application/json
+
+{ 
+  "province_id" : "1" 
 
 }
 

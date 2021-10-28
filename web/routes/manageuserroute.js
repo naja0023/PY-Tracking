@@ -198,7 +198,45 @@ router.put('/adminse/edit', checkUser, (req, res) => {
 });
 
 
+router.post('/get_province', (req, res) => {
+    sql = "SELECT `id`,`name_th` FROM provinces";
+    con.query(sql, function(err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("Database server error");
+            return;
+        } else {
+            res.status(200).send(result)
+        }
+    });
+});
 
+router.post('/get_amphures', (req, res) => {
+    const id = req.body
+    sql = "SELECT  `id` ,`name_th` FROM `amphures` WHERE `province_id`= ?";
+    con.query(sql, [id], function(err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("Database server error");
+            return;
+        } else {
+            res.status(200).send(result)
+        }
+    });
+});
 
+router.post('/get_dist', (req, res) => {
+    const id = req.body
+    sql = "SELECT `name_th`,`zip_code` FROM `districts` WHERE `amphure_id` = ?";
+    con.query(sql, [id], function(err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("Database server error");
+            return;
+        } else {
+            res.status(200).send(result)
+        }
+    });
+});
 
 module.exports = router;
