@@ -133,11 +133,11 @@ $(document).ready(function() {
 
 
     $("#adduser").click(function() {
-        $("#btnModalSave").html("ADD")
+        $("#btnModalSave").html("เพิ่ม")
         mode = "add";
         // change the modal title
         // change the modal title
-        $("#exampleModalLabel").text("Add Carmatch");
+        $("#exampleModalLabel").text("จับคู่รถ");
         // console.log(postData);
         $("#name").val('');
         $("#lastnamel").val('');
@@ -149,10 +149,10 @@ $(document).ready(function() {
 
     // Edit button
     $(".editbut").click(function() {
-        $("#btnModalSave").html("EDIT")
+        $("#btnModalSave").html("แก้ไข")
         mode = "edit";
         // change the modal title
-        $("#exampleModalLabel").text("Edit match");
+        $("#exampleModalLabel").text("แก้ไขการจับคู่");
         // show modal
         $("#exampleModal").modal("toggle");
         // get selected post data

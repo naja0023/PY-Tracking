@@ -1,20 +1,20 @@
-$(document).ready(function () {
+$(document).ready(function() {
     var mode = "";
     var car_id = 0;
-    $(".closes").click(function(){
-        $("#exampleModal").modal("toggle");  
+    $(".closes").click(function() {
+        $("#exampleModal").modal("toggle");
     })
 
-    $(".close2").click(function(){
-        $("#exampleModal2").modal("toggle");  
+    $(".close2").click(function() {
+        $("#exampleModal2").modal("toggle");
     })
 
-    $(".btnDelete").click(function () {
+    $(".btnDelete").click(function() {
         car_id = $(this).attr("blogID");
         $("#exampleModal2").modal("toggle");
     })
 
-    $("#btnModalSave").click(function () {
+    $("#btnModalSave").click(function() {
         // close modal
         $("#exampleModal").modal("toggle");
 
@@ -24,7 +24,7 @@ $(document).ready(function () {
             seat: $("#seat").val(),
             brand: $("#brand").val(),
             color: $("#color").val(),
-            
+
 
         };
         let method = "POST";
@@ -47,11 +47,11 @@ $(document).ready(function () {
             type: method,
             url: url,
             data: data,
-            success: function (response) {
+            success: function(response) {
                 alert("Success")
                 window.location.replace(response);
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 Swal.fire({
                     icon: "error",
                     title: xhr.responseText,
@@ -60,12 +60,12 @@ $(document).ready(function () {
         });
     });
 
-    $("#adduser").click(function () {
-        $("#btnModalSave").html("ADD")
+    $("#adduser").click(function() {
+        $("#btnModalSave").html("เพิ่ม")
         mode = "add";
         // change the modal title
         // change the modal title
-        $("#exampleModalLabel").text("Add Car");
+        $("#exampleModalLabel").text("เพิ่มรถ");
         // console.log(postData);
         $("#editer").val('');
         $("#seat").val('');
@@ -77,23 +77,23 @@ $(document).ready(function () {
     });
 
     // Edit button
-    $(".editbut").click(function () {
-        $("#btnModalSave").html("EDIT")
+    $(".editbut").click(function() {
+        $("#btnModalSave").html("แก้ไข")
         mode = "edit";
         // change the modal title
-        $("#exampleModalLabel").text("Edit User");
+        $("#exampleModalLabel").text("แก้ไขรถ");
         // show modal
         $("#exampleModal").modal("toggle");
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
-         console.log(postData);
+        console.log(postData);
         $("#editer").val(postData.License_plate);
         $("#seat").val(postData.seat);
         $("#brand").val(postData.brand);
         $("#color").val(postData.color);
-       
+
         car_id = postData.car_id;
-        
+
     });
 
     // $("#deletekiki").click(function () {
@@ -108,4 +108,3 @@ $(document).ready(function () {
     // })
 
 });
-

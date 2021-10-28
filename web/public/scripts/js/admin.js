@@ -34,7 +34,7 @@ $(document).ready(function() {
             zip: $("#zip").val(),
             sex: $("#sex").val(),
             role: $("#selectrole").val(),
-            
+
 
         };
         let method = "POST";
@@ -82,9 +82,10 @@ $(document).ready(function() {
 
     $("#adduser").click(function() {
         mode = "add";
-        // change the modal title
-        // change the modal title
-        $("#exampleModalLabel").text("Add User");
+        $("#btnModalSave").html("เพิ่ม")
+            // change the modal title
+            // change the modal title
+        $("#exampleModalLabel").text("เพิ่มคนขับรถ");
         // console.log(postData);
         $("#username").val('');
         $("#password").val('');
@@ -109,8 +110,10 @@ $(document).ready(function() {
     // Edit button
     $(".editbut").click(function() {
         mode = "edit";
+        $("#btnModalSave").html("แก้ไข")
+
         // change the modal title
-        $("#exampleModalLabel").text("Edit User");
+        $("#exampleModalLabel").text("แก้ไขคนขับ");
         // show modal
         $("#exampleModal").modal("toggle");
         // get selected post data

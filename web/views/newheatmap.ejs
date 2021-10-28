@@ -2,7 +2,7 @@
 <html lang="en">
 <%- include('./partials/header.ejs') %>
     <%- include('./partials/heatmap.ejs') %>
-
+        <script src="/scripts/js/dashboard.js"></script>
 
         <head>
             <meta charset="UTF-8">
@@ -21,7 +21,7 @@
             <link rel="stylesheet" href="/styles/grid.css">
             <link rel="stylesheet" href="/styles/app.css">
             <!-- <link rel="stylesheet" href="/styles/bootstrap.min.css"> -->
-            <script src="/scripts/js/dashboard.js"></script>
+
             <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
         </head>
@@ -128,16 +128,16 @@
                 </div>
                 <div class="main-content">
 
-                  
 
-                    </div>
-                    <div class="row" style="margin-left: 10%;">
-                        <div class="col-6 col-md-12 col-sm-12" style=" height: 720px; width: 1280px;">
-                            <div id="map" class="border-map" style=" height: 100%; width: 100%;"></div>
-                        </div>
-                    </div>
 
                 </div>
+                <div class="row" style="margin-left: 10%;">
+                    <div class="col-6 col-md-12 col-sm-12" style=" height: 720px; width: 1280px;">
+                        <div id="map" class="border-map" style=" height: 100%; width: 100%;"></div>
+                    </div>
+                </div>
+
+            </div>
             </div>
             <!-- END MAIN CONTENT-->
 
