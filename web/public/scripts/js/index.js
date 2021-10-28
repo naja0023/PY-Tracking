@@ -280,7 +280,7 @@ function initMap() {
     var image = '/image/car_13260.png';
     var myLatLng = new google.maps.LatLng(19.024647, 99.943809); //or wherever you want the marker placed
     beachMarker = new google.maps.Marker({
-        position: (lat, lat),
+        position: (lat, lng),
         map: map,
         icon: image
 
