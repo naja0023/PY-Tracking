@@ -117,51 +117,7 @@ app.get('/verify', (req, res) => {
 });
 
 //-------------------------- Register ------------------------
-app.post("/register", function(req, res) {
-    const username = req.body.username;
-    const name = req.body.name;
-    const lastname = req.body.lastname;
-    const password = req.body.password;
-    const role = req.body.role;
-    const id_card = req.body.id_card;
-    const email = req.body.email;
-    const tell = req.body.tell;
 
-    //checked existing username
-    let sql = "SELECT driver_id FROM driver WHERE username=?";
-    con.query(sql, [username], function(err, result, fields) {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send("Database server error");
-            return;
-        }
-
-        const numrows = result.length;
-        //if repeated username
-        if (numrows > 0) {
-            res.status(400).send("Sorry, this username exists");
-        } else {
-            bcrypt.hash(password, 10, function(err, hash) {
-                //return hashed password, 60 characters
-                sql = "INSERT INTO driver(username,name,lastname,password,role,id_card,email,tell) VALUES (?,?,?,?,?,?,?,?)";
-                con.query(sql, [username, name, lastname, hash, role, id_card, email, tell], function(err, result, fields) {
-                    if (err) {
-                        console.error(err.message);
-                        res.status(500).send("Database server error");
-                        return;
-                    }
-
-                    const numrows = result.affectedRows;
-                    if (numrows != 1) {
-                        res.status(500).send("Insert failed");
-                    } else {
-                        res.send("Register done");
-                    }
-                });
-            });
-        }
-    });
-});
 
 app.post("/loginmoblie", function(req, res) {
     const username = req.body.username;
@@ -282,9 +238,9 @@ app.post("/addlocation", (req, res) => {
 
 
 app.post("/review", (req, res) => {
-    const { driver_id, user_email, point, report } = req.body;
-    const sql = "INSERT INTO  review_driver( driver_id, user_email,point,report) VALUES (?,?,?,?)"
-    con.query(sql, [driver_id, user_email, point, report], (err, result) => {
+    const { driver_id, user_email, user_name, point, report } = req.body;
+    const sql = "INSERT INTO  review_driver( driver_id, user_email,user_name,point,report) VALUES (?,?,?,?,?)"
+    con.query(sql, [driver_id, user_email, user_name, point, report], (err, result) => {
         if (err) {
             console.log(err);
             res.status(503).send("Server error");
@@ -293,22 +249,6 @@ app.post("/review", (req, res) => {
         }
     });
 });
-
-// app.post("/request", (req, res) => {
-//     const { user_email,user_name,lat, lng, route } = req.body;
-//     const sql = "INSERT INTO `user_request`( `user_email`,`user_name`, `lat`, `lng`,  `route`) VALUES (?,?,?,?,?)"
-//     const sql1 = "INSERT INTO user_info( email, name) VALUES (?,?)"
-//     con.query(sql, [user_email,user_name, lat, lng, route], (err, result) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(503).send("Server error");
-//         } else {
-//             console.log(result.insertId)
-//             let num = (result.insertId).toString()
-//             res.send(num);
-//         }
-//     });
-// });
 
 app.post("/request", (req, res) => {
     const { user_email, user_name, lat, lng, route } = req.body;
@@ -410,7 +350,7 @@ app.get("/reqdata", (req, res) => {
 
 app.post("/hist", function(req, res) {
     const id = req.body.driver_id;
-    const sql = "SELECT DATE_FORMAT(date,'%d/%m/%Y') as date ,License_plate,brand,color FROM `car_match` LEFT JOIN `car` ON `car_match`.`car_id` = `car`.`car_id` WHERE MONTH(`date`) = MONTH(CURRENT_TIMESTAMP) AND `driver_id` = ?";
+    const sql = "SELECT DATE_FORMAT(date,'%d/%m/%Y') as date ,License_plate,brand,color FROM `car_match` LEFT JOIN `car` ON `car_match`.`car_id` = `car`.`car_id` WHERE MONTH(`date`) = MONTH(CURRENT_TIMESTAMP) AND `driver_id` = ? ORDER BY date desc;";
     con.query(sql, [id], function(err, result) {
         if (err) {
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
