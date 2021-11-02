@@ -16,6 +16,7 @@ var user_name
 var driver_id
 var score
 var comment
+var ratestatus
 connection.onopen = function() {
     // จะทำงานเมื่อเชื่อมต่อสำเร็จ
     console.log("connect webSocket");
@@ -98,12 +99,54 @@ $(document).ready(function() {
         e.preventDefault();
         window.location.replace('/auth/logout')
     });
+
+    $('#star5').click(function() {
+        ratestatus = 'ปรับปรุง'
+        document.getElementById("ratestatus").innerHTML = ratestatus;
+    })
+    $('#star4').click(function() {
+        ratestatus = 'พอใช้'
+        document.getElementById("ratestatus").innerHTML = ratestatus;
+    })
+
+    $('#star3').click(function() {
+        ratestatus = 'ปานกลาง'
+        document.getElementById("ratestatus").innerHTML = ratestatus;
+    })
+    $('#star2').click(function() {
+        ratestatus = 'ดี'
+        document.getElementById("ratestatus").innerHTML = ratestatus;
+    })
+    $('#star1').click(function() {
+        ratestatus = 'ดีมาก'
+        document.getElementById("ratestatus").innerHTML = ratestatus;
+    })
+
+    // var score_ = $('.fa-star').val()
+    // // console.log(score_)
     $('#sendinfo').click(function() {
         score = $('.fa-star').val()
-        var point = document.getElementsByName('rate');
+            // console.log(score)
+        var point = document.getElementsByName('star');
+        console.log(point)
         for (let i = 0; i < point.length; i++) {
             if (point[i].checked) {
-                score = point[i].value
+                if (point[i].value == 5) {
+                    score = 1
+                    console.log(score)
+                } else if (point[i].value == 1) {
+                    score = 5
+                    console.log(score)
+                } else if (point[i].value == 2) {
+                    score = 4
+                    console.log(score)
+                } else if (point[i].value == 4) {
+                    score = 2
+                    console.log(score)
+                } else {
+                    score = point[i].value
+                    console.log(score)
+                }
             }
             comment = $('.getdata').val();
 

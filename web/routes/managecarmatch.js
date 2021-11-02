@@ -76,7 +76,7 @@ router.get("/graph_carmatch", (req, res) => {
 });
 
 router.get("/graph_carmatch_week", (req, res) => {
-    const sql = "SELECT WEEKDAY(`date`)as _day,COUNT(`carmatch`) as num FROM `car_match`WHERE WEEK(`date`,1)=WEEK(CURDATE(),1) GROUP BY WEEKDAY(`date`)"
+    const sql = "SELECT WEEKDAY(`date`)as wun,COUNT(`carmatch`) as num FROM `car_match`WHERE WEEK(`date`,1)=WEEK(CURDATE(),1) GROUP BY WEEKDAY(`date`)"
     con.query(sql, (err, result) => {
         if (err) {
             console.log(err);
