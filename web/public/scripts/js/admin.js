@@ -102,6 +102,8 @@ $(document).ready(function() {
         $("#sex").val('');
         $("#selectrole").val('');
 
+
+
         // show modal
         $("#exampleModal").modal("toggle");
 
@@ -147,4 +149,58 @@ $(document).ready(function() {
     //     })
     // })
 
+    function getprovince() {
+        $.ajax({
+            type: "POST",
+            url: "/get_province",
+            success: function(response) {
+               
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+      }
+
+
+      function getdistrict() {
+        $.ajax({
+            type: "POST",
+            url: "/get_dist",
+            data: data,
+            success: function(response) {
+               
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+      }
+
+      function getamphur() {
+        $.ajax({
+            type: "POST",
+            url: "/get_amphures",
+            data: data,
+            success: function(response) {
+               
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
+      }
+     
+
+   
 });
+
