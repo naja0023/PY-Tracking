@@ -4,8 +4,12 @@
 
 <link rel="stylesheet" type="text/css" href="/style/index.css">
 <link rel="stylesheet" href="file:///E:/fontawesome/css/all.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link rel="stylesheet" type="text/css" href="/style/review.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <!-- <meta http-equiv="refresh" content="30"> -->
@@ -49,42 +53,45 @@
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
+
                 <div class="modal-content">
                     <div class="container">
+
                         <div class="modal-header">
+
+                            <h4 class="modal-title" style="font-weight: 600;">ให้คะแนน</h4>
+
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title"></h4>
                         </div>
+
                         <div class="modal-body">
-                            <div class="star-widget">
-                                <div class="column">
-                                    <input type="radio" name="rate" id="rate-5" value="5">
-                                    <label for="rate-5" class="fas fa-star"></label>
+                            <center>
+                                <div class="rating">
 
-                                    <input type="radio" name="rate" id="rate-4" value="4">
-                                    <label for="rate-4" class="fas fa-star"></label>
+                                    <input type="radio" name="star" id="star1" value="1">
+                                    <label for="star1" class="fa fa-star"></label>
 
-                                    <input type="radio" name="rate" id="rate-3" value="3">
-                                    <label for="rate-3" class="fas fa-star"></label>
+                                    <input type="radio" name="star" id="star2" value="2">
+                                    <label for="star2" class="fa fa-star"></label>
 
-                                    <input type="radio" name="rate" id="rate-2" value="2">
-                                    <label for="rate-2" class="fas fa-star"></label>
+                                    <input type="radio" name="star" id="star3" value="3">
+                                    <label for="star3" class="fa fa-star"></label>
 
-                                    <input type="radio" name="rate" id="rate-1" value="1">
-                                    <label for="rate-1" class="fas fa-star"></label>
-                                    <form action="#">
-                                        <header></header>
-                                    </form>
+                                    <input type="radio" name="star" id="star4" value="4">
+                                    <label for="star4" class="fa fa-star"></label>
 
-                                    <div class="textarea">
-                                        <textarea class=" getdata " cols="30 " placeholder="เพิ่มข้อเสนอแนะ " style="padding-left:10px ; "></textarea>
-                                    </div>
-                                    <div class="btn">
-                                        <button id="sendinfo">ตกลง</button>
-                                    </div>
+                                    <input type="radio" name="star" id="star5" value="5">
+                                    <label for="star5" class="fa fa-star"></label>
 
                                 </div>
-                            </div>
+                                <p style="margin-top: 60px; font-size: 20px; font-weight: 600;" id='ratestatus'></p>
+                                <div>
+
+                                    <textarea class="getdata" placeholder="เพิ่มข้อเสนอแนะ" style="padding-left: 20px;font-size: 18px; width: 200px;"></textarea>
+                                </div>
+                                <div class="btn">
+                                    <button id="sendinfo" class="btn btn-success">ตกลง</button>
+                                </div>
                         </div>
                         <div class="modal-footer ">
 
@@ -121,6 +128,7 @@
                         </div>
                     </div> -->
                 </div>
+                </center>
             </div>
         </div>
 

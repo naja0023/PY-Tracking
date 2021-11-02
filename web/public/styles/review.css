@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-* {
+@import url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css');
+
+/** {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -40,7 +41,7 @@
     padding-left: 5px;
     padding-right: 5px;
     text-align: center;
-    float: right;
+    /* float: right; 
     transition: all 0.2s ease;
 }
 
@@ -153,4 +154,48 @@ form .btn button {
 
 form .btn button:hover {
     background: #1b1b1b;
+}*/
+
+.rating {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(180deg);
+    display: flex;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    display: inline-block;
+    cursor: pointer;
+    width: 50px;
+    /* background: #ccc; */
+}
+
+.rating label:before {
+    content: '\f005';
+    position: relative;
+    display: block;
+    font-size: 43px;
+    color: #444;
+}
+
+.rating label:after {
+    content: '\f005';
+    position: absolute;
+    display: block;
+    font-size: 43px;
+    color: #fd4;
+    top: 0;
+    opacity: 0;
+    transition: .5s;
+}
+
+.rating label:hover:after,
+.rating label:hover~label:after,
+.rating input:checked~label:after {
+    opacity: 1;
 }

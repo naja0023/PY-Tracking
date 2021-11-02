@@ -243,7 +243,7 @@
 
                         <div class="box-body overflow-scroll">
                             <div>
-                                <h3>ประวัติรีวิว</h3>
+                                <h3>ประวัติการรีวิว(เดือนนี้)</h3>
                             </div>
                             <table>
                                 <thead>
@@ -324,13 +324,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">เบอร์โทร:</label>
-                                        <input class="form-control" type="number" pattern='[0-9]{10}'
-                                            placeholder="08xxxxxxxx" id="tel"></input>
+                                        <input class="form-control" type="tel" placeholder="08xxxxxxxx" id="tel" maxlength="10"></input>
+                                        <p id="statusPhone" style="color: red;"></p>
                                     </div>
                                     <div class="form-group">
-                                        
-                                            <label for="recipient-name" class="col-form-label">เลขบัตรประชาชน:</label>
-                                            <input type="text" minlength="13"maxlength="13" onkeyup="autoTab(this)" tabindex="1" class="form-control" id="card">
+                                        <label for="recipient-name" class="col-form-label">เลขบัตรประชาชน:</label>
+                                        <input type="text" class="form-control" id="card" maxlength="13">
+                                        <p id="statusCard" style="color: red;"></p>
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">ที่อยู่:</label>
@@ -363,11 +363,13 @@
                                             <option value="2">คนขับ</option>
                                         </select>
                                     </div>
+
                                 </form>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="closes btn btn-secondary" data-dismiss="modal">ปิด</button>
-                                <button type="button" class="btn btn-primary" id="btnModalSave">แอด</button>
+                                <button type="submit" class="btn btn-primary" id="btnModalSave">แอด</button>
                             </div>
                         </div>
                     </div>

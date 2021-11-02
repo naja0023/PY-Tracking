@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var statusCard = null
+    var statusPhone = null
     var mode = "";
     var blogID = 0;
     $(".closes").click(function() {
@@ -14,9 +16,10 @@ $(document).ready(function() {
         $("#exampleModal2").modal("toggle");
     })
 
-    $("#btnModalSave").click(function() {
-        // close modal
-        $("#exampleModal").modal("toggle");
+    $("#btnModalSave").click(function(e) {
+        e.preventDefault()
+            // close modal
+
 
         // add       
         let data = {
@@ -37,51 +40,83 @@ $(document).ready(function() {
 
 
         };
-        let method = "POST";
-        let url = "/adminse/new";
+        var ele = document.getElementById("card")
+        var ele1 = document.getElementById("tel")
 
-        // edit
-        if (mode == "edit") {
-            data = {
-                username: $("#username").val(),
-                password: $("#password").val(),
-                name: $("#name").val(),
-                lastname: $("#editer").val(),
-                tell: $("#tel").val(),
-                id_card: $("#card").val(),
-                email: $("#email").val(),
-                address: $("#address").val(),
-                sub: $("#sub").val(),
-                dist: $("#dist").val(),
-                prov: $("#prov").val(),
-                zip: $("#zip").val(),
-                sex: $("#sex").val(),
-                role: $("#selectrole").val(),
-                driver_id: blogID
-            };
-            method = "PUT";
-            url = "/adminse/edit";
+        if (ele1.value.length != 10 && ele.value.length != 13) {
+            // alert('กรุณากรอกเลขบัตรให้ครบ 13 หลัก')
+            statusPhone = 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง'
+            document.getElementById("statusPhone").innerHTML = statusPhone;
+            statusCard = 'กรุณากรอกเลขบัตรให้ครบ 13 หลัก'
+            document.getElementById("statusCard").innerHTML = statusCard;
+        } else {
+            if (ele1.value.length != 10 && ele.value.length == 13) {
+                // alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง')
+                statusPhone = 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง'
+                document.getElementById("statusPhone").innerHTML = statusPhone;
+                document.getElementById("statusCard").innerHTML = '';
+            } else if (ele.value.length != 13 && ele1.value.length == 10) {
+                statusCard = 'กรุณากรอกเลขบัตรให้ครบ 13 หลัก'
+                document.getElementById("statusCard").innerHTML = statusCard;
+                document.getElementById("statusPhone").innerHTML = '';
+            } else {
+                document.getElementById("statusPhone").innerHTML = '';
+                document.getElementById("statusCard").innerHTML = '';
+
+                let method = "POST";
+                let url = "/adminse/new";
+
+                // edit
+                if (mode == "edit") {
+                    data = {
+                        username: $("#username").val(),
+                        password: $("#password").val(),
+                        name: $("#name").val(),
+                        lastname: $("#editer").val(),
+                        tell: $("#tel").val(),
+                        id_card: $("#card").val(),
+                        email: $("#email").val(),
+                        address: $("#address").val(),
+                        sub: $("#sub").val(),
+                        dist: $("#dist").val(),
+                        prov: $("#prov").val(),
+                        zip: $("#zip").val(),
+                        sex: $("#sex").val(),
+                        role: $("#selectrole").val(),
+                        driver_id: blogID
+                    };
+                    method = "PUT";
+                    url = "/adminse/edit";
+                }
+
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: data,
+                    success: function(response) {
+                        alert("Success")
+                        window.location.replace(response);
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: "error",
+                            title: xhr.responseText,
+                        });
+                    }
+                });
+                $("#exampleModal").modal("toggle");
+            }
+
         }
 
-        $.ajax({
-            type: method,
-            url: url,
-            data: data,
-            success: function(response) {
-                alert("Success")
-                window.location.replace(response);
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: "error",
-                    title: xhr.responseText,
-                });
-            }
-        });
+
+
     });
 
     $("#adduser").click(function() {
         mode = "add";
+        document.getElementById("statusPhone").innerHTML = '';
+        document.getElementById("statusCard").innerHTML = '';
         $("#btnModalSave").html("เพิ่ม")
             // change the modal title
             // change the modal title
@@ -112,6 +147,7 @@ $(document).ready(function() {
     // Edit button
     $(".editbut").click(function() {
         mode = "edit";
+
         $("#btnModalSave").html("แก้ไข")
 
         // change the modal title

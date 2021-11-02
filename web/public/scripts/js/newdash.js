@@ -100,7 +100,7 @@ $(document).ready(function() {
             var j = 0
             for (var i = 0; i < 7; i++) {
 
-                if (i == response[j]._day) {
+                if (i == response[j].wun) {
 
                     datapoint1[i].y = response[j].num;
                     //alert('เพิ่ม :' + response[j].num)
@@ -121,7 +121,7 @@ $(document).ready(function() {
                 }
             }
 
-            var chart = new CanvasJS.Chart("chartContainer1", {
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
                 animationEnabled: true,
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 title: {
@@ -135,8 +135,7 @@ $(document).ready(function() {
                     dataPoints: datapoint1,
                 }]
             });
-            chart.render();
+            chart1.render();
         }
     });
-
 });
