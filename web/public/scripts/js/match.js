@@ -301,7 +301,7 @@ $(document).ready(function () {
 
 
 
-function autocomplete(inp, arr) {
+function autocompletes(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
     var currentFocus;
@@ -332,14 +332,11 @@ function autocomplete(inp, arr) {
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function (e) {
                     /*insert the value for the autocomplete text field:*/
-
+    
                     inp.value = this.getElementsByTagName("input")[0].value; 
                     /*close the list of autocompleted values,
-                    (or any other open lists of autocompleted values:*/
-                        var array =  inp.value; 
-                        var License_plate= array[0]
-                       inp.value = License_plate
-                       $("#carplate").val(License_plate)
+                    (or any other open lists of autocompleted values:*/      
+                       $("#carplate").val(inp.value)
                     closeAllLists();
 
 
@@ -409,7 +406,7 @@ function autocomplete(inp, arr) {
 var countries1 = ["1111","222","333"];
 
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-autocomplete(document.getElementById("carplate"), countries1);
+autocompletes(document.getElementById("carplate"), countries1);
 
 
 });
