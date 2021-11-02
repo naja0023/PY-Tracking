@@ -87,5 +87,30 @@ router.get("/graph_carmatch_week", (req, res) => {
     });
 });
 
+router.get("/namelastname", checkUser, (req, res) => {
+    const sql = "SELECT name,lastname FROM driver  WHERE role =2";
+    con.query(sql, function (err, result4, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("Database error");
+            return;
+        } else {
+            res.send(result4)
+        }
+    });
+})
+
+router.get("/license_plate",  (req, res) => {
+    const sql = "SELECT `License_plate` FROM `car` ";
+    con.query(sql, function (err, result4, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("Database error");
+            return;
+        } else {
+            res.send(result4)
+        }
+    });
+})
 
 module.exports = router;

@@ -49,6 +49,10 @@ router.get("/newadminse", checkUser, (req, res) => {
     });
 })
 
+
+
+
+
 router.get("/countdriver", checkUser, (req, res) => {
     const sql = "SELECT COUNT(driver_id) AS num FROM `driver` WHERE role =2";
     con.query(sql, function (err, result, fields) {
@@ -330,7 +334,7 @@ router.post('/get_province', (req, res) => {
 });
 
 router.post('/get_amphures', (req, res) => {
-    const id = req.body
+    const id = req.body.id
     sql = "SELECT  `id` ,`name_th` FROM `amphures` WHERE `province_id`= ?";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
@@ -344,7 +348,7 @@ router.post('/get_amphures', (req, res) => {
 });
 
 router.post('/get_dist', (req, res) => {
-    const id = req.body
+    const id = req.body.id
     sql = "SELECT `name_th`,`zip_code` FROM `districts` WHERE `amphure_id` = ?";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {

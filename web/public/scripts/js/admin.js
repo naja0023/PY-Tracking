@@ -1,24 +1,27 @@
-$(document).ready(function() {
+
+
+$(document).ready(function () {
     var statusCard = null
     var statusPhone = null
     var mode = "";
     var blogID = 0;
-    $(".closes").click(function() {
+    $(".closes").click(function () {
         $("#exampleModal").modal("toggle");
     })
 
-    $(".close2").click(function() {
+    $(".close2").click(function () {
         $("#exampleModal2").modal("toggle");
     })
 
-    $(".btnDelete").click(function() {
+    $(".btnDelete").click(function () {
         blogID = $(this).attr("blogID");
         $("#exampleModal2").modal("toggle");
     })
+    getprovince()
 
-    $("#btnModalSave").click(function(e) {
+    $("#btnModalSave").click(function (e) {
         e.preventDefault()
-            // close modal
+        // close modal
 
 
         // add       
@@ -93,11 +96,11 @@ $(document).ready(function() {
                     type: method,
                     url: url,
                     data: data,
-                    success: function(response) {
+                    success: function (response) {
                         alert("Success")
                         window.location.replace(response);
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         Swal.fire({
                             icon: "error",
                             title: xhr.responseText,
@@ -113,13 +116,13 @@ $(document).ready(function() {
 
     });
 
-    $("#adduser").click(function() {
+    $("#adduser").click(function () {
         mode = "add";
         document.getElementById("statusPhone").innerHTML = '';
         document.getElementById("statusCard").innerHTML = '';
         $("#btnModalSave").html("เพิ่ม")
-            // change the modal title
-            // change the modal title
+        // change the modal title
+        // change the modal title
         $("#exampleModalLabel").text("เพิ่มคนขับรถ");
         // console.log(postData);
         $("#username").val('');
@@ -145,7 +148,7 @@ $(document).ready(function() {
     });
 
     // Edit button
-    $(".editbut").click(function() {
+    $(".editbut").click(function () {
         mode = "edit";
 
         $("#btnModalSave").html("แก้ไข")
@@ -186,57 +189,88 @@ $(document).ready(function() {
     // })
 
     function getprovince() {
+        $("#prov").change(function () {
+            getamphur($("#prov").val())
+        })
         $.ajax({
             type: "POST",
             url: "/get_province",
-            success: function(response) {
-               
+            success: function (response) {
+
+
+                for (let i = 0; i < 77; i++) {
+                    $("#prov").append("<option value='" + response[i].id + "'>" + response[i].name_th + "</option>")
+                    // document.getElementById("prov").options[i].text=5
+                    // prov.text = response[i].name_th
+                }
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire({
                     icon: "error",
                     title: xhr.responseText,
                 });
             }
         });
-      }
+    }
 
 
-      function getdistrict() {
+    function getdistrict(dis) {
+        $("#sub").change(function () {
+            getzip($("#sub").val())
+        })
         $.ajax({
             type: "POST",
             url: "/get_dist",
-            data: data,
-            success: function(response) {
-               
+            data: { "id": dis },
+            success: function (response) {
+                $("#sub").empty()
+                for (let i = 0; i < 77; i++) {
+                    $("#sub").append("<option value='" + response[i].zip_code + "'>" + response[i].name_th + "</option>")
+                    // document.getElementById("prov").options[i].text=5
+                    // prov.text = response[i].name_th
+                }
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire({
                     icon: "error",
                     title: xhr.responseText,
                 });
             }
         });
-      }
+    }
 
-      function getamphur() {
+    function getamphur(dis) {
+        $("#dist").change(function () {
+            getdistrict($("#dist").val())
+        })
         $.ajax({
             type: "POST",
             url: "/get_amphures",
-            data: data,
-            success: function(response) {
-               
+            data: { "id": dis },
+            success: function (response) {
+                var select = document.getElementById("dist");
+                var length = select.options.length;
+                for (i = length - 1; i >= 0; i--) {
+                    select.options[i] = null;
+                }
+                for (let i = 0; i < 77; i++) {
+                    $("#dist").append("<option value='" + response[i].id + "'>" + response[i].name_th + "</option>")
+                    // document.getElementById("prov").options[i].text=5
+                    // prov.text = response[i].name_th
+                }
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 Swal.fire({
                     icon: "error",
                     title: xhr.responseText,
                 });
             }
         });
-      }
-     
+    }
 
-   
+    function getzip(dis) {
+        $("#zip").val(dis)
+    }
+
 });
 
