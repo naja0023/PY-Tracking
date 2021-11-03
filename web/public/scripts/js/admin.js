@@ -218,7 +218,8 @@ $(document).ready(function () {
 
     function getdistrict(dis) {
         $("#sub").change(function () {
-            getzip($("#sub").val())
+            getzip($("#sub").val(),dis)
+              
         })
         $.ajax({
             type: "POST",
@@ -243,7 +244,7 @@ $(document).ready(function () {
 
     function getamphur(dis) {
         $("#dist").change(function () {
-            getdistrict($("#dist").val(),dis)
+            getdistrict($("#dist").val())  
         })
         $.ajax({
             type: "POST",
@@ -277,6 +278,7 @@ $(document).ready(function () {
             url: "/get_zip",
             data: { "id": dis,"aum":aum },
             success: function (response) {
+              
                 $("#zip").val(response[0].zip_code)
             },
             error: function (xhr) {
