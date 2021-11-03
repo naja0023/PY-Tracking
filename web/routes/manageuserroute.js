@@ -335,7 +335,7 @@ router.post('/get_province', (req, res) => {
 
 router.post('/get_amphures', (req, res) => {
     const id = req.body.id
-    sql = "SELECT  `id` ,`name_th` FROM `amphures` WHERE `province_id`= ?";
+    sql = "SELECT  `id` ,`name_th` FROM `amphures` WHERE `province_id`= (SELECT id FROM provinces WHERE name_th=?)";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
             console.error(err.message);
@@ -349,8 +349,23 @@ router.post('/get_amphures', (req, res) => {
 
 router.post('/get_dist', (req, res) => {
     const id = req.body.id
-    sql = "SELECT `name_th`,`zip_code` FROM `districts` WHERE `amphure_id` = ?";
+    sql = "SELECT `name_th`,`zip_code` FROM `districts` WHERE `amphure_id` = (SELECT id FROM amphures WHERE name_th =?)";
     con.query(sql, [id], function (err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("Database server error");
+            return;
+        } else {
+            res.status(200).send(result)
+        }
+    });
+});
+
+router.post('/get_zip', (req, res) => {
+    const id = req.body.id
+    const aum = req.body.aum
+    sql = "SELECT zip_code  FROM `districts`WHERE name_th =? AND amphure_id =(SELECT id FROM amphures WHERE name_th = ?)";
+    con.query(sql, [id,aum], function (err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(500).send("Database server error");

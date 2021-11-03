@@ -1,5 +1,4 @@
 
-
 $(document).ready(function () {
     var statusCard = null
     var statusPhone = null
@@ -71,6 +70,8 @@ $(document).ready(function () {
 
                 // edit
                 if (mode == "edit") {
+                    
+                    console.log($("#prov").text())
                     data = {
                         username: $("#username").val(),
                         password: $("#password").val(),
@@ -159,7 +160,7 @@ $(document).ready(function () {
         $("#exampleModal").modal("toggle");
         // get selected post data
         const postData = JSON.parse($(this).attr("blogData"));
-        console.log(postData);
+        // console.log(postData);
         $("#username").val(postData.username);
         $("#name").val(postData.name);
         $("#editer").val(postData.lastname);
@@ -190,7 +191,8 @@ $(document).ready(function () {
 
     function getprovince() {
         $("#prov").change(function () {
-            getamphur($("#prov").val())
+          
+             getamphur($("#prov").val())
         })
         $.ajax({
             type: "POST",
@@ -199,7 +201,7 @@ $(document).ready(function () {
 
 
                 for (let i = 0; i < 77; i++) {
-                    $("#prov").append("<option value='" + response[i].id + "'>" + response[i].name_th + "</option>")
+                    $("#prov").append("<option value='" + response[i].name_th + " '>" + response[i].name_th + "</option>")
                     // document.getElementById("prov").options[i].text=5
                     // prov.text = response[i].name_th
                 }
@@ -225,7 +227,7 @@ $(document).ready(function () {
             success: function (response) {
                 $("#sub").empty()
                 for (let i = 0; i < 77; i++) {
-                    $("#sub").append("<option value='" + response[i].zip_code + "'>" + response[i].name_th + "</option>")
+                    $("#sub").append("<option value='" + response[i].name_th + "'>" + response[i].name_th + "</option>")
                     // document.getElementById("prov").options[i].text=5
                     // prov.text = response[i].name_th
                 }
@@ -241,7 +243,7 @@ $(document).ready(function () {
 
     function getamphur(dis) {
         $("#dist").change(function () {
-            getdistrict($("#dist").val())
+            getdistrict($("#dist").val(),dis)
         })
         $.ajax({
             type: "POST",
@@ -254,7 +256,7 @@ $(document).ready(function () {
                     select.options[i] = null;
                 }
                 for (let i = 0; i < 77; i++) {
-                    $("#dist").append("<option value='" + response[i].id + "'>" + response[i].name_th + "</option>")
+                    $("#dist").append("<option value='" + response[i].name_th + "'>" + response[i].name_th + "</option>")
                     // document.getElementById("prov").options[i].text=5
                     // prov.text = response[i].name_th
                 }
@@ -268,8 +270,22 @@ $(document).ready(function () {
         });
     }
 
-    function getzip(dis) {
-        $("#zip").val(dis)
+    function getzip(dis,aum) {
+       
+        $.ajax({
+            type: "POST",
+            url: "/get_zip",
+            data: { "id": dis,"aum":aum },
+            success: function (response) {
+                $("#zip").val(response[0].zip_code)
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: xhr.responseText,
+                });
+            }
+        });
     }
 
 });
