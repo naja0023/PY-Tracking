@@ -240,7 +240,7 @@ router.put('/adminse/edit', checkUser, (req, res) => {
         const numrows = result.length;
         //if repeated username
         if (numrows > 0) {
-            res.status(400).send("ขออภัย, ไอดีผู้ใช้นี้ถูกใช้งานแล้ว");
+            res.status(400).send("ขออภัย,รหัสผู้ใช้นี้ถูกใช้งานแล้ว");
         } else {
 
 
