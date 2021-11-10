@@ -4,7 +4,7 @@ var lat
 var lng
 var _lat
 var _lng
-var _state
+    // var _state
 var beachMarker
 var connection = new WebSocket('ws://localhost:34000')
     // var connection = new WebSocket('wss://pytransit.szo.me')
@@ -14,6 +14,7 @@ var current_lng;
 var user_email
 var user_name
 var driver_id
+var id
 var score
 var comment
 var ratestatus
@@ -321,7 +322,7 @@ function initMap() {
 
 
     var image = '/image/car_13260.png';
-    var myLatLng = new google.maps.LatLng(19.024647, 99.943809); //or wherever you want the marker placed
+    //var myLatLng = new google.maps.LatLng(19.024647, 99.943809); //or wherever you want the marker placed
     beachMarker = new google.maps.Marker({
         position: (lat, lng),
         map: map,
@@ -440,23 +441,23 @@ connection.onmessage = function(e) {
     var array = [];
     yourString.split(':').forEach(function(value) {
         array.push(value.split(' '));
-
     });
     // log ค่าที่ถูกส่งมาจาก server
     // console.log("message from server: ", e.data);
     // const map = new google.maps.Map(document.getElementById("map"), {
     //   zoom: 18,
-    //   center: { lat: 19.024647, lng: 99.943809 },
+    //   center: { lat: 19.024647, lng: 99.943809 }
     // });
-
+    // print(array)
     lat = parseFloat(array[2])
     lng = parseFloat(array[4])
-    _state = array[5];
+        //_state = array[5];
+
     var latlng = new google.maps.LatLng(lat, lng);
     beachMarker.setPosition(latlng);
-    if (_state == '5') {
-        beachMarker.setPosition(null);
-        _state = 0;
-    }
+    // if (_state == '0') {
+    //     beachMarker.setPosition(null);
+    //     //  _state = 0;
+    // }
 
 };

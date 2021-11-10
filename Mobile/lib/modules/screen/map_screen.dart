@@ -574,7 +574,7 @@ class _MapViewState extends State<MapView> {
   }
 
   void _publishMessage(String text) {
-    String osPrefix = '$driverid:';
+    String osPrefix = '$driverid';
     final String message = osPrefix + text;
     _manager.publish(message);
     // _messageTextController.clear();
@@ -586,7 +586,7 @@ class _MapViewState extends State<MapView> {
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) async {
       _currentPosition = position;
-      _publishMessage("lat:" +
+      _publishMessage(":lat:" +
           position.latitude.toString() +
           ":lng:" +
           position.longitude.toString());
@@ -767,7 +767,7 @@ class _MapViewState extends State<MapView> {
                 onSurface: Colors.black,
               ),
               onPressed: () {
-                _publishMessage('0');
+                _publishMessage(':' + driverid);
                 _disconnect();
               },
               child: Row(
@@ -897,7 +897,7 @@ class _MapViewState extends State<MapView> {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
                           updateStatus('$marker_id', '$driverid');
-                          _publishMessage("diverid:" + driverid);
+                          //_publishMessage("diverid:" + driverid);
                         });
                       },
                     ),
@@ -920,7 +920,7 @@ class _MapViewState extends State<MapView> {
                           _marker.removeWhere((element) =>
                               element.markerId == MarkerId('$marker_id'));
                           updateStatus('$marker_id', '$driverid');
-                          _publishMessage("diverid:" + driverid);
+                          // _publishMessage("diverid:" + driverid);
                         });
                       },
                     ),
