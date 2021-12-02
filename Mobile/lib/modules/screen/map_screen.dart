@@ -573,12 +573,15 @@ class _MapViewState extends State<MapView> {
     }
   }
 
-  void _publishMessage(String text) {
-    String osPrefix = '$driverid';
-    final String message = osPrefix + text;
-    _manager.publish(message);
-    // _messageTextController.clear();
-  }
+  // void _publishMessage(text) {
+  //   String osPrefix = '$driverid';
+  //   final String message = osPrefix + text;
+  //   _manager.publish(message);
+  //   // _messageTextController.clear();
+  //   // for (var item in text) {
+  //   //   print(text);
+  //   // }
+  // }
 
   // ignore: unused_element
   void _updatelocation() {
@@ -586,10 +589,18 @@ class _MapViewState extends State<MapView> {
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) async {
       _currentPosition = position;
-      _publishMessage(":lat:" +
-          position.latitude.toString() +
-          ":lng:" +
-          position.longitude.toString());
+      // print(message);
+      var text = jsonEncode({
+        "driverid": driverid.toString(),
+        "lat": position.latitude.toString(),
+        "lng": position.longitude.toString()
+      });
+      _manager.publish(text);
+
+      // _publishMessage(":lat:" +
+      //     position.latitude.toString() +
+      //     ":lng:" +
+      //     position.longitude.toString());
 
       await GetStorage.init();
       final box = GetStorage();
@@ -767,7 +778,9 @@ class _MapViewState extends State<MapView> {
                 onSurface: Colors.black,
               ),
               onPressed: () {
-                _publishMessage(':' + driverid);
+                var text = jsonEncode(
+                    {"driverid": driverid.toString(), "status": '0'});
+                _manager.publish(text);
                 _disconnect();
               },
               child: Row(
