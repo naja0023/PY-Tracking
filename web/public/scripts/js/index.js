@@ -5,7 +5,7 @@ var lng
 var _lat
 var _lng
     // var _state
-var beachMarker
+var beachMarker = []
 var connection = new WebSocket('ws://localhost:34000')
     // var connection = new WebSocket('wss://pytransit.szo.me')
 
@@ -435,26 +435,34 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
 //         })
 //         .catch((e) => window.alert("Directions request failed due to " + status));
 // }
+var array = [];
 
 connection.onmessage = function(e) {
-    var yourString = e.data;
-    var array = [];
-    yourString.split(':').forEach(function(value) {
-        array.push(value.split(' '));
-    });
+    var yourString = JSON.parse(e.data);
+    setTimeout(function() { array = [] }, 800);
+    array.push(yourString)
+    console.log(array)
+    var latlng = new google.maps.LatLng(yourString.lat, yourString.lng);
+    beachMarker.setPosition(latlng);
+
+    // array = [];
+    // var _driverid = driverid;
+    // if (_driverid != _driverid);
+    // yourString.split(':').forEach(function(value) {
+    //     array.push(value.split(' '));
+    // });
     // log ค่าที่ถูกส่งมาจาก server
     // console.log("message from server: ", e.data);
     // const map = new google.maps.Map(document.getElementById("map"), {
     //   zoom: 18,
-    //   center: { lat: 19.024647, lng: 99.943809 }
+    //   center: { driverid: 6, lat: 19.024647, lng: 99.943809 }
     // });
     // print(array)
-    lat = parseFloat(array[2])
-    lng = parseFloat(array[4])
-        //_state = array[5];
+    // lat = parseFloat(array[2])
+    // lng = parseFloat(array[4])
+    //_state = array[5];
 
-    var latlng = new google.maps.LatLng(lat, lng);
-    beachMarker.setPosition(latlng);
+
     // if (_state == '0') {
     //     beachMarker.setPosition(null);
     //     //  _state = 0;

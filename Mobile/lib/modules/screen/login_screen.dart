@@ -34,6 +34,12 @@ class _loginState extends State<login> {
   final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

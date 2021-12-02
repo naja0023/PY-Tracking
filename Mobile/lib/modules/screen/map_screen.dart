@@ -591,9 +591,9 @@ class _MapViewState extends State<MapView> {
       _currentPosition = position;
       // print(message);
       var text = jsonEncode({
-        "driverid": driverid.toString(),
-        "lat": position.latitude.toString(),
-        "lng": position.longitude.toString()
+        "driverid": driverid,
+        "lat": position.latitude,
+        "lng": position.longitude
       });
       _manager.publish(text);
 
