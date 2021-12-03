@@ -30,16 +30,11 @@ class _loginState extends State<login> {
   late Timer _timer;
   late MQTTManager _manager;
   var _counter = 0;
+  var _count;
   // final _url = Uri.parse('http://pytransit.szo.me/loginmoblie');
   final _url = Uri.parse('http://10.0.2.2:35000/loginmoblie');
   final TextEditingController _getUsername = TextEditingController();
   final TextEditingController _getPassword = TextEditingController();
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +179,7 @@ class _loginState extends State<login> {
   }
 
   ///ConectMqtt and Sucribe
-  void _configureAndConnect() {
+  void _configureAndConnect(String driverid, String carid) {
     // TODO: Use UUID
     String osPrefix = 'diver';
     int counter = 0;
@@ -196,7 +191,7 @@ class _loginState extends State<login> {
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
         if (counter == 1) {
-          _subscribe();
+          _subscribe(driverid, carid);
           counter = 0;
           timer.cancel();
         } else {
@@ -206,8 +201,12 @@ class _loginState extends State<login> {
     });
   }
 
-  void _subscribe() {
-    _manager.subScribeTo("moyanyo");
+  void _subscribe(String _driverid, String _carid) {
+    // for (var i in _count) {
+
+    // }
+    _manager.subScribeTo("car" + _driverid + _carid);
+    // print("car" + _driverid + _carid);
 
     MaterialPageRoute route =
         MaterialPageRoute(builder: (value) => MapScreen());
@@ -238,15 +237,19 @@ class _loginState extends State<login> {
         box.write('carmatchid', "${driver['carmatch']}");
         box.write('name', "${driver['name']} ${driver['lastname']}");
         box.write('email', "${driver['email']} ");
-        box.write('driver_id', "${driver['driver_id']} ");
-        box.write('adrs', "ที่อยู่ ${driver['address']} ");
+        box.write('driver_id', "${driver['driver_id']}");
+        box.write('adrs', "ที่อยู่ ${driver['address']}");
         box.write('adrs1',
             "ตำบล/แขวง ${driver['sub']} \nอำเภอ/เขต ${driver['dist']}");
         box.write('adrs2', "จังหวัด ${driver['prov']} ${driver['zip']}");
         box.write('sex', "เพศ ${driver['sex']} ");
         box.write('tell', "${driver['tell']} ");
-        // print('เช็คๆๆ ${box.read('driver_id')}');
-        _configureAndConnect();
+
+        String dvid = '${driver['driver_id']}';
+        String cvid = '${driver['car_id']}';
+
+        // print('เช็คๆๆ' + cvid + dvid);
+        _configureAndConnect(dvid, cvid);
       } else {
         final snackBar = SnackBar(
           duration: Duration(seconds: 2),

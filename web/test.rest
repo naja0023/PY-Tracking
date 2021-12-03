@@ -1,11 +1,11 @@
 ### student upload
-post http://localhost:35000/signUp
+post http://localhost:35000/loginmoblie
 content-type: application/json
 
 {
-    "username" : "test1",
-    "email" : "hjkjasdkajhsdads",
-    "tel" : "0888888888",
+    "username" : "windoss",
+    "password" : 12345
+    
 }
 
 
@@ -26,7 +26,7 @@ content-type: application/json
     "tell" : "0999999999"
 }
 ####
-post http://localhost:35000/get_province
+get http://localhost:35000/getcar
 content-type: application/json
 
 { 

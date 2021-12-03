@@ -333,18 +333,6 @@ app.get("/reqdata", (req, res) => {
     });
 });
 
-app.get("/getcar", (req, res) => {
-    const sql = "SELECT COUNT(*) FROM `car`"
-    con.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(503).send("Server error");
-        } else {
-            res.status(200).send(result);
-        }
-    });
-});
-
 app.post("/hist", function(req, res) {
     const id = req.body.driver_id;
     const sql = "SELECT DATE_FORMAT(date,'%d/%m/%Y') as date ,License_plate,brand,color FROM `car_match` LEFT JOIN `car` ON `car_match`.`car_id` = `car`.`car_id` WHERE MONTH(`date`) = MONTH(CURRENT_TIMESTAMP) AND `driver_id` = ? ORDER BY date desc;";
