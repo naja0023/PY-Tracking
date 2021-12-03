@@ -346,19 +346,48 @@ app.post("/hist", function(req, res) {
     });
 });
 
-client.on('connect', function() {
-    client.subscribe('moyanyo', function(err) {
-        if (!err) {
-            client.publish('moyanyo', 'Hello mqtt')
-        }
-    })
-})
+// client.on('connect', function() {
+//     client.subscribe('moyanyo', function(err) {
+//         if (!err) {
+//             client.publish('moyanyo', 'Hello mqtt')
+//         }
+//     })
+// })
+client.subscribe('car65');
+client.subscribe('car71');
+client.subscribe('car96');
+var temperature;
+var humidity;
+var wind;
+client.on('message', function(topic, message, packet) {
+    if (topic === 'car65') {
+        temperature = message;
+    }
 
-client.on('message', function(topic, message) {
-    // message is Buffer
-    //console.log(message.toString())
-    // client.end()
-})
+    if (topic === 'car71') {
+        humidity = message;
+    }
+    if (topic === 'car96') {
+        wind = message;
+    }
+    if (temperature && humidity && wind) {
+        //do database update or print
+        console.log("----");
+        console.log("temp: %s", temperature);
+        console.log("----");
+        console.log("humidity: %s", humidity);
+        console.log("----");
+        console.log("wind: %s", wind);
+        //reset to undefined for next time
+        temperature = undefined;
+        humidity = undefined;
+    }
+});
+// client.on('message', function(topic, message) {
+//     // message is Buffer
+//     //console.log(message.toString())
+//     // client.end()
+// })
 
 const PORT = 35000
 app.listen(PORT, function() {

@@ -42,7 +42,6 @@ class _profileScreenState extends State<profileScreen> {
       getInfo();
       imgProfile();
       nameText();
-      viewBox();
       infoBox();
       carInfo();
     });
@@ -68,7 +67,7 @@ class _profileScreenState extends State<profileScreen> {
                         ])),
                     child: Container(
                       width: double.infinity,
-                      height: 350.0,
+                      height: 250.0,
                       child: Center(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +81,6 @@ class _profileScreenState extends State<profileScreen> {
                             SizedBox(
                               height: 10.0,
                             ),
-                            viewBox()
                           ],
                         ),
                       ),
@@ -152,103 +150,6 @@ class _profileScreenState extends State<profileScreen> {
       style: TextStyle(
         fontSize: 24.0,
         color: Colors.white,
-      ),
-    );
-  }
-
-  Card viewBox() {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: .0),
-      clipBehavior: Clip.antiAlias,
-      color: Colors.white,
-      elevation: 5.0,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 22.0),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "จำนวนรีวิว",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: MyConstant.dark,
-                        fontSize: 21.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      total,
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: MyConstant.primary,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "คะแนนเฉลี่ย",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: MyConstant.dark,
-                          fontSize: 21,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Text(
-                        _point.toStringAsFixed(1),
-                        style: TextStyle(
-                          fontSize: 19,
-                          color: MyConstant.primary,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "เริ่มใช้งานเมื่อ",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: MyConstant.dark,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      date,
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: MyConstant.primary,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -347,7 +248,6 @@ class _profileScreenState extends State<profileScreen> {
     await GetStorage.init();
     final box = GetStorage();
     id = box.read('carmatchid').toString();
-
     try {
       http.Response response =
           await http.post(Uri.parse('http://10.0.2.2:35000/date'), body: {

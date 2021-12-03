@@ -40,89 +40,49 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
+  /*ประกาศตัวแปร*/
+  // final _url = Uri.parse('http://pytransit.szo.me/addlocation');
+  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
   late String _name = '';
   late String _email = '';
   late String driverid = '';
   double? lat, lng;
-
-  bool _picture = true;
-  // final _url = Uri.parse('http://pytransit.szo.me/addlocation');
-  final _url = Uri.parse('http://10.0.2.2:35000/addlocation');
-
+  //bool _picture = true;
   late GoogleMapController mapController;
-  late Timer _timer;
   late double p = 0;
   int countingtin = 0;
   late MQTTManager _manager;
-
   StreamSubscription<Position>? positionStream;
   bool track_button = true;
   late Position _currentPosition;
-
   final startAddressController = TextEditingController();
   final destinationAddressController = TextEditingController();
-
   final startAddressFocusNode = FocusNode();
   final desrinationAddressFocusNode = FocusNode();
-
   double _originLatitude = 19.031459, _originLongitude = 99.926547;
   double _destLatitude = 19.172379, _destLongitude = 99.898241;
   double _onwaylat = 19.161715, _onwaylng = 99.913415;
   double _originLatitude1 = 19.172379, _originLongitude1 = 99.898241;
   double _destLatitude1 = 19.031459, _destLongitude1 = 99.926547;
-
-  int _in = 0;
-  int _out = 0;
-
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polylines = {};
   List<Marker> _marker = [];
   List wayPoint = [];
+  /*ประกาศตัวแปร*/
+
+  /*ดึงค่าตอนเริ่มต้น*/
   @override
   void initState() {
     findposition();
     getInfo();
-
     _getPolyline();
-
-    //finlatlng();
     _updatelocation();
     calculateStar();
-
-    int counter = 0;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (counter == 1) {
-          get_location();
-          get_count_in();
-          get_count_out();
-          counter = 0;
-          // timer.cancel();
-        } else {
-          counter++;
-        }
-      });
-    });
-
     super.initState();
-
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
   }
+  /*ดึงค่าตอนเริ่มต้น*/
 
-  // @override
-  // dispose() {
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.landscapeRight,
-  //     DeviceOrientation.landscapeLeft,
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  //   super.dispose();
-  // }
-
+  /*สร้าง UI*/
   @override
   Widget build(BuildContext context) {
     _manager = Provider.of<MQTTManager>(context);
@@ -153,113 +113,16 @@ class _MapViewState extends State<MapView> {
         body: Stack(
           children: <Widget>[
             buildMap(),
-            reviewBox(width, context, height),
             zoombutton(width, height),
             trackingbutton(width, height),
-            count(width, height),
           ],
         ),
       ),
     );
   }
+  /*สร้าง UI*/
 
-  Future get_count_in() async {
-    try {
-      http.Response response =
-          await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
-      // await http.get(Uri.parse('http://pytransit.szo.me/count_in'));
-
-      List data = jsonDecode(response.body);
-      for (var i in data) {
-        setState(() {
-          _in = int.parse('${i['COUNT(request_id)']}');
-          // print('atyaty$count');
-        });
-      }
-    } on TimeoutException catch (e) {
-      print('Timeout : $e ');
-    } catch (e) {
-      print('ERROR : $e ');
-    }
-  }
-
-  Future get_count_out() async {
-    try {
-      http.Response response =
-          await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
-      // await http.get(Uri.parse('http://pytransit.szo.me/count_out'));
-
-      List data = jsonDecode(response.body);
-      for (var i in data) {
-        setState(() {
-          _out = int.parse('${i['COUNT(request_id)']}');
-          // print('atyaty$count');
-        });
-      }
-    } on TimeoutException catch (e) {
-      print('Timeout : $e ');
-    } catch (e) {
-      print('ERROR : $e ');
-    }
-  }
-
-  SafeArea count(double width, double height) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(
-            left: width * (2 / 100), bottom: height * (4 / 100)),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: MyConstant.green1,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
-                  ),
-                ),
-                width: 100,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    'เข้าเมือง : $_in',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: MyConstant.red2,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25),
-                    ),
-                  ),
-                  width: 100,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      'ออกเมือง : $_out',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
+  /*ฟังก์ชั่นการทำงาน*/
   SafeArea trackingbutton(double width, double height) {
     return SafeArea(
       child: Align(
@@ -294,131 +157,6 @@ class _MapViewState extends State<MapView> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  SafeArea reviewBox(double width, BuildContext context, double height) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(top: height * (3 / 100)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(width * height * 0.01),
-                ),
-              ),
-              width: 275,
-              height: 100,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      //height: height * 0.1,
-                      child: Row(
-                        children: [
-                          img_Profile(),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                showName(),
-                                starReview(),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Container img_Profile() {
-    return Container(
-      margin: EdgeInsets.only(left: 5),
-      child: _picture
-          ? Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: CircleAvatar(
-                backgroundImage: AssetImage("images/img5.png"),
-                maxRadius: 35,
-              ),
-            )
-          : Icon(
-              Icons.account_circle,
-              size: 70,
-              color: MyConstant.primary,
-            ),
-    );
-  }
-
-  Container showName() {
-    return Container(
-      margin: EdgeInsets.only(left: 5, top: 25),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              _name,
-              style: MyConstant().h2_Stlye(),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container starReview() {
-    return Container(
-      margin: EdgeInsets.only(bottom: 25, top: 5),
-      child: Row(
-        children: [
-          (p >= 0.5)
-              ? (p >= 1)
-                  ? Icon(Icons.star, color: Colors.amber[500])
-                  : Icon(Icons.star_half, color: Colors.amber[500])
-              : Icon(Icons.star_border, color: Colors.grey),
-          (p >= 1.5)
-              ? (p >= 2)
-                  ? Icon(Icons.star, color: Colors.amber[500])
-                  : Icon(Icons.star_half, color: Colors.amber[500])
-              : Icon(Icons.star_border, color: Colors.grey),
-          (p >= 2.5)
-              ? (p >= 3)
-                  ? Icon(Icons.star, color: Colors.amber[500])
-                  : Icon(Icons.star_half, color: Colors.amber[500])
-              : Icon(Icons.star_border, color: Colors.grey),
-          (p >= 3.5)
-              ? (p >= 4)
-                  ? Icon(Icons.star, color: Colors.amber[500])
-                  : Icon(Icons.star_half, color: Colors.amber[500])
-              : Icon(Icons.star_border, color: Colors.grey),
-          (p >= 4.5)
-              ? (p >= 5)
-                  ? Icon(Icons.star, color: Colors.amber[500])
-                  : Icon(Icons.star_half, color: Colors.amber[500])
-              : Icon(Icons.star_border, color: Colors.grey),
-          Text(
-            '(' + p.toStringAsFixed(1) + ')',
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: MyConstant.dark,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -555,14 +293,6 @@ class _MapViewState extends State<MapView> {
     setState(() {});
   }
 
-  // Future<Null> finlatlng() async {
-  //   Position? _position = await findposition();
-  //   setState(() {
-  //     lat = _position?.latitude;
-  //     lng = _position?.longitude;
-  //   });
-  // }
-
   Future<Position?> findposition() async {
     Position _position;
     try {
@@ -573,17 +303,6 @@ class _MapViewState extends State<MapView> {
     }
   }
 
-  // void _publishMessage(text) {
-  //   String osPrefix = '$driverid';
-  //   final String message = osPrefix + text;
-  //   _manager.publish(message);
-  //   // _messageTextController.clear();
-  //   // for (var item in text) {
-  //   //   print(text);
-  //   // }
-  // }
-
-  // ignore: unused_element
   void _updatelocation() {
     StreamSubscription<Position> positionStream =
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
@@ -802,29 +521,31 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  void _disconnect() {
-    int counter = 0;
+  void _disconnect() async {
+    await GetStorage.init();
+    final box = GetStorage();
+    box.erase();
     _manager.disconnect();
-    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      setState(() {
-        if (counter == 1) {
-          //Navigator.pushReplacementNamed(context, '/login');
-          counter = 0;
-          _timer.cancel();
+    MaterialPageRoute route = MaterialPageRoute(builder: (value) => login());
+    Navigator.pushReplacement(context, route);
+    // _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+    //   setState(() {
+    //     if (counter == 1) {
+    //       //Navigator.pushReplacementNamed(context, '/login');
+    //       counter = 0;
+    //       _timer.cancel();
 
-          ///----------
-          // Navigator.of(context).pushNamedAndRemoveUntil(
-          //     '/login', (Route<dynamic> route) => false);
-          ///----------
-          // Navigator.pop(context);
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => login());
-          Navigator.pushReplacement(context, route);
-        } else {
-          counter++;
-        }
-      });
-    });
+    //       ///----------
+    //       // Navigator.of(context).pushNamedAndRemoveUntil(
+    //       //     '/login', (Route<dynamic> route) => false);
+    //       ///----------
+    //       // Navigator.pop(context);
+
+    //     } else {
+    //       counter++;
+    //     }
+    //   });
+    // });
   }
 
   void getInfo() async {
@@ -833,133 +554,6 @@ class _MapViewState extends State<MapView> {
     _name = box.read('name').toString();
     _email = box.read('email').toString();
     driverid = box.read('driver_id').toString();
-  }
-
-  Future get_location() async {
-    try {
-      http.Response response =
-          await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
-      // await http.get(Uri.parse('http://pytransit.szo.me/query_location'));
-
-      List data = jsonDecode(response.body);
-      for (var i in data) {
-        var user_lat = double.parse('${i['lat']}');
-        var user_lng = double.parse('${i['lng']}');
-        var user_status = int.parse('${i['status']}');
-        // var user_status = int.parse('${i['status']}');
-        var user_route = int.parse('${i['route']}');
-        var marker_id = int.parse('${i['request_id']}');
-
-        if (user_status != 0) {
-          _marker.add(
-            Marker(
-              markerId: MarkerId('$marker_id'),
-              position: LatLng(user_lat, user_lng),
-              icon: (user_route == 1)
-                  ? BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueGreen,
-                    )
-                  : BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueRed,
-                    ),
-              onTap: () {
-                showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      _AlertDialog(context, marker_id),
-                );
-              },
-            ),
-          );
-        }
-      }
-    } on TimeoutException catch (e) {
-      print('Timeout : $e ');
-    } catch (e) {
-      print('ERROR : $e ');
-    }
-  }
-
-  AlertDialog _AlertDialog(BuildContext context, int marker_id) {
-    return AlertDialog(
-      contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      actions: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CloseButton(),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: Expanded(
-                    child: ElevatedButton(
-                      child: Text(
-                        "ยืนยันการขึ้นรถ",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      style: MyConstant().MyButtonStlye(),
-                      onPressed: () {
-                        Navigator.pop(context, 'OK');
-                        setState(() {
-                          _marker.removeWhere((element) =>
-                              element.markerId == MarkerId('$marker_id'));
-                          updateStatus('$marker_id', '$driverid');
-                          //_publishMessage("diverid:" + driverid);
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  child: Expanded(
-                    child: ElevatedButton(
-                      child: Text(
-                        "ลบหมุดตำแหน่ง",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      style: MyConstant().MyButtonStlye1(),
-                      onPressed: () {
-                        Navigator.pop(context, 'Cancel');
-                        setState(() {
-                          _marker.removeWhere((element) =>
-                              element.markerId == MarkerId('$marker_id'));
-                          updateStatus('$marker_id', '$driverid');
-                          // _publishMessage("diverid:" + driverid);
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  Future updateStatus(var id, var drverid) async {
-    try {
-      http.Response response =
-          await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
-        // await http.put(Uri.parse('http://pytransit.szo.me/setstatus'), body: {
-        'request_id': id,
-        'res_driver': drverid,
-      }).timeout(Duration(seconds: 4));
-    } on TimeoutException catch (e) {
-      print('Timeout : $e ');
-    } catch (e) {
-      print('ERROR : $e ');
-    }
   }
 
   void calculateStar() async {
@@ -994,4 +588,312 @@ class _MapViewState extends State<MapView> {
       print('ERROR : $e ');
     }
   }
+
+  // Future updateStatus(var id, var drverid) async {
+  //   try {
+  //     http.Response response =
+  //         await http.put(Uri.parse('http://10.0.2.2:35000/setstatus'), body: {
+  //       // await http.put(Uri.parse('http://pytransit.szo.me/setstatus'), body: {
+  //       'request_id': id,
+  //       'res_driver': drverid,
+  //     }).timeout(Duration(seconds: 4));
+  //   } on TimeoutException catch (e) {
+  //     print('Timeout : $e ');
+  //   } catch (e) {
+  //     print('ERROR : $e ');
+  //   }
+  // }
+
+  // Future get_count_in() async {
+  //   try {
+  //     http.Response response =
+  //         await http.get(Uri.parse('http://10.0.2.2:35000/count_in'));
+  //     // await http.get(Uri.parse('http://pytransit.szo.me/count_in'));
+
+  //     List data = jsonDecode(response.body);
+  //     for (var i in data) {
+  //       setState(() {
+  //         _in = int.parse('${i['COUNT(request_id)']}');
+  //         // print('atyaty$count');
+  //       });
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     print('Timeout : $e ');
+  //   } catch (e) {
+  //     print('ERROR : $e ');
+  //   }
+  // }
+
+  // Future get_count_out() async {
+  //   try {
+  //     http.Response response =
+  //         await http.get(Uri.parse('http://10.0.2.2:35000/count_out'));
+  //     // await http.get(Uri.parse('http://pytransit.szo.me/count_out'));
+  //     List data = jsonDecode(response.body);
+  //     for (var i in data) {
+  //       setState(() {
+  //         _out = int.parse('${i['COUNT(request_id)']}');
+  //         // print('atyaty$count');
+  //       });
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     print('Timeout : $e ');
+  //   } catch (e) {
+  //     print('ERROR : $e ');
+  //   }
+  // }
+
+  // Future get_location() async {
+  //   try {
+  //     http.Response response =
+  //         await http.get(Uri.parse('http://10.0.2.2:35000/query_location'));
+  //     // await http.get(Uri.parse('http://pytransit.szo.me/query_location'));
+  //     List data = jsonDecode(response.body);
+  //     for (var i in data) {
+  //       var user_lat = double.parse('${i['lat']}');
+  //       var user_lng = double.parse('${i['lng']}');
+  //       var user_status = int.parse('${i['status']}');
+  //       // var user_status = int.parse('${i['status']}');
+  //       var user_route = int.parse('${i['route']}');
+  //       var marker_id = int.parse('${i['request_id']}');
+  //       if (user_status != 0) {
+  //         _marker.add(
+  //           Marker(
+  //             markerId: MarkerId('$marker_id'),
+  //             position: LatLng(user_lat, user_lng),
+  //             icon: (user_route == 1)
+  //                 ? BitmapDescriptor.defaultMarkerWithHue(
+  //                     BitmapDescriptor.hueGreen,
+  //                   )
+  //                 : BitmapDescriptor.defaultMarkerWithHue(
+  //                     BitmapDescriptor.hueRed,
+  //                   ),
+  //             onTap: () {
+  //               showDialog<String>(
+  //                 context: context,
+  //                 builder: (BuildContext context) =>
+  //                     _AlertDialog(context, marker_id),
+  //               );
+  //             },
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     print('Timeout : $e ');
+  //   } catch (e) {
+  //     print('ERROR : $e ');
+  //   }
+  // }
+
+  // AlertDialog _AlertDialog(BuildContext context, int marker_id) {
+  //   return AlertDialog(
+  //     contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+  //     actions: [
+  //       Column(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.end,
+  //             children: [
+  //               CloseButton(),
+  //             ],
+  //           ),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Container(
+  //                 child: Expanded(
+  //                   child: ElevatedButton(
+  //                     child: Text(
+  //                       "ยืนยันการขึ้นรถ",
+  //                       overflow: TextOverflow.ellipsis,
+  //                     ),
+  //                     style: MyConstant().MyButtonStlye(),
+  //                     onPressed: () {
+  //                       Navigator.pop(context, 'OK');
+  //                       setState(() {
+  //                         _marker.removeWhere((element) =>
+  //                             element.markerId == MarkerId('$marker_id'));
+  //                         updateStatus('$marker_id', '$driverid');
+  //                         //_publishMessage("diverid:" + driverid);
+  //                       });
+  //                     },
+  //                   ),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Container(
+  //                 child: Expanded(
+  //                   child: ElevatedButton(
+  //                     child: Text(
+  //                       "ลบหมุดตำแหน่ง",
+  //                       overflow: TextOverflow.ellipsis,
+  //                     ),
+  //                     style: MyConstant().MyButtonStlye1(),
+  //                     onPressed: () {
+  //                       Navigator.pop(context, 'Cancel');
+  //                       setState(() {
+  //                         _marker.removeWhere((element) =>
+  //                             element.markerId == MarkerId('$marker_id'));
+  //                         updateStatus('$marker_id', '$driverid');
+  //                         // _publishMessage("diverid:" + driverid);
+  //                       });
+  //                     },
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       )
+  //     ],
+  //   );
+  // }
+
+  // void _publishMessage(text) {
+  //   String osPrefix = '$driverid';
+  //   final String message = osPrefix + text;
+  //   _manager.publish(message);
+  //   // _messageTextController.clear();
+  //   // for (var item in text) {
+  //   //   print(text);
+  //   // }
+  // }
+
+  // Future<Null> finlatlng() async {
+  //   Position? _position = await findposition();
+  //   setState(() {
+  //     lat = _position?.latitude;
+  //     lng = _position?.longitude;
+  //   });
+  // }
+
+  // SafeArea reviewBox(double width, BuildContext context, double height) {
+  //   return SafeArea(
+  //     child: Padding(
+  //       padding: EdgeInsets.only(top: height * (3 / 100)),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Container(
+  //             decoration: BoxDecoration(
+  //               color: Colors.white,
+  //               borderRadius: BorderRadius.all(
+  //                 Radius.circular(width * height * 0.01),
+  //               ),
+  //             ),
+  //             width: 275,
+  //             height: 100,
+  //             child: Row(
+  //               children: [
+  //                 Expanded(
+  //                   child: Container(
+  //                     //height: height * 0.1,
+  //                     child: Row(
+  //                       children: [
+  //                         img_Profile(),
+  //                         Expanded(
+  //                           child: Column(
+  //                             children: [
+  //                               showName(),
+  //                               starReview(),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Container img_Profile() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 5),
+  //     child: _picture
+  //         ? Padding(
+  //             padding: const EdgeInsets.only(left: 10),
+  //             child: CircleAvatar(
+  //               backgroundImage: AssetImage("images/img5.png"),
+  //               maxRadius: 35,
+  //             ),
+  //           )
+  //         : Icon(
+  //             Icons.account_circle,
+  //             size: 70,
+  //             color: MyConstant.primary,
+  //           ),
+  //   );
+  // }
+
+  // Container showName() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 5, top: 25),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //           child: Text(
+  //             _name,
+  //             style: MyConstant().h2_Stlye(),
+  //             overflow: TextOverflow.ellipsis,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Container starReview() {
+  //   return Container(
+  //     margin: EdgeInsets.only(bottom: 25, top: 5),
+  //     child: Row(
+  //       children: [
+  //         (p >= 0.5)
+  //             ? (p >= 1)
+  //                 ? Icon(Icons.star, color: Colors.amber[500])
+  //                 : Icon(Icons.star_half, color: Colors.amber[500])
+  //             : Icon(Icons.star_border, color: Colors.grey),
+  //         (p >= 1.5)
+  //             ? (p >= 2)
+  //                 ? Icon(Icons.star, color: Colors.amber[500])
+  //                 : Icon(Icons.star_half, color: Colors.amber[500])
+  //             : Icon(Icons.star_border, color: Colors.grey),
+  //         (p >= 2.5)
+  //             ? (p >= 3)
+  //                 ? Icon(Icons.star, color: Colors.amber[500])
+  //                 : Icon(Icons.star_half, color: Colors.amber[500])
+  //             : Icon(Icons.star_border, color: Colors.grey),
+  //         (p >= 3.5)
+  //             ? (p >= 4)
+  //                 ? Icon(Icons.star, color: Colors.amber[500])
+  //                 : Icon(Icons.star_half, color: Colors.amber[500])
+  //             : Icon(Icons.star_border, color: Colors.grey),
+  //         (p >= 4.5)
+  //             ? (p >= 5)
+  //                 ? Icon(Icons.star, color: Colors.amber[500])
+  //                 : Icon(Icons.star_half, color: Colors.amber[500])
+  //             : Icon(Icons.star_border, color: Colors.grey),
+  //         Text(
+  //           '(' + p.toStringAsFixed(1) + ')',
+  //           overflow: TextOverflow.ellipsis,
+  //           style: TextStyle(
+  //             color: MyConstant.dark,
+  //             fontSize: 16,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+/*ฟังก์ชั่นการทำงาน*/
 }
